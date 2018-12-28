@@ -132,6 +132,7 @@ export default {
 <style lang="stylus">
 .page{
     padding-bottom 66px
+    padding-top 0px
 }
 .buyInfo{
     text-align left 
@@ -387,6 +388,9 @@ export default {
   line-height: 16px;
 }
 .amap-logo{
-    display none
+    display: none !important
+}
+.amap-copyright{
+  display: none !important
 }
 </style>

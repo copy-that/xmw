@@ -38,30 +38,30 @@
             </div>
             <div class="id-body-item" :class="1==idtype?'is_active':''">
               <span>个人</span>
-              <img class="check-icon" src="@/assets/images/check-no.png" alt srcset>
+              <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
             </div>
             <div class="id-body-item" :class="2==idtype?'is_active':''">
               <span>经纪人</span>
-              <img class="check-icon" src="@/assets/images/check-no.png" alt srcset>
+              <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
             </div>
             <div class="confirm-btn">确定</div>
           </div>
           <div class="body-item-box" v-show="'pr'==activeitem">
             <div class="body-item-two" :class="1==prtype?'is_active':''">
               <span>不限</span>
-              <img class="check-icon" src="@/assets/images/check.png" alt srcset>
+              <img class="check-icon" src="@/assets/images/icon-6.png" alt srcset>
             </div>
             <div class="body-item-two" :class="2==prtype?'is_active':''">
               <span>1000元以内</span>
-              <img class="check-icon" src="@/assets/images/check-no.png" alt srcset>
+              <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
             </div>
             <div class="body-item-two" :class="3==prtype?'is_active':''">
               <span>1000-2000元</span>
-              <img class="check-icon" src="@/assets/images/check-no.png" alt srcset>
+              <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
             </div>
             <div class="body-item-two" :class="4==prtype?'is_active':''">
               <span>2000-3000元</span>
-              <img class="check-icon" src="@/assets/images/check-no.png" alt srcset>
+              <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
             </div>
           </div>
           <div class="body-type" v-show="'fi'==activeitem">
@@ -69,19 +69,19 @@
             <div class="body-item-box">
               <div class="body-item-three" :class="1==prtype?'is_active':''">
                 <span>不限</span>
-                <img class="check-icon" src="@/assets/images/check.png" alt srcset>
+                <img class="check-icon" src="@/assets/images/icon-6.png" alt srcset>
               </div>
               <div class="body-item-three" :class="2==prtype?'is_active':''">
                 <span>4室及以上</span>
-                <img class="check-icon" src="@/assets/images/check-no.png" alt srcset>
+                <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
               </div>
               <div class="body-item-three" :class="3==prtype?'is_active':''">
                 <span>3室2厅</span>
-                <img class="check-icon" src="@/assets/images/check-no.png" alt srcset>
+                <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
               </div>
               <div class="body-item-three" :class="4==prtype?'is_active':''">
                 <span>3室1厅</span>
-                <img class="check-icon" src="@/assets/images/check-no.png" alt srcset>
+                <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
               </div>
             </div>
           </div>
@@ -257,7 +257,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
+<style lang="stylus" scope>
 @import '../assets/css/style.styl';
 
 .page {

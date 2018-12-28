@@ -24,11 +24,16 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .header
-    position relative
+    position fixed
+    top 0
+    width 100%
+    background-color #ffffff
     display flex
+    z-index 10
     align-items center
     height 45px
     line-height 45px
+    border-bottom 1px solid #f2f2f2
     .header-name
         text-align center
         font-size 17px

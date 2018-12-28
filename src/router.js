@@ -19,16 +19,100 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/History.vue')
     },
     {
+      path: '/buysell',
+      name: 'buysell',
+      component: () => import('./views/BuySell.vue')
+    },
+    {
+      path: '/buynewhouse',
+      name: 'BuyNewHouse',
+      component: () => import('./views/BuyNewHouse.vue')
+    },
+    {
       path: '/my',
       name: 'my',
-      component: () => import(/* webpackChunkName: "about" */ './views/My.vue')
+      component: () => import('./views/My.vue')
     },
     {
       path: '/myinfo',
       name: 'MyInfo',
-      component: () => import(/* webpackChunkName: "about" */ './views/MyInfo.vue')
+      component: () => import('./views/MyInfo.vue')
     },
-    
+    {
+      path: '/mytodo',
+      name: 'MyTodo',
+      component: () => import('./views/MyTodo.vue')
+    },
+    {
+      path: '/mypoket',
+      name: 'MyPoket',
+      component: () => import('./views/MyPoket.vue')
+    },
+    {
+      path: '/poketdetail',
+      name: 'PoketDetail',
+      component: () => import('./views/PoketDetail.vue')
+    },
+    {
+      path: '/recharge',
+      name: 'Recharge',
+      component: () => import('./views/Recharge.vue')
+    },
+    {
+      path: '/resuccess',
+      name: 'ReSuccess',
+      component: () => import('./views/ReSuccess.vue')
+    },
+    {
+      path: '/withdraw',
+      name: 'Withdraw',
+      component: () => import('./views/Withdraw.vue')
+    },
+    {
+      path: '/wisuccess',
+      name: 'WiSuccess',
+      component: () => import('./views/WiSuccess.vue')
+    },
+    {
+      path: '/mymessage',
+      name: 'MyMessage',
+      component: () => import('./views/MyMessage.vue')
+    },
+    {
+      path: '/mycollect',
+      name: 'MyCollection',
+      component: () => import('./views/MyCollection.vue')
+    },
+    {
+      path: '/aboutus',
+      name: 'AboutUs',
+      component: () => import('./views/AboutUs.vue')
+    },
+    {
+      path: '/question',
+      name: 'Question',
+      component: () => import('./views/Question.vue')
+    },
+    {
+      path: '/questiondetail',
+      name: 'QuestionDetail',
+      component: () => import('./views/QuestionDetail.vue')
+    },
+    {
+      path: '/issues',
+      name: 'Issues',
+      component: () => import('./views/Issues.vue')
+    },
+    {
+      path: '/auth',
+      name: 'Authentication',
+      component: () => import('./views/Authentication.vue')
+    },
+    {
+      path: '/eidtepass',
+      name: 'EidtePass',
+      component: () => import('./views/EidtePass.vue')
+    },
     {
       path: '/product',
       name: 'product',
@@ -46,6 +130,7 @@ export default new Router({
       path: '/newsdetail',
       name: 'NewsDetail',
       component: () => import(/* webpackChunkName: "about" */ './views/NewsDetail.vue')
-    }
+    },
+    
   ]
 })

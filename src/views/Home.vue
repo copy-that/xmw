@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="page">
     <div class="search-box">
       <div class="location">
         <img class="location-icon" src="@/assets/images/location.png" alt>
@@ -10,7 +10,7 @@
         <img class="search-icon" slot="prepend" src="@/assets/images/search.png" alt>
       </cube-input>
     </div>
-    <cube-slide ref="slide" direction="horizontal" :options="{eventPassthrough:'vertical',cancelable:true}" :data="slideList">
+    <cube-slide ref="slide" class="banner" direction="horizontal" :options="{eventPassthrough:'vertical',cancelable:true}" :data="slideList">
       <cube-slide-item
         v-for="(item, index) in slideList"
         :key="index"
@@ -218,7 +218,7 @@ export default {
 };
 </script>
 <style lang="stylus">
-.home {
+.page {
   text-align left 
   margin-bottom: 59px;
   -webkit-overflow-scrolling: touch;
@@ -273,7 +273,9 @@ export default {
   position: absolute;
   top: 15px;
 }
-
+.banner{
+  height: 174px;
+}
 .slide-img {
   height: 174px;
 }

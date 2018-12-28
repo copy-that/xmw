@@ -31,18 +31,18 @@ export default {
       }, {
         name: '历史',
         label:'history',
-        icon:  require('@/assets/images/tab-1.png'),
-        icon_active:  require('@/assets/images/tab-1-p.png'),
+        icon:  require('@/assets/images/tab-2.png'),
+        icon_active:  require('@/assets/images/tab-2-p.png'),
       }, {
         name: '出租出售发布',
-        label:'fabu',
-        icon:  require('@/assets/images/tab-1.png'),
-        icon_active:  require('@/assets/images/tab-1-p.png'),
+        label:'buysell',
+        icon:  require('@/assets/images/tab-3.png'),
+        icon_active:  require('@/assets/images/tab-3-p.png'),
       }, {
         name: '我的',
         label:'my',
-        icon:  require('@/assets/images/tab-1.png'),
-        icon_active:  require('@/assets/images/tab-1-p.png'),
+        icon:  require('@/assets/images/tab-4.png'),
+        icon_active:  require('@/assets/images/tab-4-p.png'),
       }]
     }
   },
@@ -61,6 +61,7 @@ export default {
 <style >
     .tabbar{
         position: fixed;
+        border-top: 1px solid #f2f2f2;
         bottom: 0;
         width: 100vw;
         background-color: #ffffff;

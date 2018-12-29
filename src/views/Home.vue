@@ -2,12 +2,12 @@
   <div class="page">
     <div class="search-box">
       <div class="location">
-        <img class="location-icon" src="@/assets/images/location.png" alt>
+        <img class="location-icon" src="@/assets/images/icon-14.png" alt>
         <div class="location-place">郑州</div>
         <div class="location-change">切换分站</div>
       </div>
       <cube-input class="search" v-model="searchWorld" placeholder="请输入区域、商圈或者编号">
-        <img class="search-icon" slot="prepend" src="@/assets/images/search.png" alt>
+        <img class="search-icon" slot="prepend" src="@/assets/images/icon-15.png" alt>
       </cube-input>
     </div>
     <cube-slide ref="slide" class="banner" direction="horizontal" :options="{eventPassthrough:'vertical',cancelable:true}" :data="slideList">
@@ -101,18 +101,15 @@ export default {
       slideList: [
         {
           url: "http://www.didichuxing.com/",
-          image:
-            "//webapp.didistatic.com/static/webapp/shield/cube-ui-examples-slide01.png"
+          image:require('@/assets/images/banner.png'),
         },
         {
           url: "http://www.didichuxing.com/",
-          image:
-            "//webapp.didistatic.com/static/webapp/shield/cube-ui-examples-slide02.png"
+          image:require('@/assets/images/banner.png'),
         },
         {
           url: "http://www.didichuxing.com/",
-          image:
-            "//webapp.didistatic.com/static/webapp/shield/cube-ui-examples-slide03.png"
+          image:require('@/assets/images/banner.png'),
         }
       ],
       scrollList2: [
@@ -220,11 +217,17 @@ export default {
 <style lang="stylus">
 .page {
   text-align left 
-  margin-bottom: 59px;
+  padding-bottom: 59px;
   -webkit-overflow-scrolling: touch;
 }
 
 .search-box {
+  position fixed;
+  top:0;
+  width 100%;
+  box-sizing:border-box;
+  z-index 10;
+  background-color #fff;
   display: flex;
   padding: 5px 15px;
 }
@@ -276,9 +279,7 @@ export default {
 .banner{
   height: 174px;
 }
-.slide-img {
-  height: 174px;
-}
+
 
 .list-menu {
   padding: 0 10px;

@@ -11,13 +11,13 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #111111;
-  min-height: 100vh;
+  height: 100vh;
   width: 100vw;
 }
 .page{
   box-sizing: border-box;
   width: 100%;
-  height: 100%;
+
   padding-top: 45px;
   background-color: #ffffff;
 }

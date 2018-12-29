@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" style="padding-top:0;">
     <div class="banner">
       <img class="back" src="@/assets/images/icon-1.png" alt srcset @click="goback">
       <img class="banner-img" src="@/assets/images/ban-1.png" alt>
@@ -129,11 +129,8 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
-.page{
-    padding-bottom 66px
-    padding-top 0px
-}
+<style lang="stylus" scope>
+
 .buyInfo{
     text-align left 
     position fixed
@@ -335,7 +332,7 @@ export default {
   .comment {
     border-bottom: 1px solid #f1f1f1;
     padding-top: 15px;
-
+    margin-bottom: 10px;
     .comment-top {
       margin-bottom: 10px;
       display: flex;
@@ -364,7 +361,7 @@ export default {
     }
 
     .comment-text {
-      margin-bottom: 10px;
+      padding-bottom: 10px;
       line-height: 18px;
       font-size: 12px;
       color: rgba(102, 102, 102, 1);

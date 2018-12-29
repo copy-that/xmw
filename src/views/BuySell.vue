@@ -96,6 +96,7 @@ export default {
 <style lang="stylus" scoped>
 .buysell-box {
   .name {
+    text-align center;
     color: #666666;
     font-size: 15px;
     margin: 37px auto 18px;

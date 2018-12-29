@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <img class="back-icon" v-if="backIcon" @click="goback" src="@/assets/images/back-icon.png" alt="">
+        <img class="back-icon" v-if="backIcon" @click="goback" src="@/assets/images/icon-16.png" alt="">
         <div class="header-name">{{title}}</div>
     </div>
 </template>
@@ -41,7 +41,9 @@ export default {
         flex 1
     .back-icon
         position absolute
-        left 9px
+        top 7px;
+        left 0px
+        padding 9px
         height 13px
         width 13px
 </style>

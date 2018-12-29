@@ -89,7 +89,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
+<style lang="stylus" scope>
 @import '../assets/css/style.styl';
 .auth-box{
     padding: 0 15px;

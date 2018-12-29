@@ -5,30 +5,30 @@
       <Header title="商品页"></Header>
       <div class="search-box">
         <div class="location">
-          <img class="location-icon" src="@/assets/images/location.png" alt>
+          <img class="location-icon" src="@/assets/images/icon-14.png" alt>
           <div class="location-place">郑州</div>
         </div>
         <cube-input class="search-min" v-model="searchWorld" placeholder="请输入区域、商圈或者编号">
-          <img class="search-icon" slot="prepend" src="@/assets/images/search.png" alt>
+          <img class="search-icon" slot="prepend" src="@/assets/images/icon-15.png" alt>
         </cube-input>
       </div>
       <div class="filter">
         <div class="filter-header">
           <div class="filter-item" :class="'id'==activeitem?'is_active':''">
             身份
-            <img src="@/assets/images/down.png" alt srcset>
+            <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
           <div class="filter-item" :class="'pr'==activeitem?'is_active':''">
             价格
-            <img src="@/assets/images/down.png" alt srcset>
+            <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
           <div class="filter-item" :class="'fi'==activeitem?'is_active':''">
             筛选
-            <img src="@/assets/images/down.png" alt srcset>
+            <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
           <div class="filter-item" :class="'lo'==activeitem?'is_active':''">
             分站
-            <img src="@/assets/images/down.png" alt srcset>
+            <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
         </div>
         <div class="filter-body">

@@ -84,11 +84,15 @@ export default {
     height 75px
     .cell-upload
         position absolute
+        top 13px
         right 30px
     .cell-avatar
         height 50px
         width 50px
 .change-text
+    position absolute;
+    right 0
+    top 21px
     color #717171
     text-align right
     font-size 13px

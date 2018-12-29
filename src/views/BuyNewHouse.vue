@@ -301,19 +301,20 @@ export default {
 
   .tag-item {
     position: relative;
-    padding: 10px 0;
-    height: 80px;
+    padding: 12.5px 0;
+    height: 92px;
     width: 25%;
+    box-sizing border-box
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    justify-content space-between;
     .tag-item-icon {
       width: 46px;
     }
 
     .tag-item-check {
-      position: absolute;
+      // position: absolute;
       bottom: 20px;
       height: 10px;
       width: 10px;

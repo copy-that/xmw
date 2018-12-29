@@ -1,7 +1,7 @@
 <template>
     <div class="page">
         <div class="navtitle">
-            <img class="back-icon" @click="goback" src="@/assets/images/back-icon.png" alt="" srcset="">
+            <img class="back-icon" @click="goback" src="@/assets/images/icon-16.png" alt="" srcset="">
             <span>如何发布卖房信息？</span>
         </div>
         <div class="quest-detail">

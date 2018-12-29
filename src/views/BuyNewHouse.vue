@@ -4,12 +4,12 @@
     <div class="newhouse-box">
       <div class="cell" @click="showAddressPicker">
         <div class="cell-label">所属地区:</div>
-        <div class="cell-value">请选择地区</div>
+        <div class="cell-value">{{params.area?params.area:'请选择地区'}}</div>
         <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
       </div>
       <div class="cell" @click="showRangePicker">
         <div class="cell-label">有&ensp;效&ensp;期:</div>
-        <div class="cell-value">请选择有效期限</div>
+        <div class="cell-value">{{params.time?params.time:'请选择有效期限'}}</div>
         <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
       </div>
       <div class="cell">
@@ -29,7 +29,7 @@
       </div>
       <div class="cell">
         <div class="cell-label">地理位置:</div>
-        <input type="text" class="cell-input" placeholder="请输入门牌号：例如 9号楼10层48室">
+        <input type="text" class="cell-input" placeholder="请输入详细地址：例如:财信圣堤亚纳">
         <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
       </div>
       <div class="cell" @click="showBuyType">
@@ -56,7 +56,7 @@
       </div>
       <div class="cell">
         <div class="cell-label">价格:</div>
-        <input type="text" class="cell-input" placeholder="/月">
+        <input type="text" class="cell-input" placeholder="元/月">
         <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
       </div>
       <div class="block">
@@ -146,7 +146,23 @@ export default {
     Header
   },
   data() {
-    return {};
+    return {
+      Poi:{
+          city:'全国',
+          citylimit:true
+        },
+      params:{
+        area:'',
+        time:'',
+        title:'',
+        nickName:'',
+        phone:'',
+        location:'',
+        rentType:'',
+        idType:'',
+        square:'',
+      }
+    };
   },
   mounted() {
     const addressData = provinceList;
@@ -183,7 +199,24 @@ export default {
     showAddressPicker() {
       this.addressPicker.show();
     },
+    initSearch(){
+      var keywords = '北京大学';
+      AMap.plugin('AMap.PlaceSearch', function(){
+        var autoOptions = {
+          city: ''
+        }
+        var placeSearch = new AMap.PlaceSearch(autoOptions);
+        placeSearch.search(keywords, function(status, result) {
+          // 搜索成功时，result即是对应的匹配数据
+          console.log(status, result)
+        })
+      })
+
+    },
     selectHandle(selectedVal, selectedIndex, selectedText) {
+      this.params.area = selectedText.join('/')
+      this.Poi.city= selectedIndex[1]
+      this.initSearch()
       console.log(
         `Selected Item: <br/> - value: ${selectedVal.join(
           ", "
@@ -204,18 +237,14 @@ export default {
         showNow: true,
         minuteStep: 10,
         delay: 10,
+        format:"YYYY-MM-DD",
         day: {
           len: 30,
           filter: ["今天", "明天"],
-          format: "M月d日"
+          
         },
         onSelect: (selectedTime, selectedText, formatedTime) => {
-          this.$createDialog({
-            type: "warn",
-            title: `selected time: ${selectedTime}`,
-            content: `selected text: ${selectedText}<br>format time: ${formatedTime}`,
-            icon: "cubeic-alert"
-          }).show();
+          this.params.time = formatedTime
         },
         onCancel: () => {
           this.$createToast({

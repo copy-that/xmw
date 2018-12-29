@@ -11,14 +11,18 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #111111;
-  height: 100vh;
-  width: 100vw;
+  overflow: visible;
+  -webkit-overflow-scrolling: touch;
 }
 .page{
+  height: 100%;
   box-sizing: border-box;
   width: 100%;
-
   padding-top: 45px;
   background-color: #ffffff;
+
+}
+.page.paddbo{
+  padding-bottom: 59px;
 }
 </style>

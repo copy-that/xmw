@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page paddbo">
     <Header :back-icon="false" title="发布信息"/>
     <div class="buysell-box">
       <div class="name">点击选择</div>
@@ -13,8 +13,9 @@
         <div class="card-name">买房信息</div>
         <img class="card-arrow" src="@/assets/images/icon-5.png" alt>
       </div>
+      <cube-button :primary="true" class="primary-btn">查看我的发布</cube-button>
     </div>
-    <Tabbar active-tab-item="buysell"/>
+    <Tabbar active-tab-item="buysell" @click="viewMypost" />
   </div>
 </template>
 <script>
@@ -26,7 +27,13 @@ export default {
         Tabbar,
         Header
     },
+    data(){
+        return{}
+    },
     methods:{
+        viewMypost(){
+            this.$router.push({name:'Mypost'})
+        },
         showBuySheet() {
             this.$createActionSheet({
                 title: '买房信息',

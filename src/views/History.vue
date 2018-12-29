@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page paddbo">
         <Header :back-icon="false" title="历史记录"/>
         <div class="history">
             <div class="prod">

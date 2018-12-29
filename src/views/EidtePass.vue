@@ -33,8 +33,5 @@ export default {
         color #666666
         border 1px solid #ff6b00
         margin-top 20px
-    .form-primary-btn
-        margin-top: 20px;
-        width 100%
-        padding: 12px 15px;
+
 </style>

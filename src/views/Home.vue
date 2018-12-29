@@ -1,6 +1,6 @@
 <template>
-  <div class="page">
-    <div class="search-box">
+  <div class="page paddbo">
+    <div class="search-box" style="top:0">
       <div class="location">
         <img class="location-icon" src="@/assets/images/icon-14.png" alt>
         <div class="location-place">郑州</div>
@@ -10,39 +10,18 @@
         <img class="search-icon" slot="prepend" src="@/assets/images/icon-15.png" alt>
       </cube-input>
     </div>
-    <cube-slide ref="slide" class="banner" direction="horizontal" :options="{eventPassthrough:'vertical',cancelable:true}" :data="slideList">
-      <cube-slide-item
-        v-for="(item, index) in slideList"
-        :key="index"
-        @click.native="clickHandler(item, index)"
-      >
-        <a :href="item.url">
-          <img class="slide-img" :src="item.image">
-        </a>
-      </cube-slide-item>
-    </cube-slide>
-    <cube-slide
-      ref="slidemenu"
-      :data="scrollList2"
-      :autoPlay="false"
-      :showDots="false"
-      direction="horizontal"
-      :options="{eventPassthrough:'vertical',cancelable:true}"
-    >
-      <cube-slide-item
-        v-for="(scrollList,index) in scrollList2"
-        :key="index"
-        @click.native="clickHandler(item, index)"
-      >
-        <ul class="list-menu">
-          <li v-for="item in scrollList" class="list-menu-item"  :key="item.id" 
+    <div class="banner">
+    <img src="@/assets/images/banner.png" alt="" srcset="">
+    </div>
+    <div>
+      <ul class="list-menu">
+          <li v-for="item in scrollList2" class="list-menu-item"  :key="item.id" 
           @click="viewProduct">
             <img class="list-item-icon" :src="item.icon" alt>
             <div class="list-item-name">{{ item.name }}</div>
           </li>
         </ul>
-      </cube-slide-item>
-    </cube-slide>
+    </div>
      
     <div class="recom" v-for="(recom,index) in recomList" :key="index">
       <div class="recom-name">{{recom.name}}</div>
@@ -102,42 +81,20 @@ export default {
         {
           url: "http://www.didichuxing.com/",
           image:require('@/assets/images/banner.png'),
-        },
-        {
-          url: "http://www.didichuxing.com/",
-          image:require('@/assets/images/banner.png'),
-        },
-        {
-          url: "http://www.didichuxing.com/",
-          image:require('@/assets/images/banner.png'),
         }
       ],
       scrollList2: [
-        [
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "1" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "2" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "3" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "4" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "11" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "21" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "31" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "41" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "23" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "22" }
+          { icon: require("@/assets/images/tab-9.png"), name: "买住宅", id: "1" },
+          { icon: require("@/assets/images/tab-10.png"), name: "买商铺", id: "2" },
+          { icon: require("@/assets/images/tab-11.png"), name: "买办公", id: "3" },
+          { icon: require("@/assets/images/tab-12.png"), name: "买厂房", id: "4" },
+          { icon: require("@/assets/images/tab-13.png"), name: "买期房", id: "11" },
+          { icon: require("@/assets/images/tab-9.png"), name: "买商铺", id: "21" },
+          { icon: require("@/assets/images/tab-10.png"), name: "买住宅", id: "31" },
+          { icon: require("@/assets/images/tab-11.png"), name: "买办公", id: "41" },
+          { icon: require("@/assets/images/tab-12.png"), name: "买厂房", id: "23" },
+          { icon: require("@/assets/images/tab-13.png"), name: "买期房", id: "22" }
         ],
-        [
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "10" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "20" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "30" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "40" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "110" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "210" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "310" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "410" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "211" },
-          { icon: require("@/assets/images/tab-1.png"), name: "买住宅", id: "220" }
-        ]
-      ],
       recomList: [
         {
           name: "热门推荐",
@@ -214,22 +171,13 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
+<style lang="stylus" scope>
+@import '../assets/css/style.styl';
 .page {
   text-align left 
-  padding-bottom: 59px;
-  -webkit-overflow-scrolling: touch;
 }
-
-.search-box {
-  position fixed;
-  top:0;
-  width 100%;
-  box-sizing:border-box;
-  z-index 10;
-  background-color #fff;
-  display: flex;
-  padding: 5px 15px;
+.slide-img {
+  height 100%  
 }
 
 .cube-input.search {
@@ -249,20 +197,21 @@ export default {
   width: 13px;
 }
 
-.location-icon {
+
+
+.location {
+  display flex
+  flex-direction column
+  width: 75px;
+  position: relative;
+  color: #666666;
+}
+.location-icon
   position: absolute;
   top: 0;
   left: 0;
   height: 13px;
   width: 13px;
-}
-
-.location {
-  width: 75px;
-  position: relative;
-  color: #666666;
-}
-
 .location-place {
   font-size: 13px;
   position: absolute;
@@ -277,7 +226,13 @@ export default {
   top: 15px;
 }
 .banner{
+  width 100%;
   height: 174px;
+  img{
+     width 100%;
+    height 100%
+  }
+   
 }
 
 
@@ -301,6 +256,7 @@ export default {
 }
 
 .list-item-name {
+  margin-top 5px;
   font-size: 13px;
   color: #111111;
 }

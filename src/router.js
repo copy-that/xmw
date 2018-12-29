@@ -1,17 +1,19 @@
 import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
+import store from '@/store.js';
+import Router from 'vue-router';
 
 Vue.use(Router)
-
-export default new Router({
+const router =  new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: () => import('./views/Home.vue'),
+      meta: {
+        Auth: true
+      }
     },
     {
       path: '/history',
@@ -131,6 +133,30 @@ export default new Router({
       name: 'NewsDetail',
       component: () => import(/* webpackChunkName: "about" */ './views/NewsDetail.vue')
     },
-    
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('./views/Login.vue'),
+      meta: {
+        Auth: true
+      }
+    },
+    {
+      path: '*',
+      redirect: { name: 'Login' }
+    }
   ]
 })
+router.beforeEach((to, from, next) => {
+  // ...
+  const token = store.state.token;
+  if( token || to.meta.Auth){
+    next()
+  }else{
+    next({
+      path:'/login'
+    });
+  }
+})
+
+export default router;

@@ -1,12 +1,11 @@
 <template>
   <div class="page">
     <div class="mask" v-if="showdrop"></div>
-    <div class="block">
-      <Header title="商品页"></Header>
-      <div class="search-box">
+    <Header title="商品页"></Header>
+      <div class="search-box top-45">
         <div class="location">
-          <img class="location-icon" src="@/assets/images/icon-14.png" alt>
-          <div class="location-place">郑州</div>
+          <img class="location-icon-r" src="@/assets/images/icon-14.png" alt>
+          <div class="location-place-r">郑州</div>
         </div>
         <cube-input class="search-min" v-model="searchWorld" placeholder="请输入区域、商圈或者编号">
           <img class="search-icon" slot="prepend" src="@/assets/images/icon-15.png" alt>
@@ -102,7 +101,6 @@
           </div>
         </div>
       </div>
-    </div>
     <div class="list-prod">
       <div class="prod">
         <div class="prod-icon">
@@ -252,18 +250,20 @@ export default {
       activeitem: "lo",
       idtype: 1,
       prtype: 1,
-      showdrop: false
+      showdrop: true
     };
   }
 };
 </script>
 <style lang="stylus" scope>
 @import '../assets/css/style.styl';
-
 .page {
-  margin-top: 125px;
-}
+  text-align left 
 
+}
+.top-45{
+  top 45px  
+}
 .cube-input.search-min {
   width: 260px;
   box-sizing: border-box;
@@ -285,15 +285,28 @@ export default {
   width: 13px;
 }
 
-.location-icon {
+.location-icon-r 
   top: 8px;
-}
+  position: absolute;
+  left: 0;
+  height: 13px;
+  width: 13px;
 
-.location-place {
+.location-place-r {
   top: 8px;
+  font-size: 13px;
+  position: absolute;
+  left: 21px;
+  font-size: 0.346667rem;
 }
 
 .filter {
+  position fixed
+  top 85px
+  width 100%
+  background-color #ffffff
+  box-sizing border-box
+  z-index 10
   padding: 0 15px;
   overflow: hidden;
 }
@@ -402,6 +415,7 @@ export default {
 }
 
 .list-prod {
+  margin-top:85px;
   padding: 0 15px;
 }
 </style>

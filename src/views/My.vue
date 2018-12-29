@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="page paddbo">
         <Header :back-icon="false" title="个人中心"/>
         <div class="my-box">
             <div class="userinfo" @click="viewMyInfo">
@@ -94,7 +94,7 @@ export default {
                 title: '客服电话',
                 data: [
                     {
-                        content: '<a href="tel:15537189285;">15537189285 点击拨打</a>'
+                        content: '<a href="tel:15537189285">15537189285 点击拨打</a>'
                     }
                 ],
                 onSelect: (item, index) => {
@@ -112,8 +112,7 @@ export default {
 @import '../assets/css/style.styl';
 .page {
   text-align left 
-  margin-bottom: 59px;
-  -webkit-overflow-scrolling: touch;
+
 }
 .my-box
     border-top 1px solid #fbfbfb

@@ -185,6 +185,8 @@ export default {
 </script>
 <style lang="stylus" scoped>
 @import '../assets/css/style.styl'
+.search-box
+    top 45px
 .newhouse-box
     padding 0 15px
 .radio-item

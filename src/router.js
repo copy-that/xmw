@@ -26,9 +26,14 @@ const router =  new Router({
       component: () => import('./views/BuySell.vue')
     },
     {
-      path: '/buynewhouse',
-      name: 'BuyNewHouse',
-      component: () => import('./views/BuyNewHouse.vue')
+      path: '/buyhouse',
+      name: 'BuyHouse',
+      component: () => import('./views/BuyHouse.vue')
+    },
+    {
+      path: '/renthouse',
+      name: 'RentHouse',
+      component: () => import('./views/RentHouse.vue')
     },
     {
       path: '/my',
@@ -44,6 +49,11 @@ const router =  new Router({
       path: '/mytodo',
       name: 'MyTodo',
       component: () => import('./views/MyTodo.vue')
+    },
+    {
+      path: '/mypost',
+      name: 'MyPost',
+      component: () => import('./views/MyPost.vue')
     },
     {
       path: '/mypoket',
@@ -137,6 +147,22 @@ const router =  new Router({
       path: '/login',
       name: 'Login',
       component: () => import('./views/Login.vue'),
+      meta: {
+        Auth: true
+      }
+    },
+    {
+      path: '/forgot',
+      name: 'Forgot',
+      component: () => import('./views/Forgot.vue'),
+      meta: {
+        Auth: true
+      }
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: () => import('./views/Register.vue'),
       meta: {
         Auth: true
       }

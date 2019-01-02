@@ -35,7 +35,7 @@ export default {
     },
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus" >
 
 .message-box{
     background-color #F4F4F4

@@ -73,7 +73,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus" >
 @import '../assets/css/style.styl';
 .edite-box
     box-sizing border-box

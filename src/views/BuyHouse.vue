@@ -87,37 +87,10 @@
       <div class="block bordered">
         <div class="block-label" style="margin:10px">来为您的房屋购买一个合适的标签吧!</div>
         <div class="tags">
-          <div class="tag-item">
-            <img class="tag-item-icon" src="@/assets/images/tag-1.png" alt srcset>
-            <img class="tag-item-check" src="@/assets/images/icon-6.png" alt srcset>
-          </div>
-          <div class="tag-item">
-            <img class="tag-item-icon" src="@/assets/images/tag-1.png" alt srcset>
-            <img class="tag-item-check" src="@/assets/images/icon-6.png" alt srcset>
-          </div>
-          <div class="tag-item">
-            <img class="tag-item-icon" src="@/assets/images/tag-1.png" alt srcset>
-            <img class="tag-item-check" src="@/assets/images/icon-6.png" alt srcset>
-          </div>
-          <div class="tag-item">
-            <img class="tag-item-icon" src="@/assets/images/tag-1.png" alt srcset>
-            <img class="tag-item-check" src="@/assets/images/icon-6.png" alt srcset>
-          </div>
-          <div class="tag-item">
-            <img class="tag-item-icon" src="@/assets/images/tag-1.png" alt srcset>
-            <img class="tag-item-check" src="@/assets/images/icon-6.png" alt srcset>
-          </div>
-          <div class="tag-item">
-            <img class="tag-item-icon" src="@/assets/images/tag-1.png" alt srcset>
-            <img class="tag-item-check" src="@/assets/images/icon-7.png" alt srcset>
-          </div>
-          <div class="tag-item">
-            <img class="tag-item-icon" src="@/assets/images/tag-1.png" alt srcset>
-            <img class="tag-item-check" src="@/assets/images/icon-7.png" alt srcset>
-          </div>
-          <div class="tag-item">
-            <img class="tag-item-icon" src="@/assets/images/tag-1.png" alt srcset>
-            <img class="tag-item-check" src="@/assets/images/icon-6.png" alt srcset>
+          <div class="tag-item" v-for="(tag,index) in tags" :key="tag.id">
+            <img class="tag-item-icon" :src="tag.icon" @click="showTagsDesc(index)"  alt srcset>
+            <img class="tag-item-check" v-if="tag.ischeck" @click="cancelCheck(index)" src="@/assets/images/icon-6.png" alt srcset>
+            <img class="tag-item-check" v-else  @click="confrimCheck(index)" src="@/assets/images/icon-7.png" alt srcset>
           </div>
         </div>
         <div class="tags-info">
@@ -127,41 +100,52 @@
           </div>
           <div class="tags-info-item">
             <span class="tags-label">共计：</span>
-            <span>100元</span>
+            <span>{{total}}元</span>
           </div>
         </div>
       </div>
       <div class="rule-desc">置顶发布的信息可使成交率提高5倍！</div>
       <cube-button :primary="true" class="primary-btn" style="margin-top:10px">发布</cube-button>
     </div>
+    <div class="remind-box" v-show="showRemind">
+        <div class="remind-inner">
+            <img class="remind-logo" src="@/assets/images/LOGO.png" alt="">
+            <div class="remind-desc">{{remindDesc}}</div>
+            <img class="remind-close" @click="closeRemind" src="@/assets/images/icon-18.png" alt="">
+        </div>
+    </div>
   </div>
 </template>
 <script>
 import Header from "@/components/Header.vue";
 import { provinceList, cityList, areaList } from "@/area.js";
-
+import { tags } from "@/tags.js";
 export default {
-  name: "BuyNewHouse",
+  name: "BuyHouse",
   components: {
     Header
   },
   data() {
     return {
-      Poi:{
-          city:'全国',
-          citylimit:true
-        },
-      params:{
-        area:'',
-        time:'',
-        title:'',
-        nickName:'',
-        phone:'',
-        location:'',
-        rentType:'',
-        idType:'',
-        square:'',
-      }
+        Poi:{
+            city:'全国',
+            citylimit:true
+            },
+        showRemind:false,
+        remindDesc:'',
+        total:0,
+        tags:tags,
+        params:{
+            area:'',
+            time:'',
+            title:'',
+            nickName:'',
+            phone:'',
+            location:'',
+            rentType:'',
+            idType:'',
+            square:'',
+        }
     };
   },
   mounted() {
@@ -180,6 +164,33 @@ export default {
     });
   },
   methods: {
+    cancelCheck(index){
+        
+        const ischeck = this.tags[index].ischeck;
+        if(ischeck){
+            const price = this.tags[index].price;
+           
+            this.$set(this.tags[index],'ischeck',false)
+           this.total = this.total - price;
+        }
+    },
+    confrimCheck(index){
+        const ischeck = this.tags[index].ischeck;
+        if(!ischeck){
+            const price = this.tags[index].price;
+           
+            this.$set(this.tags[index],'ischeck',true)
+            this.total = this.total + price;
+        }
+        
+    },
+    showTagsDesc(index){
+        this.remindDesc = this.tags[index].desc
+        this.showRemind = true
+    },
+    closeRemind(){
+        this.showRemind = false
+    },
     filesAdded(files) {
       let hasIgnore = false
       const maxSize = 1 * 1024 * 1024 // 1M
@@ -284,7 +295,7 @@ export default {
 @import '../assets/css/style.styl';
 
 .newhouse-box {
-  padding: 0 15px;
+  padding: 0 15px 10px;
 }
 
 .radio-item {
@@ -297,59 +308,6 @@ export default {
   margin-bottom: 10px;
 }
 
-.block {
-  margin: 10px 0 20px;
-}
-
-.block.bordered {
-  border: 1px solid #f2f2f2;
-  border-radius: 4px;
-}
-
-.block-label {
-  font-size: 15px;
-  margin-bottom: 10px;
-}
-
-.tags-info {
-  padding: 15px;
-  box-sizing: border-box;
-  height: 70px;
-  background-color: #f7f7f7;
-
-  .tags-info-item {
-    margin-bottom: 10px;
-    display: flex;
-    font-size: 13px;
-  }
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-
-  .tag-item {
-    position: relative;
-    padding: 12.5px 0;
-    height: 92px;
-    width: 25%;
-    box-sizing border-box
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content space-between;
-    .tag-item-icon {
-      width: 46px;
-    }
-
-    .tag-item-check {
-      // position: absolute;
-      bottom: 20px;
-      height: 10px;
-      width: 10px;
-    }
-  }
-}
 .base-upload .cube-upload-btn-def{
     background-color: #f0f0f0 !important
 }

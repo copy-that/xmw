@@ -10,100 +10,100 @@
       </div>
       <div class="card" @click="showSellSheet">
         <img class="card-icon" src="@/assets/images/icon-12.png" alt>
-        <div class="card-name">买房信息</div>
+        <div class="card-name">出租信息</div>
         <img class="card-arrow" src="@/assets/images/icon-5.png" alt>
       </div>
-      <cube-button :primary="true" class="primary-btn">查看我的发布</cube-button>
+      <cube-button class="form-primary-btn" :primary="true" @click="viewMypost">查看我的发布</cube-button>
     </div>
-    <Tabbar active-tab-item="buysell" @click="viewMypost" />
+    <Tabbar active-tab-item="buysell"/>
   </div>
 </template>
 <script>
 import Header from "@/components/Header.vue";
 import Tabbar from "@/components/Tabbar.vue";
 export default {
-    name:'BuySell',
-    components: {
-        Tabbar,
-        Header
+  name: "BuySell",
+  components: {
+    Tabbar,
+    Header
+  },
+  data() {
+    return {};
+  },
+  methods: {
+    viewMypost() {
+      this.$router.push({ name: "MyPost" });
     },
-    data(){
-        return{}
-    },
-    methods:{
-        viewMypost(){
-            this.$router.push({name:'Mypost'})
-        },
-        showBuySheet() {
-            this.$createActionSheet({
-                title: '买房信息',
-                data: [
-                {
-                    content: '<em>住宅</em>',
-                    id: '6'
-                },
-                {
-                    content: '<em>商铺</em>',
-                    id: '7'
-                },
-                {
-                    content: '<em>写字楼</em>',
-                    id: '8'
-                },
-                {
-                    content: '<em>厂房仓库</em>',
-                    id: '9'
-                },
-                {
-                    content: '买新房',
-                    id: '10'
-                },
-                ],
-                onSelect: (item, index) => {
-                    this.$router.push({name:'BuyNewHouse'})
-                }
-            }).show()
-        },
-        showSellSheet(){
-            this.$createActionSheet({
-                title: '出租信息',
-                data: [
-                {
-                    content: '<em>住宅</em>',
-                    class: 'cube-foo'
-                },
-                {
-                    content: '<em>商铺</em>',
-                    class: 'cube-foo'
-                },
-                {
-                    content: '<em>写字楼</em>',
-                    class: 'cube-foo'
-                },
-                {
-                    content: '<em>厂房仓库</em>',
-                    class: 'cube-foo'
-                },
-                {
-                    content: '<em>租酒店</em>',
-                    class: 'cube-foo'
-                },
-                ],
-                onSelect: (item, index) => {
-                this.$createToast({
-                    txt: `Clicked ${item.content}`,
-                    time: 1000
-                }).show()
-                }
-            }).show()
+    showBuySheet() {
+      this.$createActionSheet({
+        title: "买房信息",
+        data: [
+          {
+            content: "<em>住宅</em>",
+            id: "6"
+          },
+          {
+            content: "<em>商铺</em>",
+            id: "7"
+          },
+          {
+            content: "<em>写字楼</em>",
+            id: "8"
+          },
+          {
+            content: "<em>厂房仓库</em>",
+            id: "9"
+          },
+          {
+            content: "买新房",
+            id: "10"
+          }
+        ],
+        onSelect: (item, index) => {
+          this.$router.push({ name: "BuyHouse" });
         }
+      }).show();
+    },
+    showSellSheet() {
+      this.$createActionSheet({
+        title: "出租信息",
+        data: [
+          {
+            content: "<em>住宅</em>",
+            class: "cube-foo"
+          },
+          {
+            content: "<em>商铺</em>",
+            class: "cube-foo"
+          },
+          {
+            content: "<em>写字楼</em>",
+            class: "cube-foo"
+          },
+          {
+            content: "<em>厂房仓库</em>",
+            class: "cube-foo"
+          },
+          {
+            content: "<em>租酒店</em>",
+            class: "cube-foo"
+          }
+        ],
+        onSelect: (item, index) => {
+          this.$router.push({ name: "RentHouse" });
+        }
+      }).show();
     }
-}
+  }
+};
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
+@import '../assets/css/style.styl';
 .buysell-box {
+  margin: 0 15px;
+
   .name {
-    text-align center;
+    text-align: center;
     color: #666666;
     font-size: 15px;
     margin: 37px auto 18px;
@@ -115,7 +115,7 @@ export default {
   border-radius: 6px;
   height: 100px;
   background-color: #ffffff;
-  margin: 16px 15px;
+  margin: 16px 0px;
   box-shadow: 0 0 2px 2px #f5f5f5;
   display: flex;
   align-items: center;

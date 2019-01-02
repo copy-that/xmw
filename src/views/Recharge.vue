@@ -37,7 +37,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus" >
 @import '../assets/css/style.styl'
 .charge-box
     border-top 1px solid #f2f2f2

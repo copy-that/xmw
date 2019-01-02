@@ -16,7 +16,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus" >
 @import '../assets/css/style.styl';
 .issues-box
     border-top 1px solid #f1f1f1

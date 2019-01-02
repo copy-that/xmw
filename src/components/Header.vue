@@ -22,7 +22,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus" >
 .header
     position fixed
     top 0

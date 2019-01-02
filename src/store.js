@@ -12,7 +12,6 @@ export default new Vuex.Store({
         setUserToken: function (state, token) {
             sessionStorage.setItem('userToken', token);
             state.token = token;
-            console.log(token);
         },
         removeUserToken:function(state){
             sessionStorage.removeItem("userToken");

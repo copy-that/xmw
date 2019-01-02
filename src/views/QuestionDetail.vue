@@ -20,7 +20,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus" >
 .navtitle
     position fixed
     width 100%

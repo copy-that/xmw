@@ -108,7 +108,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus" scope>
+<style lang="stylus" >
 @import '../assets/css/style.styl';
 .page {
   text-align left 

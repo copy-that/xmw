@@ -2,14 +2,15 @@
     <div class="page paddbo">
         <Header :back-icon="false" title="历史记录"/>
         <div class="history">
-            <div class="prod">
+            <div class="prod" @click="viewProdDetail">
                 <div class="prod-icon">
                     <img class="prod-img" src="@/assets/images/item-icon.png" alt>
                     <span class="prod-img-pages">7张</span>
                 </div>
                 <div class="prod-info">
                 <div class="prod-name">和悦华锦
-                    <img class="prod-enjoy" src="@/assets/images/icon-2-b.png" alt="" srcset="">
+                    <img class="prod-enjoy" v-if="historyList[0].isenjoy"  @click.prevent.stop="enjoyProd('0')" src="@/assets/images/icon-2.png" alt="" srcset="">
+                    <img class="prod-enjoy" v-else  @click.prevent.stop="enjoyProd('0')" src="@/assets/images/icon-2-b.png" alt="" srcset="">
                 </div>
                 <div class="prod-value">
                     <span>户型:3室1厅</span>
@@ -36,6 +37,22 @@ export default {
     components: {
         Tabbar,
         Header
+    },
+    data(){
+        return{
+            enjoyType:0,
+            historyList:[{
+                isenjoy:false
+            }]
+        }
+    },
+    methods:{
+        viewProdDetail(){
+            this.$router.push({name:'ProductDetail'})
+        },
+        enjoyProd(index){
+            this.historyList[index].isenjoy = !this.historyList[index].isenjoy
+        }
     }
 }
 </script>

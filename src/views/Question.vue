@@ -31,7 +31,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus" scope>
+<style lang="stylus" >
 @import '../assets/css/style.styl';
 .question-box
     padding 0 15px

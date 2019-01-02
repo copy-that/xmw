@@ -19,7 +19,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus" >
 @import '../assets/css/style.styl'
 .edite-pass-box
     padding: 0 45px

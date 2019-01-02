@@ -1,5 +1,5 @@
 <template>
-  <div class="page" style="padding-top:0;">
+  <div class="page paddbo" style="padding-top:0;">
     <div class="banner">
       <img class="back" src="@/assets/images/icon-1.png" alt srcset @click="goback">
       <img class="banner-img" src="@/assets/images/ban-1.png" alt>
@@ -18,16 +18,20 @@
         </div>
         <div class="right">
           <span class="detail-price">¥1200/月</span>
-          <div class="detail-enjoy">
-            <img class="enjoy-icon" src="@/assets/images/icon-2.png" alt>
-            <span class="enjoy-state">已收藏</span>
+          <div class="detail-enjoy" @click="enjoyProd">
+            <img class="enjoy-icon" v-if="isEnjoy" src="@/assets/images/icon-2.png" alt>
+            <img class="enjoy-icon" v-else src="@/assets/images/icon-2-b.png" alt>
+            <span class="enjoy-state">{{isEnjoy?'已收藏':'&ensp;收藏&ensp;'}}</span>
           </div>
         </div>
       </div>
       <div class="images">
+        <img class="image-item" src="@/assets/images/tag-1.png" alt srcset>
         <img class="image-item" src="@/assets/images/tag-2.png" alt srcset>
-        <img class="image-item" src="@/assets/images/tag-2.png" alt srcset>
-        <img class="image-item" src="@/assets/images/tag-2.png" alt srcset>
+        <img class="image-item" src="@/assets/images/tag-3.png" alt srcset>
+        <img class="image-item" src="@/assets/images/tag-4.png" alt srcset>
+        <img class="image-item" src="@/assets/images/tag-5.png" alt srcset>
+        <img class="image-item" src="@/assets/images/tag-6.png" alt srcset>
       </div>
       <div class="detail-cell">
         <div class="cell-lable">房源编号：</div>
@@ -100,7 +104,8 @@ export default {
   name: "ProductDetail",
   data() {
     return {
-        state:1
+        state:1,
+        isEnjoy:true
     };
   },
   mounted() {
@@ -109,6 +114,9 @@ export default {
   methods: {
     handleBuy(){
         this.state = 2
+    },
+    enjoyProd(){
+      this.isEnjoy = !this.isEnjoy
     },
     goback(){
         this.$router.go(-1)
@@ -129,7 +137,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus" scope>
+<style lang="stylus">
 
 .buyInfo{
     text-align left 
@@ -271,6 +279,7 @@ export default {
         }
 
         .enjoy-state {
+          text-align: center;
           font-size: 10px;
           color: rgba(17, 17, 17, 1);
           margin-top: 10px;

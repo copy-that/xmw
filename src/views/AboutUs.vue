@@ -20,6 +20,9 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
+.page{
+    text-align center
+}
 .aboutus{
     padding 0 15px;
 }

@@ -29,7 +29,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus" >
 .poket-debox
     border-top 1px solid #f2f2f2
     .order

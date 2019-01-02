@@ -23,7 +23,7 @@
             <span>在售</span>
           </div>
           <div class="prod-price">¥3000万</div>
-          <cube-button class="btn-com" :inline="true" :outline="true" :primary="true">写评价</cube-button>
+          <div class="btn-com">写评价</div>
         </div>
       </div>
     </div>
@@ -48,9 +48,15 @@ export default {
 
 .btn-com {
   position: absolute;
+  height 20px;
+  box-sizing border-box
+  line-height 20px;
+  border 1px solid #ff6b00
+  border-radius 2px
+  color #ff6b00
   right: 0px;
-  padding: 6px 10px;
-  top: 75px
+  padding: 0px 10px;
+  top: 80px
   font-size 13px
 }
 </style>

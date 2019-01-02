@@ -11,7 +11,7 @@
       </cube-input>
     </div>
     <div class="banner">
-    <img src="@/assets/images/banner.png" alt="" srcset="">
+    <img class="img-full" src="@/assets/images/banner.png" alt="" srcset="">
     </div>
     <div>
       <ul class="list-menu">
@@ -22,7 +22,7 @@
           </li>
         </ul>
     </div>
-     
+
     <div class="recom" v-for="(recom,index) in recomList" :key="index">
       <div class="recom-name">{{recom.name}}</div>
       <div class="recom-desc">{{recom.desc}}</div>
@@ -44,24 +44,31 @@
       
     </div>
     <div class="news">
-        <div class="news-name">最新资讯</div>
-        <div class="newsitem"  @click="viewNewsDetail">
-          <img class="newsitem-icon" src="@/assets/images/item-icon.png" alt="">
-          <div class="newsitem-info">
-            <div class="newsitem-name">鑫苑国际新城项目现有房源在售，
-国际新城项目现有房源</div>
-            <div class="newsitem-time">2018-11-20</div>
-          </div>
-        </div>
-        <div class="newsitem">
-          <img class="newsitem-icon" src="@/assets/images/item-icon.png" alt="">
-          <div class="newsitem-info">
-            <div class="newsitem-name">鑫苑国际新城项目现有房源在售，
-国际新城项目现有房源</div>
-            <div class="newsitem-time">2018-11-20</div>
-          </div>
+      <div class="news-name">最新资讯</div>
+      <div class="newsitem"  @click="viewNewsDetail">
+        <img class="newsitem-icon" src="@/assets/images/item-icon.png" alt="">
+        <div class="newsitem-info">
+          <div class="newsitem-name">鑫苑国际新城项目现有房源在售，国际新城项目现有房源</div>
+          <div class="newsitem-time">2018-11-20</div>
         </div>
       </div>
+      <div class="newsitem">
+        <img class="newsitem-icon" src="@/assets/images/item-icon.png" alt="">
+        <div class="newsitem-info">
+          <div class="newsitem-name">鑫苑国际新城项目现有房源在售，国际新城项目现有房源</div>
+          <div class="newsitem-time">2018-11-20</div>
+        </div>
+      </div>
+    </div>
+    <div class="popCity" v-show="showPopCity">
+    <cube-index-list
+      :data="cityData"
+      :title="title"
+      @select="selectItem"
+      @title-click="clickTitle">
+    </cube-index-list>
+    </div>
+    
     <Tabbar/>
   </div>
 </template>
@@ -69,6 +76,7 @@
 <script>
 // @ is an alias to /src
 import Tabbar from "@/components/Tabbar.vue";
+import { cityData } from "@/popcity.js";
 export default {
   name: "home",
   components: {
@@ -76,6 +84,9 @@ export default {
   },
   data() {
     return {
+      cityData:cityData,
+      showPopCity:false,
+      title: 'Current City: BEIJING',
       searchWorld: "",
       slideList: [
         {
@@ -150,6 +161,13 @@ export default {
     };
   },
   methods: {
+    selectItem(item) {
+      console.log(item.name)
+    },
+    clickTitle(title) {
+      this.title = title
+      console.log(title)
+    },
     changePage(current) {
       console.log("当前轮播图序号为:" + current);
     },
@@ -171,7 +189,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus" scope>
+<style lang="stylus">
 @import '../assets/css/style.styl';
 .page {
   text-align left 
@@ -197,15 +215,6 @@ export default {
   width: 13px;
 }
 
-
-
-.location {
-  display flex
-  flex-direction column
-  width: 75px;
-  position: relative;
-  color: #666666;
-}
 .location-icon
   position: absolute;
   top: 0;
@@ -228,7 +237,7 @@ export default {
 .banner{
   width 100%;
   height: 174px;
-  img{
+  .img-full{
      width 100%;
     height 100%
   }
@@ -353,4 +362,11 @@ export default {
   font-size 12px
   color: #9f9f9f
 }
+.popCity
+  position fixed
+  top 40px
+  height calc(100% - 90px)
+  width 100vw
+  background-color #fff
+  z-index 10
 </style>

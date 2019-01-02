@@ -24,7 +24,7 @@ export default {
     }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus" >
 .success
     display flex
     flex-direction column

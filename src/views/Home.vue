@@ -1,9 +1,9 @@
 <template>
   <div class="page paddbo">
     <div class="search-box" style="top:0">
-      <div class="location">
+      <div class="location" @click.stop="changeLocation">
         <img class="location-icon" src="@/assets/images/icon-14.png" alt>
-        <div class="location-place">郑州</div>
+        <div class="location-place">{{showCity}}</div>
         <div class="location-change">切换分站</div>
       </div>
       <cube-input class="search" v-model="searchWorld" placeholder="请输入区域、商圈或者编号">
@@ -60,12 +60,10 @@
         </div>
       </div>
     </div>
-    <div class="popCity" v-show="showPopCity">
+    <div class="popCity" v-if="showPopCity">
     <cube-index-list
       :data="cityData"
-      :title="title"
-      @select="selectItem"
-      @title-click="clickTitle">
+      @select="selectItem">
     </cube-index-list>
     </div>
     
@@ -86,7 +84,7 @@ export default {
     return {
       cityData:cityData,
       showPopCity:false,
-      title: 'Current City: BEIJING',
+      showCity:'北京',
       searchWorld: "",
       slideList: [
         {
@@ -161,12 +159,13 @@ export default {
     };
   },
   methods: {
-    selectItem(item) {
-      console.log(item.name)
+    changeLocation(){
+      this.showPopCity = true
     },
-    clickTitle(title) {
-      this.title = title
-      console.log(title)
+    selectItem(item) {
+      this.showCity = item.name
+      this.showPopCity = false
+      console.log(item.name)
     },
     changePage(current) {
       console.log("当前轮播图序号为:" + current);

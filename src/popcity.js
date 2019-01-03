@@ -1,6 +1,6 @@
 export const cityData = [
     {
-        "name": "★Hot City",
+        "name": "★热门城市",
         "items": [
             {
                 "name": "北京",

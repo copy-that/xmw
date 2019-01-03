@@ -91,6 +91,11 @@ const router =  new Router({
       component: () => import('./views/MyMessage.vue')
     },
     {
+      path: '/hotguide',
+      name: 'HotGuide',
+      component: () => import('./views/HotGuide.vue')
+    },
+    {
       path: '/mycollect',
       name: 'MyCollection',
       component: () => import('./views/MyCollection.vue')

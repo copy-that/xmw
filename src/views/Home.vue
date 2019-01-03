@@ -34,7 +34,7 @@
         class="horizontal-scroll-list-wrap"
       >
         <ul class="list-wrapper">
-          <div class="reitem list-item" v-for="recomitem in recom.children"  @click="viewProductDetail" :key="recomitem.id">
+          <div class="reitem list-item" v-for="recomitem in recom.children"  @click="viewProductDetail(index)" :key="recomitem.id">
             <img class="reitem-icon" :src="recomitem.icon" alt>
             <div class="reitem-name">{{recomitem.name}}</div>
             <div class="reitem-price">¥{{recomitem.price}}万</div>
@@ -160,7 +160,7 @@ export default {
   },
   methods: {
     changeLocation(){
-      this.showPopCity = true
+      this.showPopCity = !this.showPopCity
     },
     selectItem(item) {
       this.showCity = item.name
@@ -179,8 +179,13 @@ export default {
     viewProduct(){
       this.$router.push('product')
     },
-    viewProductDetail(){
-      this.$router.push('ProductDetail')
+    viewProductDetail(key){
+      if(key==0){
+        this.$router.push('ProductDetail')
+      }else{
+        this.$router.push({name:'HotGuide'})
+      }
+      
     },
     viewNewsDetail(){
       this.$router.push('NewsDetail')

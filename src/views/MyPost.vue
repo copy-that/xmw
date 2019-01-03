@@ -64,7 +64,7 @@
     </div>
     <div class="paypop" v-if="showPopPay">
       <div class="paypop-inner">
-        <div class="paypop-cancel">取消</div>
+        <div class="paypop-cancel" @click="showPopPay=false">取消</div>
         <div class="paypop-money">￥<span>210</span></div>
         <div class="paypop-title">请选择付款方式</div>
         <div class="paypop-cell" @click="checkType(1)">

@@ -2,14 +2,14 @@
     <div class="page">
         <Header title="我的钱包"/>
         <div class="poket">
-            <div class="card">
+            <div class="card-poket">
                 <div class="card-label">
                     <img src="@/assets/images/icon-8.png" alt="" srcset="">
                     <span>我的金币（个）</span>
                 </div>
                 <div class="card-value">
                     <div class="total">7500.00</div>
-                    <div class="detail-btn" @click="viewPoketDetail">收支明细&emsp;&gt;</div>
+                    <div class="detail-btn" @click="viewPoketDetail">收支明细&emsp;›</div>
                 </div>
             </div>
             <div class="cell" @click="viewRecharge">
@@ -43,11 +43,11 @@ export default {
     }
 }
 </script>
-<style lang="stylus" >
+<style lang="stylus" scoped>
 @import '../assets/css/style.styl';
 .poket
     padding 0 15px
-.card
+.card-poket
     text-align left 
     display flex
     flex-direction column

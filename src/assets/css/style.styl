@@ -169,6 +169,7 @@
     .form_item_radio:before
         background-image: url(../images/icon-6.png);
 .textarea
+    box-sizing: border-box
     margin-top 25px
     border-radius 2px
     border 1px solid #f2f2f2
@@ -215,8 +216,7 @@
   width: 13px;
 }
 .form-primary-btn
-    margin-top: 20px;
-    width 100%
+    margin-top: 25px;
     padding: 12px 15px;
 .filter-body
   overflow: hidden scroll;
@@ -235,19 +235,30 @@
 
 .block-label {
   font-size: 15px;
-  margin-bottom: 10px;
+  margin: 10px auto;
 }
 
 .tags-info {
-  padding: 15px;
+  margin-top: 15px;
+  line-height 20px
+  padding: 10px 15px;
   box-sizing: border-box;
-  height: 70px;
   background-color: #f7f7f7;
 
   .tags-info-item {
-    margin-bottom: 10px;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start
     font-size: 13px;
+    
+    .tags-label {
+      text-align: left 
+    }
+    .tags-value{
+       flex: 1
+       text-align: left 
+       
+    }
   }
 }
 

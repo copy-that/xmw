@@ -1,6 +1,6 @@
 <template>
   <div class="page paddbo" style="padding-top:0;">
-    <div class="banner">
+    <div class="banner-detail">
       <img class="back" src="@/assets/images/icon-1.png" alt srcset @click="goback">
       <img class="banner-img" src="@/assets/images/ban-1.png" alt>
       <div class="carbin">1/7</div>
@@ -174,7 +174,7 @@ export default {
     color #ffffff
     text-align center 
 }
-.banner {
+.banner-detail {
   position: relative;
   height: 300px;
   width: 100%;

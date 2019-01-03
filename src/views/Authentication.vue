@@ -8,12 +8,12 @@
         <div class="upload-box">
             <cube-upload
             ref="face"
-            v-model="files"
+            v-model="face"
             :action="action"
-            @files-added="addedHandler"
+            @files-added="faceHandler"
             @file-error="errHandler"
             >
-            <cube-upload-file v-for="(file, i) in files" :file="file" :key="i"></cube-upload-file>
+            <cube-upload-file v-for="(file, i) in face" :file="file" :key="i"></cube-upload-file>
             <cube-upload-btn :multiple="false">
                 <div>
                 <i>＋</i>
@@ -23,12 +23,12 @@
             </cube-upload>
             <cube-upload
             ref="back"
-            v-model="files"
+            v-model="back"
             :action="action"
-            @files-added="addedHandler"
+            @files-added="backHandler"
             @file-error="errHandler"
             >
-            <cube-upload-file v-for="(file, i) in files" :file="file" :key="i"></cube-upload-file>
+            <cube-upload-file v-for="(file, i) in back" :file="file" :key="i"></cube-upload-file>
             <cube-upload-btn :multiple="false">
                 <div>
                 <i>＋</i>
@@ -41,12 +41,12 @@
         <div class="upload-box">
             <cube-upload
             ref="house"
-            v-model="files"
+            v-model="house"
             :action="action"
-            @files-added="addedHandler"
+            @files-added="houseHandler"
             @file-error="errHandler"
             >
-            <cube-upload-file v-for="(file, i) in files" :file="file" :key="i"></cube-upload-file>
+            <cube-upload-file v-for="(file, i) in house" :file="file" :key="i"></cube-upload-file>
             <cube-upload-btn :multiple="false">
                 <div>
                 <i>＋</i>
@@ -55,7 +55,7 @@
             </cube-upload-btn>
             </cube-upload>
         </div>
-        <cube-button :primary="true" class="primary-btn">提交</cube-button>
+        <cube-button :primary="true" class="primary-btn" @click="submitForm">提交</cube-button>
     </div>
 
   </div>
@@ -70,13 +70,23 @@ export default {
   data() {
     return {
       action: "//jsonplaceholder.typicode.com/photos/",
-      files: []
+      face: [],
+      back:[],
+      house:[]
     };
   },
   methods: {
-    addedHandler() {
-      const file = this.files[0];
-      file && this.$refs.upload.removeFile(file);
+    faceHandler() {
+      const face = this.face[0];
+      face && this.$refs.face.removeFile(face);
+    },
+    backHandler() {
+      const back = this.back[0];
+      back && this.$refs.back.removeFile(back);
+    },
+    houseHandler() {
+      const house = this.house[0];
+      house && this.$refs.house.removeFile(house);
     },
     errHandler(file) {
       // const msg = file.response.message
@@ -85,6 +95,9 @@ export default {
         txt: "Upload fail",
         time: 1000
       }).show();
+    },
+    submitForm(){
+      this.$router.go(-1)
     }
   }
 };
@@ -93,6 +106,7 @@ export default {
 @import '../assets/css/style.styl';
 .auth-box{
     padding: 0 15px;
+    text-align center;
 }
 .auth-name{
     text-align left ;
@@ -100,6 +114,7 @@ export default {
     margin 30px 0 12px;
 }
 .auth-input{
+    margin 0 15px
    width: calc(100% - 30px);
    box-sizing:border-box;
    padding: 0px 15px;

@@ -52,13 +52,15 @@ export default {
 }
 </script>
 <style lang="stylus">
-@import '../assets/css/style.styl';
+@import '../assets/css/style.styl';  
 .login-logo
+    display block
     margin 68px auto 0
     height 47px
     width 167px
 .login-box
     padding 0 50px
+    text-align center
 .logon-input
     margin-top 25px
 .cube-input.logon-input::after

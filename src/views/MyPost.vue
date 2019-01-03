@@ -52,7 +52,7 @@
               <span>共计：</span>
               <span class="fix-bot-value">{{total}}元</span>
             </div>
-            <div class="fix-bot-btn">确认购买</div>
+            <div class="fix-bot-btn" @click="rawOrder">确认购买</div>
         </div>
     </div>
     <div class="remind-box" v-show="showRemind">
@@ -61,6 +61,32 @@
             <div class="remind-desc">{{remindDesc}}</div>
             <img class="remind-close" @click="closeRemind" src="@/assets/images/icon-18.png" alt="">
         </div>
+    </div>
+    <div class="paypop" v-if="showPopPay">
+      <div class="paypop-inner">
+        <div class="paypop-cancel">取消</div>
+        <div class="paypop-money">￥<span>210</span></div>
+        <div class="paypop-title">请选择付款方式</div>
+        <div class="paypop-cell" @click="checkType(1)">
+          <img class="paypop-cell-check" v-if="type==1" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
+          <img class="paypop-cell-icon" src="@/assets/images/icon-9.png" alt="">
+          <div class="paypop-cell-name">支付宝</div>
+        </div>
+        <div class="paypop-cell" @click="checkType(2)">
+          <img class="paypop-cell-check" v-if="type==2" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
+          <img class="paypop-cell-icon" src="@/assets/images/icon-10.png" alt="">
+          <div class="paypop-cell-name">支付宝</div>
+        </div>
+        <div class="paypop-cell" @click="checkType(3)">
+          <img class="paypop-cell-check" v-if="type==3" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
+          <img class="paypop-cell-icon" src="@/assets/images/icon-13.png" alt="">
+          <div class="paypop-cell-name">支付宝</div>
+        </div>
+        <cube-button class="form-primary-btn" :primary="true" @click="ToPayFor">确认</cube-button>
+      </div>
     </div>
   </div>
 </template>
@@ -74,6 +100,8 @@ export default {
   },
   data(){
     return{
+      type:0,
+      showPopPay:false,
       showPop:false,
       tags:tags,
       total:0,
@@ -82,6 +110,15 @@ export default {
     }
   },
   methods:{
+    ToPayFor(){
+      this.showPopPay = false
+    },
+    checkType(type){
+      this.type = type
+    },
+    rawOrder(){
+      this.showPopPay = true
+    },
     toBuyTags(){
       this.showPop = true
     },
@@ -100,7 +137,6 @@ export default {
         const ischeck = this.tags[index].ischeck;
         if(!ischeck){
             const price = this.tags[index].price;
-           
             this.$set(this.tags[index],'ischeck',true)
             this.total = this.total + price;
         }
@@ -200,4 +236,49 @@ export default {
   width 130px
   background-color #ff6b00
   color #ffffff
+.paypop
+  background-color rgba(0,0,0,.4)
+  position fixed
+  top 0
+  left 0
+  width 100%
+  height 100%
+  z-index 20
+  
+  display flex
+  flex-direction column
+  justify-content flex-end
+  .paypop-inner
+    overflow-y scroll
+    background-color #ffffff
+    height 400px
+    width 100%
+    padding 15px
+    box-sizing border-box
+    .paypop-cancel
+      font-size 15px
+      color #666666
+    .paypop-money
+      color #FF6B00
+      font-size 23px
+      text-align center
+      span 
+        font-size 20px
+    .paypop-title
+      font-size 15px
+      padding 15px 0
+    .paypop-cell
+      display flex
+      align-items center
+      height 50px
+      .paypop-cell-check
+        height 10px
+        width 10px
+      .paypop-cell-icon
+        margin-left 30px
+        height 25px
+        width 25px
+      .paypop-cell-name
+        margin-left 18px
+        font-size:15px
 </style>

@@ -41,7 +41,7 @@
                 <span class="change-text">更改&emsp;</span>
                 <img class="cell-right-icon"  src="@/assets/images/icon-5.png" alt="">
             </div>
-            <cube-button class="primary-btn" :primary="true">保存</cube-button>
+            <cube-button class="primary-btn" :primary="true" @click="saveInfo">保存</cube-button>
        </div>
     </div>
 </template>
@@ -69,6 +69,9 @@ export default {
     methods:{
         viewEidtePass(){
             this.$router.push({name:'EidtePass'})
+        },
+        saveInfo(){
+            this.$router.go(-1)
         }
     }
 }
@@ -81,7 +84,7 @@ export default {
     width 100%
 .avatar-box
     position relative
-    height 75px
+    height 75px !important
     .cell-upload
         position absolute
         top 13px

@@ -238,7 +238,7 @@ export default {
   width 100%;
   height: 174px;
   .img-full{
-     width 100%;
+    width 100%;
     height 100%
   }
    

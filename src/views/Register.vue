@@ -3,8 +3,8 @@
     <Header title="注册"></Header>
     <div class="choose-box" v-if="step==1">
       <div class="choose-name">请先选择身份</div>
-      <div class="choose-btn" :class="choosetype==1?'choosed':''">我是个人</div>
-      <div class="choose-btn" :class="choosetype==2?'choosed':''">我是经纪人</div>
+      <div class="choose-btn" :class="choosetype==1?'choosed':''" @click="checkType(1)">我是个人</div>
+      <div class="choose-btn" :class="choosetype==2?'choosed':''" @click="checkType(2)">我是经纪人</div>
       <cube-button class="form-primary-btn" :primary="true" @click="chooseType">确定</cube-button>
     </div>
     <div class="login-box" v-else-if="step==2">
@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       step: 1,
-      choosetype: "2",
+      choosetype: 1,
       phone: "",
       pass: "",
       passv:'',
@@ -70,6 +70,9 @@ export default {
     };
   },
   methods: {
+    checkType(type){
+      this.choosetype = type
+    },
     chooseType() {
       this.step = 2;
     },
@@ -165,7 +168,4 @@ export default {
   border-bottom-left-radius: 0px;
 }
 
-.form-primary-btn {
-  margin-top: 25px;
-}
 </style>

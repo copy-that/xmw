@@ -4,7 +4,7 @@
         <div class="withdraw-box">
             <div class="withdraw-input">
                 <label class="withdraw-name" for="">提现金额：<span class="withdraw-num-before">￥</span></label>
-                <input class="withdraw-num" type="text" placeholder="请输入提现金额">
+                <input class="withdraw-num" type="tel" placeholder="请输入提现金额">
             </div>
             <div class="withdraw-max">最多可提现7500元</div>
             <div class="type-name" >提现到：</div>

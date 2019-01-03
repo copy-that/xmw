@@ -128,7 +128,4 @@ export default {
   border-bottom-left-radius: 0px;
 }
 
-.form-primary-btn {
-  margin-top: 25px;
-}
 </style>

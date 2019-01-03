@@ -3,12 +3,12 @@
     <Header :back-icon="false" title="发布信息"/>
     <div class="buysell-box">
       <div class="name">点击选择</div>
-      <div class="card" @click="showBuySheet">
+      <div class="card-cell" @click="showBuySheet">
         <img class="card-icon" src="@/assets/images/icon-12.png" alt>
         <div class="card-name">买房信息</div>
         <img class="card-arrow" src="@/assets/images/icon-5.png" alt>
       </div>
-      <div class="card" @click="showSellSheet">
+      <div class="card-cell" @click="showSellSheet">
         <img class="card-icon" src="@/assets/images/icon-12.png" alt>
         <div class="card-name">出租信息</div>
         <img class="card-arrow" src="@/assets/images/icon-5.png" alt>
@@ -97,7 +97,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
 @import '../assets/css/style.styl';
 .buysell-box {
   margin: 0 15px;
@@ -110,7 +110,7 @@ export default {
   }
 }
 
-.card {
+.card-cell {
   position: relative;
   border-radius: 6px;
   height: 100px;

@@ -25,8 +25,8 @@
                     <span class="menu-text">我的收藏</span>
                 </div>
             </div>
-            <div class="cell">
-                <div class="cell-label" @click="viewAuthentication">个人认证</div>
+            <div class="cell" @click="viewAuthentication">
+                <div class="cell-label">个人认证</div>
                 <img class="cell-right-icon"  src="@/assets/images/icon-5.png" alt="">
             </div>
             <div class="cell" @click="viewIssues">

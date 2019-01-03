@@ -15,35 +15,35 @@
       <div class="cell">
         <div class="cell-label">信息标题:</div>
         <input type="text" class="cell-input" placeholder="请输入信息标题">
-        <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
+        <!-- <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt> -->
       </div>
       <div class="cell">
         <div class="cell-label">称&emsp;&emsp;呼:</div>
         <input type="text" class="cell-input" placeholder="我们应该如何称呼您">
-        <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
+        <!-- <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt> -->
       </div>
       <div class="cell">
         <div class="cell-label">手机号码:</div>
         <input type="text" class="cell-input" placeholder="您的联系方式，方便我们及时与您联系">
-        <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
+        <!-- <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt> -->
       </div>
       <div class="cell">
         <div class="cell-label">地理位置:</div>
         <input type="text" class="cell-input" placeholder="请输入详细地址：例如:财信圣堤亚纳">
-        <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
+        <!-- <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt> -->
       </div>
       <div class="cell" @click="showBuyType">
         <div class="cell-label">出租类型:</div>
-        <div class="cell-value">请选择类型</div>
+        <div class="cell-value">{{params.rentType==1?"整套":''}}{{params.rentType==2?"单间":''}}{{params.rentType==3?"床位":''}}{{params.rentType==''?"请选择类型":''}}</div>
         <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
       </div>
       <div class="cell">
         <div class="cell-label">身&emsp;&emsp;份:</div>
         <div class="radio-box">
-          <div class="radio-item is_check">
+          <div class="radio-item" :class="params.idType==1?'is_check':''" @click="idCheck(1)">
             <span class="form_item_radio"></span>个人
           </div>
-          <div class="radio-item">
+          <div class="radio-item" :class="params.idType==2?'is_check':''" @click="idCheck(2)">
             <span class="form_item_radio"></span>经纪人
           </div>
         </div>
@@ -52,25 +52,20 @@
       <div class="cell">
         <div class="cell-label">面积:</div>
         <input type="text" class="cell-input" placeholder="平方米">
-        <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
+        <!-- <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt> -->
       </div>
       <div class="cell">
         <div class="cell-label">价格:</div>
         <input type="text" class="cell-input" placeholder="元/月">
-        <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
+        <!-- <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt> -->
       </div>
       <div class="block">
         <div class="block-label">上传房源照片:</div>
-        <div class="">
-            <cube-upload
+         <cube-upload
                 class="base-upload"
                 action="//jsonplaceholder.typicode.com/photos/"
                 :simultaneous-uploads="1"
                 @files-added="filesAdded" />
-            <div>
-                <img src="" alt="" srcset="">
-            </div>
-        </div>
       </div>
       <div class="block">
         <div class="block-label">房源信息:</div>
@@ -88,15 +83,30 @@
         <div class="block-label" style="margin:10px">来为您的房屋购买一个合适的标签吧!</div>
         <div class="tags">
           <div class="tag-item" v-for="(tag,index) in tags" :key="tag.id">
+           
             <img class="tag-item-icon" :src="tag.icon" @click="showTagsDesc(index)"  alt srcset>
-            <img class="tag-item-check" v-if="tag.ischeck" @click="cancelCheck(index)" src="@/assets/images/icon-6.png" alt srcset>
-            <img class="tag-item-check" v-else  @click="confrimCheck(index)" src="@/assets/images/icon-7.png" alt srcset>
+            <template v-if="tag.id<5">
+              <img class="tag-item-check" v-if="tagsShow[index]&&index==tagsShow[index].id" @click="cancelCheck(index)" src="@/assets/images/icon-6.png" alt srcset>
+              <img class="tag-item-check" v-else  @click="confrimCheck(index)" src="@/assets/images/icon-7.png" alt srcset>
+            </template>
+            <template v-else-if="tag.id<7&&tag.id>=5">
+              <img class="tag-item-check" v-if="tagsShow[5]&&tag.id==tagsShow[5].id" @click="cancelCheck(5)" src="@/assets/images/icon-6.png" alt srcset>
+              <img class="tag-item-check" v-else  @click="confrimCheck(index)" src="@/assets/images/icon-7.png" alt srcset>
+            </template>
+            <template v-else-if="tag.id<10&&tag.id>=7">
+              <img class="tag-item-check" v-if="tagsShow[6]&&tag.id==tagsShow[6].id" @click="cancelCheck(6)" src="@/assets/images/icon-6.png" alt srcset>
+              <img class="tag-item-check" v-else  @click="confrimCheck(index)" src="@/assets/images/icon-7.png" alt srcset>
+            </template>
+            <template v-else>
+              <img class="tag-item-check" v-if="tagsShow[7]&&tag.id==tagsShow[7].id" @click="cancelCheck(7)" src="@/assets/images/icon-6.png" alt srcset>
+              <img class="tag-item-check" v-else  @click="confrimCheck(index)" src="@/assets/images/icon-7.png" alt srcset>
+            </template>
           </div>
         </div>
         <div class="tags-info">
           <div class="tags-info-item">
             <span class="tags-label">您已选择标签：</span>
-            <span>在售、已认证、1折</span>
+            <span class="tags-value"><span  v-if="tag&&tag.value" v-for="(tag,index) in tagsShow" :key="index">{{tag.value}}、</span></span>
           </div>
           <div class="tags-info-item">
             <span class="tags-label">共计：</span>
@@ -135,6 +145,8 @@ export default {
         remindDesc:'',
         total:0,
         tags:tags,
+        tagsShow:[],
+
         params:{
             area:'',
             time:'',
@@ -143,7 +155,7 @@ export default {
             phone:'',
             location:'',
             rentType:'',
-            idType:'',
+            idType:'1',
             square:'',
         }
     };
@@ -164,24 +176,61 @@ export default {
     });
   },
   methods: {
+    idCheck(type){
+      this.params.idType = type
+    },
     cancelCheck(index){
-        
-        const ischeck = this.tags[index].ischeck;
-        if(ischeck){
-            const price = this.tags[index].price;
-           
-            this.$set(this.tags[index],'ischeck',false)
-           this.total = this.total - price;
-        }
+      if(this.tagsShow[index]){
+         const price = this.tagsShow[index].price;
+        this.$set(this.tagsShow,index,null);
+        this.total = this.total - price;
+      }
+     
     },
     confrimCheck(index){
-        const ischeck = this.tags[index].ischeck;
-        if(!ischeck){
-            const price = this.tags[index].price;
-           
-            this.$set(this.tags[index],'ischeck',true)
-            this.total = this.total + price;
+        const {price,tag,id} = this.tags[index];
+
+        switch(id){
+          case 0:
+          this.$set(this.tagsShow,0,{id:id,value:tag,price:price});
+          break;
+          case 1:
+          this.$set(this.tagsShow,1,{id:id,value:tag,price:price});
+          break;
+          case 2:
+          this.$set(this.tagsShow,2,{id:id,value:tag,price:price});
+          break;
+          case 3:
+          this.$set(this.tagsShow,3,{id:id,value:tag,price:price});
+          break;
+          case 4:
+          this.$set(this.tagsShow,4,{id:id,value:tag,price:price});
+          break;
+          case 5:
+          this.$set(this.tagsShow,5,{id:id,value:tag,price:price});
+          break;
+          case 6:
+          this.$set(this.tagsShow,5,{id:id,value:tag,price:price});
+          break;
+          case 7:
+          this.$set(this.tagsShow,6,{id:id,value:tag,price:price});
+          break;
+          case 8:
+          this.$set(this.tagsShow,6,{id:id,value:tag,price:price});
+          break;
+          case 9:
+          this.$set(this.tagsShow,6,{id:id,value:tag,price:price});
+          break;
+          default:
+          this.$set(this.tagsShow,7,{id:id,value:tag,price:price});
         }
+        let total = 0;
+        this.tagsShow.map(item=>{
+          if(item){
+            total += item.price;
+          }  
+        })
+        this.total = total
         
     },
     showTagsDesc(index){
@@ -272,19 +321,20 @@ export default {
         data: [
           {
             content: "<em>整套</em>",
-            type: "6"
+            type: "1"
           },
           {
             content: "<em>单间</em>",
-            type: "7"
+            type: "2"
           },
           {
             content: "<em>床位</em>",
-            type: "8"
+            type: "3"
           }
         ],
         onSelect: (item, index) => {
-          console.log(item, index);
+          this.params.rentType = item.type
+          console.log(item.type);
         }
       }).show();
     }
@@ -307,7 +357,8 @@ export default {
   font-size: 12px;
   margin-bottom: 10px;
 }
-
+.base-upload
+  margin 0 -3px
 .base-upload .cube-upload-btn-def{
     background-color: #f0f0f0 !important
 }

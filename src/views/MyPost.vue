@@ -236,49 +236,5 @@ export default {
   width 130px
   background-color #ff6b00
   color #ffffff
-.paypop
-  background-color rgba(0,0,0,.4)
-  position fixed
-  top 0
-  left 0
-  width 100%
-  height 100%
-  z-index 20
-  
-  display flex
-  flex-direction column
-  justify-content flex-end
-  .paypop-inner
-    overflow-y scroll
-    background-color #ffffff
-    height 400px
-    width 100%
-    padding 15px
-    box-sizing border-box
-    .paypop-cancel
-      font-size 15px
-      color #666666
-    .paypop-money
-      color #FF6B00
-      font-size 23px
-      text-align center
-      span 
-        font-size 20px
-    .paypop-title
-      font-size 15px
-      padding 15px 0
-    .paypop-cell
-      display flex
-      align-items center
-      height 50px
-      .paypop-cell-check
-        height 10px
-        width 10px
-      .paypop-cell-icon
-        margin-left 30px
-        height 25px
-        width 25px
-      .paypop-cell-name
-        margin-left 18px
-        font-size:15px
+
 </style>

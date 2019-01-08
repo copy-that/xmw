@@ -20,6 +20,8 @@
                     <span>微信支付</span>
                 </div>
             </div>
+            <div class="type-name" >提现账号：</div>
+            <input class="acount-input" type="tel" placeholder="请输入提现账号">
             <cube-button class="primary-btn" :primary="true" @click="viewWiSucess">确认提现</cube-button>
             <div class="withdraw-rule">7个自然日到账</div>
         </div>
@@ -87,9 +89,17 @@ input.withdraw-num::-webkit-input-placeholder
     color rgba(34,34,34,1)
     margin-top 15px
     font-size 12px 
+    text-align center
 .withdraw-max
     text-align left 
     color #666666
     padding 15px 0
     font-size 12px 
+.acount-input
+    font-size 14px
+    color #666666
+    height 30px;
+    outline none;
+    border-bottom 1px solid #f2f2f2;
+    width 100%;
 </style>

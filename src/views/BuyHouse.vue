@@ -115,7 +115,7 @@
         </div>
       </div>
       <div class="rule-desc">置顶发布的信息可使成交率提高5倍！</div>
-      <cube-button :primary="true" class="primary-btn" style="margin-top:10px">发布</cube-button>
+      <cube-button :primary="true" class="primary-btn" @click="showPopPay=true" style="margin-top:10px">发布</cube-button>
     </div>
     <div class="remind-box" v-show="showRemind">
         <div class="remind-inner">
@@ -123,6 +123,32 @@
             <div class="remind-desc">{{remindDesc}}</div>
             <img class="remind-close" @click="closeRemind" src="@/assets/images/icon-18.png" alt="">
         </div>
+    </div>
+    <div class="paypop" v-if="showPopPay">
+      <div class="paypop-inner">
+        <div class="paypop-cancel" @click="showPopPay=false">取消</div>
+        <div class="paypop-money">￥<span>210</span></div>
+        <div class="paypop-title">请选择付款方式</div>
+        <div class="paypop-cell" @click="checkType(1)">
+          <img class="paypop-cell-check" v-if="type==1" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
+          <img class="paypop-cell-icon" src="@/assets/images/icon-9.png" alt="">
+          <div class="paypop-cell-name">支付宝</div>
+        </div>
+        <div class="paypop-cell" @click="checkType(2)">
+          <img class="paypop-cell-check" v-if="type==2" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
+          <img class="paypop-cell-icon" src="@/assets/images/icon-10.png" alt="">
+          <div class="paypop-cell-name">支付宝</div>
+        </div>
+        <div class="paypop-cell" @click="checkType(3)">
+          <img class="paypop-cell-check" v-if="type==3" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
+          <img class="paypop-cell-icon" src="@/assets/images/icon-13.png" alt="">
+          <div class="paypop-cell-name">支付宝</div>
+        </div>
+        <cube-button class="form-primary-btn" :primary="true" @click="ToPayFor">确认</cube-button>
+      </div>
     </div>
   </div>
 </template>
@@ -146,7 +172,8 @@ export default {
         total:0,
         tags:tags,
         tagsShow:[],
-
+        type:0,
+        showPopPay:false,
         params:{
             area:'',
             time:'',
@@ -176,6 +203,12 @@ export default {
     });
   },
   methods: {
+    ToPayFor(){
+      this.showPopPay = false
+    },
+    checkType(type){
+      this.type = type
+    },
     idCheck(type){
       this.params.idType = type
     },

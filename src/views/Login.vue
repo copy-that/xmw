@@ -62,6 +62,7 @@ export default {
     padding 0 50px
     text-align center
 .logon-input
+    flex 1;
     margin-top 25px
 .cube-input.logon-input::after
     border-color #FF6B00
@@ -71,6 +72,7 @@ export default {
     display flex
     justify-content space-between
     .line-item
+        display inline-block
         font-size 13px
         padding 13px 0
 

@@ -45,7 +45,10 @@
                 <div class="cell-label">联系客服</div>
                 <img class="cell-right-icon"  src="@/assets/images/icon-5.png" alt="">
             </div>
-            
+            <div class="cell" @click="userLogout">
+                <div class="cell-label">退出登录</div>
+                <img class="cell-right-icon"  src="@/assets/images/icon-5.png" alt="">
+            </div>
             
         </div>
         
@@ -104,6 +107,10 @@ export default {
                     console.log(`cancel`)
                 }
                 }).show()
+        },
+        userLogout(){
+            this.$store.commit('removeUserToken');
+            this.$router.push({name:'Login'})
         }
     }
 }

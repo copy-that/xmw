@@ -98,11 +98,11 @@ export default {
           { icon: require("@/assets/images/tab-11.png"), name: "买办公", id: "3" },
           { icon: require("@/assets/images/tab-12.png"), name: "买厂房", id: "4" },
           { icon: require("@/assets/images/tab-13.png"), name: "买期房", id: "11" },
-          { icon: require("@/assets/images/tab-9.png"), name: "买商铺", id: "21" },
-          { icon: require("@/assets/images/tab-10.png"), name: "买住宅", id: "31" },
-          { icon: require("@/assets/images/tab-11.png"), name: "买办公", id: "41" },
-          { icon: require("@/assets/images/tab-12.png"), name: "买厂房", id: "23" },
-          { icon: require("@/assets/images/tab-13.png"), name: "买期房", id: "22" }
+          { icon: require("@/assets/images/tab-9.png"), name: "租住宅", id: "21" },
+          { icon: require("@/assets/images/tab-10.png"), name: "租商铺", id: "31" },
+          { icon: require("@/assets/images/tab-11.png"), name: "租办公", id: "41" },
+          { icon: require("@/assets/images/tab-12.png"), name: "租厂房", id: "23" },
+          { icon: require("@/assets/images/tab-13.png"), name: "租酒店", id: "22" }
         ],
       recomList: [
         {

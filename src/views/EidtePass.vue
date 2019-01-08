@@ -5,7 +5,7 @@
             <input class="form-input" type="text" placeholder="请输入旧密码">
             <input class="form-input" type="text" placeholder="请设置新密码（6-20位数字或字母）">
             <input class="form-input" type="text" placeholder="请再次输入密码">
-            <cube-button class="form-primary-btn"  :primary="true">确定</cube-button>
+            <cube-button class="form-primary-btn" @click="editePass" :primary="true">确定</cube-button>
         </div>
         
     </div>
@@ -16,6 +16,11 @@ export default {
     name:'EidtePass',
     components:{
         Header
+    },
+    methods:{
+        editePass(){
+            this.$router.back()
+        }
     }
 }
 </script>

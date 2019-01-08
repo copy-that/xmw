@@ -15,6 +15,7 @@
   -webkit-overflow-scrolling: touch;
 }
 .page{
+  text-align: left;
   height: 100%;
   box-sizing: border-box;
   width: 100%;

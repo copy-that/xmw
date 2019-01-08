@@ -131,62 +131,61 @@ export default {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-}
+  .cube-upload {
+    border: 1px solid #f1f1f1;
+    height: 85px;
+    width: 150px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
 
-.cube-upload {
-  border: 1px solid #f1f1f1;
-  height: 85px;
-  width: 150px;
-  background-color: #f9f9f9;
-  border-radius: 4px;
-
-  .cube-upload-file, .cube-upload-btn {
-    margin: 0;
-  }
-
-  .cube-upload-file {
-    margin: 0;
-    height: 100%;
-
-    + .cube-upload-btn {
-      margin-top: -85px;
-      opacity: 0;
-    }
-  }
-
-  .cube-upload-file-def {
-    width: 100%;
-    height: 100%;
-
-    .cubeic-wrong {
-      display: none;
-    }
-  }
-
-  .cube-upload-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    > div {
-      text-align: center;
+    .cube-upload-file, .cube-upload-btn {
+      margin: 0;
     }
 
-    i {
-      display: inline-flex;
+    .cube-upload-file {
+      margin: 0;
+      height: 100%;
+
+      + .cube-upload-btn {
+        margin-top: -85px;
+        opacity: 0;
+      }
+    }
+
+    .cube-upload-file-def {
+      width: 100%;
+      height: 100%;
+
+      .cubeic-wrong {
+        display: none;
+      }
+    }
+
+    .cube-upload-btn {
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 50px;
-      height: 50px;
-      font-size: 32px;
-      line-height: 1;
-      font-style: normal;
-      color: #666666;
-    }
 
-    p {
-      font-size: 10px;
-      color: #666666;
+      > div {
+        text-align: center;
+      }
+
+      i {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        font-size: 32px;
+        line-height: 1;
+        font-style: normal;
+        color: #666666;
+      }
+
+      p {
+        font-size: 10px;
+        color: #666666;
+      }
     }
   }
 }

@@ -117,6 +117,7 @@ export default {
 
 .logon-input {
   margin-top: 25px;
+  flex 1;
 }
 
 .cube-input.logon-input::after {

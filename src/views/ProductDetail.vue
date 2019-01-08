@@ -1,7 +1,7 @@
 <template>
   <div class="page paddbo" style="padding-top:0;">
-    <div class="banner-detail">
-      <img class="back" src="@/assets/images/icon-1.png" alt srcset @click="goback">
+    <div class="banner-detail" @click="showImagePreview">
+      <img class="back" src="@/assets/images/icon-1.png" alt srcset @click.stop="goback">
       <img class="banner-img" src="@/assets/images/ban-1.png" alt>
       <div class="carbin">1/7</div>
     </div>
@@ -105,13 +105,25 @@ export default {
   data() {
     return {
         state:1,
-        isEnjoy:true
+        isEnjoy:true,
+        imgs:[
+          require('@/assets/images/item-1.png'),
+          require('@/assets/images/item-2.png'),
+          require('@/assets/images/item-3.png'),
+          require('@/assets/images/item-4.png')
+        ]
     };
   },
   mounted() {
     this.initMap();
   },
   methods: {
+    showImagePreview() {
+      var that = this
+      this.$createImagePreview({
+        imgs: that.imgs
+      }).show()
+    },
     handleBuy(){
         this.state = 2
     },
@@ -137,7 +149,7 @@ export default {
   }
 };
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
 
 .buyInfo{
     text-align left 

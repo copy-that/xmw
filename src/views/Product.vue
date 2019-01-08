@@ -105,7 +105,7 @@
         </div>
       </div>
     <div class="list-prod">
-      <div class="prod">
+      <div class="prod" v-for="(prod,index) in prodList" :key="index" @click="viewProductDetail">
         <div class="prod-icon">
           <img class="prod-img" src="@/assets/images/item-icon.png" alt>
           <span class="prod-img-pages">7张</span>
@@ -126,117 +126,8 @@
           </div>
           <div class="prod-price">¥3000万</div>
         </div>
-      </div>
-      <div class="prod">
-        <div class="prod-icon">
-          <img class="prod-img" src="@/assets/images/item-icon.png" alt>
-          <span class="prod-img-pages">7张</span>
-        </div>
-        <div class="prod-info">
-          <div class="prod-name">和悦华锦
-            <img class="prod-enjoy" src="@/assets/images/icon-2-b.png" alt srcset>
-          </div>
-          <div class="prod-value">
-            <span>户型:3室1厅</span>
-            <span>面积120㎡</span>
-          </div>
-          <div class="prod-time">发布时间:2018-11-20</div>
-          <div class="prod-tags">
-            <span>个人</span>
-            <span>简单装修</span>
-            <span>在售</span>
-          </div>
-          <div class="prod-price">¥3000万</div>
-        </div>
-      </div>
-      <div class="prod">
-        <div class="prod-icon">
-          <img class="prod-img" src="@/assets/images/item-icon.png" alt>
-          <span class="prod-img-pages">7张</span>
-        </div>
-        <div class="prod-info">
-          <div class="prod-name">和悦华锦
-            <img class="prod-enjoy" src="@/assets/images/icon-2-b.png" alt srcset>
-          </div>
-          <div class="prod-value">
-            <span>户型:3室1厅</span>
-            <span>面积120㎡</span>
-          </div>
-          <div class="prod-time">发布时间:2018-11-20</div>
-          <div class="prod-tags">
-            <span>个人</span>
-            <span>简单装修</span>
-            <span>在售</span>
-          </div>
-          <div class="prod-price">¥3000万</div>
-        </div>
-      </div>
-      <div class="prod">
-        <div class="prod-icon">
-          <img class="prod-img" src="@/assets/images/item-icon.png" alt>
-          <span class="prod-img-pages">7张</span>
-        </div>
-        <div class="prod-info">
-          <div class="prod-name">和悦华锦
-            <img class="prod-enjoy" src="@/assets/images/icon-2-b.png" alt srcset>
-          </div>
-          <div class="prod-value">
-            <span>户型:3室1厅</span>
-            <span>面积120㎡</span>
-          </div>
-          <div class="prod-time">发布时间:2018-11-20</div>
-          <div class="prod-tags">
-            <span>个人</span>
-            <span>简单装修</span>
-            <span>在售</span>
-          </div>
-          <div class="prod-price">¥3000万</div>
-        </div>
-      </div>
-      <div class="prod">
-        <div class="prod-icon">
-          <img class="prod-img" src="@/assets/images/item-icon.png" alt>
-          <span class="prod-img-pages">7张</span>
-        </div>
-        <div class="prod-info">
-          <div class="prod-name">和悦华锦
-            <img class="prod-enjoy" src="@/assets/images/icon-2-b.png" alt srcset>
-          </div>
-          <div class="prod-value">
-            <span>户型:3室1厅</span>
-            <span>面积120㎡</span>
-          </div>
-          <div class="prod-time">发布时间:2018-11-20</div>
-          <div class="prod-tags">
-            <span>个人</span>
-            <span>简单装修</span>
-            <span>在售</span>
-          </div>
-          <div class="prod-price">¥3000万</div>
-        </div>
-      </div>
-      <div class="prod">
-        <div class="prod-icon">
-          <img class="prod-img" src="@/assets/images/item-icon.png" alt>
-          <span class="prod-img-pages">7张</span>
-        </div>
-        <div class="prod-info">
-          <div class="prod-name">和悦华锦
-            <img class="prod-enjoy" src="@/assets/images/icon-2-b.png" alt srcset>
-          </div>
-          <div class="prod-value">
-            <span>户型:3室1厅</span>
-            <span>面积120㎡</span>
-          </div>
-          <div class="prod-time">发布时间:2018-11-20</div>
-          <div class="prod-tags">
-            <span>个人</span>
-            <span>简单装修</span>
-            <span>在售</span>
-          </div>
-          <div class="prod-price">¥3000万</div>
-        </div>
-      </div>
+      </div>     
+     
     </div>
   </div>
 </template>
@@ -255,6 +146,7 @@ export default {
       idtype: 1,
       prtype: 1,
       showdrop: false,
+      prodList:[{},{}],
       filterTags:[0,0,0,0,0],
       fiList:[
         {
@@ -389,11 +281,15 @@ export default {
     },
     handleFilter(){
       this.showdrop = false
+    },
+    viewProductDetail(){
+      this.$router.push({name:'ProductDetail'})
     }
   }
 };
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
+
 @import '../assets/css/style.styl';
 .page {
   text-align left 
@@ -555,18 +451,18 @@ export default {
   }
 }
 
-.block {
-  position: fixed;
-  top: 0;
-}
+// .block {
+//   position: fixed;
+//   top: 0;
+// }
 
-.block {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background-color: #fff;
-  z-index: 10;
-}
+// .block-fixed {
+//   position: fixed;
+//   top: 0;
+//   width: 100%;
+//   background-color: #fff;
+//   z-index: 10;
+// }
 
 .list-prod {
   margin:85px 0 20px;

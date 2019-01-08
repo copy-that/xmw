@@ -63,22 +63,26 @@ export default {
         position: fixed;
         border-top: 1px solid #f2f2f2;
         bottom: 0;
+        left: 0;
         width: 100vw;
         background-color: #ffffff;
         z-index: 10;
     }
     .tab-item{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         height: 49px;
-        padding: 5px 0;
         box-sizing: border-box;
+        padding: 5px 0;
     }
     .b-font-22{
-       
         height: 16px;
         line-height: 16px;
         font-size: 11px;
     }
     .b-img-40{
+        display: block;
         height: 20px;
         width: 20px;
     }

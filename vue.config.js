@@ -3,7 +3,8 @@ module.exports = {
     ? './'
     : '/',
   devServer: {
-    proxy: 'http://localhost:4000'
+    // proxy: 'http://192.168.1.188:8825',
+    proxy: 'http://47.105.104.41:8825'
   },
   css: {
     loaderOptions: {

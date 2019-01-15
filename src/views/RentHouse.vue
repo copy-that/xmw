@@ -39,7 +39,7 @@
       </div>
       <div class="cell">
         <div class="cell-label">身&emsp;&emsp;份:</div>
-        <div class="radio-box">
+        <div class="radio-box flex-wrap">
           <div class="radio-item is_check">
             <span class="form_item_radio"></span>个人
           </div>
@@ -58,6 +58,38 @@
         <div class="cell-label">价格:</div>
         <input type="text" class="cell-input" placeholder="元/月">
         <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
+      </div>
+      <div class="cell cell-check">
+        <div class="cell-label">房屋配置:</div>
+        <div class="radio-box">
+          <div class="radio-item radio-item-margin is_check">
+            <span class="form_item_radio"></span>床
+          </div>
+          <div class="radio-item radio-item-margin">
+            <span class="form_item_radio"></span>衣柜
+          </div>
+          <div class="radio-item radio-item-margin">
+            <span class="form_item_radio"></span>电视
+          </div>
+          <div class="radio-item radio-item-margin">
+            <span class="form_item_radio"></span>空调
+          </div>
+          <div class="radio-item radio-item-margin">
+            <span class="form_item_radio"></span>暖气
+          </div>
+          <div class="radio-item radio-item-margin">
+            <span class="form_item_radio"></span>宽带
+          </div>
+          <div class="radio-item radio-item-margin">
+            <span class="form_item_radio"></span>热水器
+          </div>
+          <div class="radio-item radio-item-margin">
+            <span class="form_item_radio"></span>洗衣机
+          </div>
+          <div class="radio-item radio-item-margin">
+            <span class="form_item_radio"></span>冰箱
+          </div>
+        </div>
       </div>
       <div class="block">
         <div class="block-label">上传房源照片:</div>
@@ -297,9 +329,17 @@ export default {
 .newhouse-box {
   padding: 0 15px 10px;
 }
-
-.radio-item {
-  margin-bottom: 5px;
+.cell-check {
+  margin 20px 0
+  height:auto;
+  border:0;
+  align-items: flex-start;
+}
+.radio-item-margin {
+  margin-bottom:  10px;
+  min-width 50px;
+  font-size: 13px;
+  color: #111;
 }
 
 .rule-desc {

@@ -11,16 +11,15 @@
       </cube-input>
     </div>
     <div class="banner">
-    <img class="img-full" src="@/assets/images/banner.png" alt="" srcset="">
+      <img class="img-full" src="@/assets/images/banner.png" alt srcset>
     </div>
     <div>
       <ul class="list-menu">
-          <li v-for="item in scrollList2" class="list-menu-item"  :key="item.id" 
-          @click="viewProduct">
-            <img class="list-item-icon" :src="item.icon" alt>
-            <div class="list-item-name">{{ item.name }}</div>
-          </li>
-        </ul>
+        <li v-for="item in scrollList2" class="list-menu-item" :key="item.id" @click="viewProduct">
+          <img class="list-item-icon" :src="item.icon" alt>
+          <div class="list-item-name">{{ item.name }}</div>
+        </li>
+      </ul>
     </div>
 
     <div class="recom" v-for="(recom,index) in recomList" :key="index">
@@ -34,39 +33,40 @@
         class="horizontal-scroll-list-wrap"
       >
         <ul class="list-wrapper">
-          <div class="reitem list-item" v-for="recomitem in recom.children"  @click="viewProductDetail(index)" :key="recomitem.id">
-            <img class="reitem-icon" :src="recomitem.icon" alt>
-            <div class="reitem-name">{{recomitem.name}}</div>
+          <div
+            class="reitem list-item"
+            v-for="recomitem in recom.children"
+            @click="viewProductDetail(recomitem.id)"
+            :key="recomitem.id"
+          >
+            <img class="reitem-icon" :src="recomitem.picUrls" alt>
+            <div class="reitem-name">{{recomitem.title}}</div>
             <div class="reitem-price">¥{{recomitem.price}}万</div>
           </div>
         </ul>
       </cube-scroll>
-      
     </div>
-    <div class="news">
+    <div class="news" ref="wrapper">
       <div class="news-name">最新资讯</div>
-      <div class="newsitem"  @click="viewNewsDetail">
+      <!-- <div class="newsitem" v-for="msg in newMsg" :key="msg.id" @click="viewNewsDetail(msg.id)">
         <img class="newsitem-icon" src="@/assets/images/item-icon.png" alt="">
         <div class="newsitem-info">
-          <div class="newsitem-name">鑫苑国际新城项目现有房源在售，国际新城项目现有房源</div>
-          <div class="newsitem-time">2018-11-20</div>
+          <div class="newsitem-name">{{msg.msgName}}</div>
+          <div class="newsitem-time">{{msg.createTime}}</div>
         </div>
-      </div>
-      <div class="newsitem">
-        <img class="newsitem-icon" src="@/assets/images/item-icon.png" alt="">
+      </div> -->
+      <div class="newsitem" v-for="msg in newMsg" :key="msg.id" @click="viewNewsDetail(msg.id)">
+        <!-- <img class="newsitem-icon" src="@/assets/images/item-icon.png" alt=""> -->
         <div class="newsitem-info">
-          <div class="newsitem-name">鑫苑国际新城项目现有房源在售，国际新城项目现有房源</div>
-          <div class="newsitem-time">2018-11-20</div>
+          <div class="newsitem-name">{{msg.msgName}}</div>
+          <div class="newsitem-time">{{msg.createTime}}</div>
         </div>
       </div>
     </div>
     <div class="popCity" v-if="showPopCity">
-    <cube-index-list
-      :data="cityData"
-      @select="selectItem">
-    </cube-index-list>
+      <cube-index-list :data="cityData" @select="selectItem"></cube-index-list>
     </div>
-    
+
     <Tabbar/>
   </div>
 </template>
@@ -82,90 +82,144 @@ export default {
   },
   data() {
     return {
-      cityData:cityData,
-      showPopCity:false,
-      showCity:'北京',
+      newMsg: [],
+      page: 1,
+      pageSize: 10,
+      cityData: cityData,
+      showPopCity: false,
+      showCity: "总站",
       searchWorld: "",
       slideList: [
         {
           url: "http://www.didichuxing.com/",
-          image:require('@/assets/images/banner.png'),
+          image: require("@/assets/images/banner.png")
         }
       ],
       scrollList2: [
-          { icon: require("@/assets/images/tab-9.png"), name: "买住宅", id: "1" },
-          { icon: require("@/assets/images/tab-10.png"), name: "买商铺", id: "2" },
-          { icon: require("@/assets/images/tab-11.png"), name: "买办公", id: "3" },
-          { icon: require("@/assets/images/tab-12.png"), name: "买厂房", id: "4" },
-          { icon: require("@/assets/images/tab-13.png"), name: "买期房", id: "11" },
-          { icon: require("@/assets/images/tab-9.png"), name: "租住宅", id: "21" },
-          { icon: require("@/assets/images/tab-10.png"), name: "租商铺", id: "31" },
-          { icon: require("@/assets/images/tab-11.png"), name: "租办公", id: "41" },
-          { icon: require("@/assets/images/tab-12.png"), name: "租厂房", id: "23" },
-          { icon: require("@/assets/images/tab-13.png"), name: "租酒店", id: "22" }
-        ],
-      recomList: [
+        { icon: require("@/assets/images/tab-9.png"), name: "买住宅", id: "1" },
         {
-          name: "热门推荐",
-          desc: "我们为你推选好的房源",
-          children: [
-            {
-              id: 0,
-              icon: require("@/assets/images/item-icon.png"),
-              name: "蓝堡湾 南北通透",
-              price: 155
-            },
-            {
-              id: 1,
-              icon: require("@/assets/images/item-icon.png"),
-              name: "蓝堡湾 南北通透",
-              price: 155
-            },
-            {
-              id: 3,
-              icon: require("@/assets/images/item-icon.png"),
-              name: "蓝堡湾 南北通透",
-              price: 155
-            }
-          ]
+          icon: require("@/assets/images/tab-10.png"),
+          name: "买商铺",
+          id: "2"
         },
         {
-          name: "热门导购",
-          desc: "真实的房源信息",
-          children: [
-            {
-              id: 0,
-              icon: require("@/assets/images/item-icon.png"),
-              name: "蓝堡湾 南北通透",
-              price: 155
-            },
-            {
-              id: 1,
-              icon: require("@/assets/images/item-icon.png"),
-              name: "蓝堡湾 南北通透",
-              price: 155
-            },
-            {
-              id: 3,
-              icon: require("@/assets/images/item-icon.png"),
-              name: "蓝堡湾 南北通透",
-              price: 155
-            }
-          ]
+          icon: require("@/assets/images/tab-11.png"),
+          name: "买办公",
+          id: "3"
+        },
+        {
+          icon: require("@/assets/images/tab-12.png"),
+          name: "买厂房",
+          id: "4"
+        },
+        {
+          icon: require("@/assets/images/tab-13.png"),
+          name: "买期房",
+          id: "11"
+        },
+        {
+          icon: require("@/assets/images/tab-9.png"),
+          name: "租住宅",
+          id: "21"
+        },
+        {
+          icon: require("@/assets/images/tab-10.png"),
+          name: "租商铺",
+          id: "31"
+        },
+        {
+          icon: require("@/assets/images/tab-11.png"),
+          name: "租办公",
+          id: "41"
+        },
+        {
+          icon: require("@/assets/images/tab-12.png"),
+          name: "租厂房",
+          id: "23"
+        },
+        {
+          icon: require("@/assets/images/tab-13.png"),
+          name: "租酒店",
+          id: "22"
         }
       ],
-      size: 50,
-      offset: 200
+      recomList: [
+        {
+          name: "置顶推荐",
+          desc: "我们为你推选好的房源",
+          children: []
+        }
+        // ,
+        // {
+        //   name: "热门导购",
+        //   desc: "真实的房源信息",
+        //   children: [
+        //     {
+        //       id: 0,
+        //       icon: require("@/assets/images/item-icon.png"),
+        //       name: "蓝堡湾 南北通透",
+        //       price: 155
+        //     },
+        //     {
+        //       id: 1,
+        //       icon: require("@/assets/images/item-icon.png"),
+        //       name: "蓝堡湾 南北通透",
+        //       price: 155
+        //     },
+        //     {
+        //       id: 3,
+        //       icon: require("@/assets/images/item-icon.png"),
+        //       name: "蓝堡湾 南北通透",
+        //       price: 155
+        //     }
+        //   ]
+        // }
+      ]
     };
   },
+  mounted() {
+    this.getNewMsg();
+    this.getRecoment();
+  },
   methods: {
-    changeLocation(){
-      this.showPopCity = !this.showPopCity
+    changeLocation() {
+      this.showPopCity = !this.showPopCity;
+    },
+    getRecoment() {
+      const token = this.$store.state.token;
+      this.$http(
+        "/api/app/homeMsg/hotList",
+        "post",
+        {},
+        token
+      ).then(res => {
+        if (res.data.code == 100) {
+          this.recomList[0].children.push(...res.data.data)
+          // console.log(res.data.data)
+        } else {
+          this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+        }
+      });
+    },
+    getNewMsg() {
+      const token = this.$store.state.token;
+      this.$http(
+        "/api/app/homeMsg/msgList",
+        "post",
+        this.$qs.stringify({ page: this.page, pageSize: this.pageSize }),
+        token
+      ).then(res => {
+        if (res.data.code == 100) {
+          this.newMsg.push(...res.data.data);
+        } else {
+          this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+        }
+      });
     },
     selectItem(item) {
-      this.showCity = item.name
-      this.showPopCity = false
-      console.log(item.name)
+      this.showCity = item.name;
+      this.showPopCity = false;
+      console.log(item.name);
     },
     changePage(current) {
       console.log("当前轮播图序号为:" + current);
@@ -176,30 +230,29 @@ export default {
     scrollHandler({ y }) {
       this.scrollY = -y;
     },
-    viewProduct(){
-      this.$router.push('product')
+    viewProduct() {
+      this.$router.push("product");
     },
-    viewProductDetail(key){
-      if(key==0){
-        this.$router.push('ProductDetail')
-      }else{
-        this.$router.push({name:'HotGuide'})
-      }
-      
+    viewProductDetail(id) {
+       console.log(id)
+      this.$router.push({ name: "ProductDetail",params:{id:id} });
     },
-    viewNewsDetail(){
-      this.$router.push('NewsDetail')
+    viewNewsDetail(id) {
+      console.log(id)
+      this.$router.push({name:'NewsDetail',params:{id:id}});
     }
   }
 };
 </script>
 <style lang="stylus">
 @import '../assets/css/style.styl';
+
 .page {
-  text-align left 
+  text-align: left;
 }
+
 .slide-img {
-  height 100%  
+  height: 100%;
 }
 
 .cube-input.search {
@@ -219,12 +272,14 @@ export default {
   width: 13px;
 }
 
-.location-icon
+.location-icon {
   position: absolute;
   top: 0;
   left: 0;
   height: 13px;
   width: 13px;
+}
+
 .location-place {
   font-size: 13px;
   position: absolute;
@@ -238,16 +293,16 @@ export default {
   position: absolute;
   top: 15px;
 }
-.banner{
-  width 100%;
-  height: 174px;
-  .img-full{
-    width 100%;
-    height 100%
-  }
-   
-}
 
+.banner {
+  width: 100%;
+  height: 174px;
+
+  .img-full {
+    width: 100%;
+    height: 100%;
+  }
+}
 
 .list-menu {
   padding: 0 10px;
@@ -259,7 +314,7 @@ export default {
   display: inline-block;
   width: 20%;
   margin: 10px 0;
-  text-align center;
+  text-align: center;
 }
 
 .list-item-icon {
@@ -269,7 +324,7 @@ export default {
 }
 
 .list-item-name {
-  margin-top 5px;
+  margin-top: 5px;
   font-size: 13px;
   color: #111111;
 }
@@ -325,52 +380,65 @@ export default {
     }
   }
 }
-.news{
-  padding 15px
-}
-.news-name{
-  margin-top 10px
-  font-size 18px
 
+.news {
+  box-sizing: border-box;
+  padding: 15px;
 }
-.newsitem{
-  display flex
-  padding 15px 0 10px
-  border-bottom 1px solid #f0f0f0
+
+.news-name {
+  margin-top: 10px;
+  font-size: 18px;
 }
-.newsitem:last-child{
-  border-bottom 0
+
+.newsitem {
+  display: flex;
+  padding: 15px 0 10px;
+  border-bottom: 1px solid #f0f0f0;
 }
-.newsitem-icon{
-  height 85px
-  width 100px
-  border-radius 4px
+
+.newsitem:last-child {
+  border-bottom: 0;
 }
-.newsitem-info{
-  margin-left 15px
-  flex 1
+
+.newsitem-icon {
+  height: 85px;
+  width: 100px;
+  border-radius: 4px;
 }
-.newsitem-name{
-  margin 10px 0
-  line-height 20px
-  font-size 15px
-  overflow hidden
-  text-overflow ellipsis
-  display -webkit-box
-  -webkit-box-orient vertical
-  -webkit-line-clamp 2
+
+.newsitem-info {
+  margin-left: 15px;
+  flex: 1;
 }
-.newsitem-time{
-  margin-top  5px
-  line-height 15px
-  font-size 12px
-  color: #9f9f9f
+
+.newsitem-name {
+  margin: 10px 0;
+  line-height: 20px;
+  font-size: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
-.popCity
-  position fixed
-  top 40px
-  height calc(100% - 90px)
-  width 100vw
-  background-color #fff
-  z-index 10
+
+.newsitem-time {
+  margin-top: 5px;
+  line-height: 15px;
+  font-size: 12px;
+  color: #9f9f9f;
+}
+
+.popCity {
+  position: fixed;
+  top: 40px;
+  height: calc(100% - 90px);
+  width: 100vw;
+  background-color: #fff;
+  z-index: 10;
+}
+.cube-pulldown-wrapper{
+  font-size:13px;  
+}
 </style>

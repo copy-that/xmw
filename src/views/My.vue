@@ -64,6 +64,9 @@ export default {
         Tabbar,
         Header
     },
+    mounted(){
+        
+    },
     methods:{
         viewMyInfo(){
             this.$router.push({name:'MyInfo'})
@@ -93,20 +96,27 @@ export default {
              this.$router.push({name:'MyCollection'})
         },
         showSheet(){
-             this.$createActionSheet({
-                title: '客服电话',
-                data: [
-                    {
-                        content: '<a href="tel:15537189285">15537189285 点击拨打</a>'
-                    }
-                ],
-                onSelect: (item, index) => {
-                    console.log(`Clicked ${item.content}`)
-                },
-                onCancel: () => {
-                    console.log(`cancel`)
+            const token = this.$store.state.token;
+            let sertel ;
+            this.$http('/api/otherInfo/getAboutUs','get',{},token).then(res=>{
+                if(res.data.code==100){
+                    return res.data.data.serviceTel
                 }
+               
+            }).then(tel=>{
+                this.$createActionSheet({
+                    title: '客服电话',
+                    data: [
+                        {
+                            content: `<a href="tel:${tel}">${tel} 点击拨打</a>`
+                        }
+                    ],
+                    onSelect: (item, index) => {
+                        console.log(`Clicked ${item.content}`)
+                    }
                 }).show()
+            })
+            
         },
         userLogout(){
             this.$store.commit('removeUserToken');

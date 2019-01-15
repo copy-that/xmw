@@ -122,7 +122,8 @@
         font-size:13px
         color: #666666
     .radio-box
-        flex 1
+        flex:1
+        flex-wrap: wrap
         display flex
         align-items center
         margin-left 30px
@@ -348,6 +349,8 @@
       font-size 15px
       color #666666
     .paypop-money
+      height 30px
+      line-height 30px
       color #FF6B00
       font-size 23px
       text-align center
@@ -357,6 +360,7 @@
       font-size 15px
       padding 15px 0
     .paypop-cell
+      padding: 5px 0;
       display flex
       align-items center
       height 50px
@@ -370,3 +374,23 @@
       .paypop-cell-name
         margin-left 18px
         font-size:15px
+
+.login-logo {
+  display block;
+  margin: 68px auto 0;
+  height: 47px;
+  width: 167px;
+}
+
+.login-box {
+  padding: 0 50px;
+}
+
+.login-input {
+  margin-top: 25px;
+  flex 1;
+}
+.cube-input.login-input::after {
+  border-color: #FF6B00;
+  border-radius: 4px;
+}

@@ -2,100 +2,135 @@
   <div class="page paddbo" style="padding-top:0;">
     <div class="banner-detail" @click="showImagePreview">
       <img class="back" src="@/assets/images/icon-1.png" alt srcset @click.stop="goback">
-      <img class="banner-img" src="@/assets/images/ban-1.png" alt>
-      <div class="carbin">1/7</div>
+      <img class="banner-img" :src="ProductInfo&&ProductInfo.picUrls.split(',')[0]" alt>
+      <div class="carbin">1/{{ProductInfo&&ProductInfo.picUrls.split(',').length}}</div>
     </div>
     <div class="detail-info">
       <div class="detail-top">
         <div class="left">
-          <div class="detail-name">和悦华锦</div>
-          <div class="detail-time">发布时间：2018-11-20</div>
-          <div class="detail-tages">
-            <span>个人</span>
-            <span>简单装修</span>
-            <span>在售</span>
+          <div class="detail-name">{{ProductInfo&&ProductInfo.title}}</div>
+          <div class="detail-time">发布时间：{{ProductInfo&&ProductInfo.createTime.substring(0,10)}}</div>
+          <div class="detail-tages" v-if="ProductInfo&&ProductInfo.tagVos">
+            <span>{{ProductInfo&&ProductInfo.identityMsg}}</span>
+            <span>{{ProductInfo&&ProductInfo.dicorationNum}}</span>
+            <span>{{ProductInfo&&ProductInfo.status==0?'在售':'已售'}}</span>
           </div>
         </div>
         <div class="right">
-          <span class="detail-price">¥1200/月</span>
+          <span class="detail-price">¥{{ProductInfo&&ProductInfo.price}}/月</span><!-- 缺少类型 -->
           <div class="detail-enjoy" @click="enjoyProd">
-            <img class="enjoy-icon" v-if="isEnjoy" src="@/assets/images/icon-2.png" alt>
+            <img class="enjoy-icon" v-if="ProductInfo&&ProductInfo.coll==1" src="@/assets/images/icon-2.png" alt>
             <img class="enjoy-icon" v-else src="@/assets/images/icon-2-b.png" alt>
-            <span class="enjoy-state">{{isEnjoy?'已收藏':'&ensp;收藏&ensp;'}}</span>
+            <span class="enjoy-state">{{ProductInfo&&ProductInfo.coll==1?'已收藏':'&ensp;收藏&ensp;'}}</span>
           </div>
         </div>
       </div>
-      <div class="images">
-        <img class="image-item" src="@/assets/images/tag-1.png" alt srcset>
-        <img class="image-item" src="@/assets/images/tag-2.png" alt srcset>
-        <img class="image-item" src="@/assets/images/tag-3.png" alt srcset>
-        <img class="image-item" src="@/assets/images/tag-4.png" alt srcset>
-        <img class="image-item" src="@/assets/images/tag-5.png" alt srcset>
-        <img class="image-item" src="@/assets/images/tag-6.png" alt srcset>
+      <div class="images" v-if="ProductInfo&&ProductInfo.tagVos">
+        <img class="image-item" v-for="tag in ProductInfo.tagVos" :src="tag.tagPicUrl" :key="tag.id" alt srcset>
       </div>
       <div class="detail-cell">
         <div class="cell-lable">房源编号：</div>
-        <div class="cell-value">123456</div>
+        <div class="cell-value">{{ProductInfo&&ProductInfo.number}}</div>
       </div>
       <div class="detail-cell">
         <div class="cell-lable">发&ensp;布&ensp;人：</div>
-        <div class="cell-value">王先生（经纪人），中介费：100元</div>
+        <div class="cell-value">{{ProductInfo&&ProductInfo.callName }}（{{ProductInfo&&ProductInfo.identityMsg}}），中介费：{{ProductInfo&&ProductInfo.tbBrokerageFee}}元</div>
       </div>
       <div class="detail-cell">
         <div class="cell-lable">房&emsp;&emsp;型：</div>
-        <div class="cell-value">3室1厅</div>
+        <div class="cell-value">{{ProductInfo&&ProductInfo.classify}}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="cell-lable">出租类型：</div>
+        <div class="cell-value">{{ProductInfo&&ProductInfo.form}}</div>
       </div>
       <div class="detail-cell">
         <div class="cell-lable">面&emsp;&emsp;积：</div>
-        <div class="cell-value">100平米</div>
+        <div class="cell-value">{{ProductInfo&&ProductInfo.area}}平米</div>
       </div>
       <div class="detail-cell">
         <div class="cell-lable">房屋配置：</div>
-        <div class="cell-value">窗户，防盗窗，门</div>
+        <div class="cell-value">{{ProductInfo&&ProductInfo.houseAllocation}}</div>
       </div>
-      <div class="detail-cell"  v-if="state==2">
+      <div class="detail-cell">
+        <div class="cell-lable">酒店等级：</div>
+        <div class="cell-value">{{ProductInfo&&ProductInfo.grade}}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="cell-lable">提供服务：</div>
+        <div class="cell-value">{{ProductInfo&&ProductInfo.mating}}</div>
+      </div>
+      <div class="detail-cell">
+        <div class="cell-lable">客服电话：</div>
+        <div class="cell-value">{{serviceTel&&serviceTel}}</div>
+      </div>
+      <div class="detail-cell" v-if="ProductInfo&&ProductInfo.hasPay==1">
         <div class="cell-lable" style="color:#FB6800">屋主电话：</div>
-        <div class="cell-value" style="color:#FB6800">12345645768</div>
+        <div class="cell-value" style="color:#FB6800">{{ProductInfo&&ProductInfo.phone}}</div>
       </div>
     </div>
     <div class="section">
       <div class="section-name">房屋信息详情</div>
       <div class="section-desc">
-        是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。
-        一壶浊酒喜相逢，古今多少事，都付笑谈中。是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。
-        滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢，古今多少事，都付笑谈中。是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢，古今多少事，都付笑谈中。
+        {{ProductInfo&&ProductInfo.remark}}
       </div>
     </div>
     <div class="section">
       <div class="section-name">地理位置</div>
       <div class="map" id="map"></div>
     </div>
-    <div class="section" v-if="state==2">
+    <div class="section" v-if="ProductInfo&&ProductInfo.hasPay==1">
       <div class="section-name">房屋评论</div>
-      <div class="comment">
+      <div class="comment" v-for="assess in ProductInfo&&ProductInfo.assessVos" :key="assess.id">
         <div class="comment-top">
           <div class="comment-left">
-            <img class="comment-avatar" src="@/assets/images/icon-4.png" alt>
-            <div class="comment-name">喜买屋房友</div>
+            <img class="comment-avatar" :src="assess.avatar" alt>
+            <div class="comment-name">{{assess.nickName}}</div>
           </div>
-          <span class="comment-time">2018-11-10</span>
+          <span class="comment-time">{{assess.createTime }}</span>
         </div>
         <div class="comment-text">
-          地理位置一般般，交通来说，现在并不怎么好。周围配套还不完善。
-          需要开通十号线地铁站。只要地铁一响，这儿就是个非常帮的位置。
-          虽然十号线通的是郑州火车站，正因为这样，
+          {{assess.content }}
         </div>
       </div>
       <div class="write-com">
-        <textarea class="write-line" name id placeholder="在这里写下您的评论..."></textarea>
+        <!-- <textarea class="write-line"  v-model="comment" ></textarea> -->
+        <cube-textarea v-model="comment" class="bg-pray"  :maxlength="140" placeholder="在这里写下您的评论..."></cube-textarea>
+        <cube-button class="form-primary-btn" :primary="true" >发表评论</cube-button>
       </div>
     </div>
-    <div class="buyInfo" v-if="state==1">
+    <div class="buyInfo" v-if="ProductInfo&&ProductInfo.hasPay!=1">
         <div class="info-left">
-            <div class="info-price">信息价格：20金币</div>
+            <div class="info-price">信息价格：{{ProductInfo&&ProductInfo.payPrice}}金币</div>
             <div class="info-desc">(立即购买后可以获得屋主信息)</div>
         </div>
         <div class="info-btn" @click="handleBuy">立即购买</div>
+    </div>
+    <div class="paypop" v-if="showPopPay">
+      <div class="paypop-inner">
+        <div class="paypop-cancel" @click="showPopPay=false">取消</div>
+        <div class="paypop-money">￥<span>210</span></div>
+        <div class="paypop-title">请选择付款方式</div>
+        <div class="paypop-cell" @click="checkType(1)">
+          <img class="paypop-cell-check" v-if="type==1" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
+          <img class="paypop-cell-icon" src="@/assets/images/icon-9.png" alt="">
+          <div class="paypop-cell-name">支付宝</div>
+        </div>
+        <div class="paypop-cell" @click="checkType(2)">
+          <img class="paypop-cell-check" v-if="type==2" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
+          <img class="paypop-cell-icon" src="@/assets/images/icon-10.png" alt="">
+          <div class="paypop-cell-name">支付宝</div>
+        </div>
+        <div class="paypop-cell" @click="checkType(3)">
+          <img class="paypop-cell-check" v-if="type==3" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
+          <img class="paypop-cell-icon" src="@/assets/images/icon-13.png" alt="">
+          <div class="paypop-cell-name">支付宝</div>
+        </div>
+        <cube-button class="form-primary-btn" :primary="true" @click="ToPayFor">确认</cube-button>
+      </div>
     </div>
   </div>
 </template>
@@ -104,28 +139,87 @@ export default {
   name: "ProductDetail",
   data() {
     return {
-        state:1,
-        isEnjoy:true,
-        imgs:[
-          require('@/assets/images/item-1.png'),
-          require('@/assets/images/item-2.png'),
-          require('@/assets/images/item-3.png'),
-          require('@/assets/images/item-4.png')
-        ]
+        type:0,
+        serviceTel:'',
+        showPopPay:false,
+        comment:'',
+        ProductInfo:null
     };
   },
   mounted() {
-    this.initMap();
+    console.log(this.$route.params.id)
+    // this.initMap();
+    this.getProductDetail()
+    this.$http('/api/otherInfo/getAboutUs','get',{},this.$store.state.token).then(res=>{
+          if(res.data.code==100){
+              this.serviceTel = res.data.data.serviceTel
+          } 
+      })
   },
   methods: {
+    getProductDetail(){
+      const token = this.$store.state.token;
+      const id = this.$route.params.id;
+      this.$http(
+        "/api/app/rendInfoApi/getInfoMsg",
+        "post",
+        this.$qs.stringify({ infoId: id}),
+        token
+      ).then(res => {
+        if (res.data.code == 100) {
+          console.log(res.data)
+          this.ProductInfo = res.data.data;
+          const lng = Number(res.data.data.longitude).toFixed(2);
+          const lat = Number(res.data.data.longitude).toFixed(2);
+         return [+lng,+lat]
+        } else {
+          this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+        }
+      }).then(data=>{
+        this.initMap(data)
+        console.log(data)
+      });
+    },
+    ToPayFor(){
+      this.showPopPay = false
+    },
+    checkType(type){
+      this.type = type
+    },
     showImagePreview() {
       var that = this
       this.$createImagePreview({
-        imgs: that.imgs
+        imgs: that.picUrls
       }).show()
     },
     handleBuy(){
-        this.state = 2
+      const token = this.$store.state.token;
+      if(token == ''){
+         this.$createDialog({
+        type: 'confirm',
+        title: '你还没有登录!',
+        confirmBtn: {
+          text: '去登陆',
+          active: true,
+          disabled: false,
+          href: 'javascript:;'
+        },
+        cancelBtn: {
+          text: '取消',
+          active: false,
+          disabled: false,
+          href: 'javascript:;'
+        },
+        onConfirm: () => {
+          this.$router.push({name:'Login'})
+        },
+        onCancel: () => {
+          
+        }
+      }).show()
+      }else{
+        this.showPopPay =true
+      }
     },
     enjoyProd(){
       this.isEnjoy = !this.isEnjoy
@@ -133,14 +227,15 @@ export default {
     goback(){
         this.$router.go(-1)
     },
-    initMap() {
+    initMap(data) {
+      
       var map = new AMap.Map("map", {
         zoom: 13,
-        center: [113.75, 34.75],
+        center: data,
         resizeEnable: true
       });
       var viaMarker = new AMap.Marker({
-        position: new AMap.LngLat(113.75, 34.75),
+        position: new AMap.LngLat(data[0], data[1]),
         icon: require("@/assets/images/icon-3.png"),
         offset: new AMap.Pixel(-75, -3)
       });
@@ -149,8 +244,8 @@ export default {
   }
 };
 </script>
-<style lang="stylus" scoped>
-
+<style lang="stylus">
+@import '../assets/css/style.styl';
 .buyInfo{
     text-align left 
     position fixed
@@ -411,4 +506,6 @@ export default {
 .amap-copyright{
   display: none !important
 }
+.bg-pray .cube-textarea
+  background-color #f2f2f2
 </style>

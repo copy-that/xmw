@@ -2,11 +2,10 @@
     <div class="page">
         <Header title="关于我们"></Header>
         <div class="aboutus">
-            <img class="logo-icon" src="@/assets/images/LOGO.png" alt="" srcset="">
+            <img class="logo-icon" :src="logo" alt="" srcset="">
             <div class="title">平台介绍</div>
             <div class="message-box">
-                是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。
-                滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢，古今多少事，都付笑谈中。
+                {{article}}
             </div>
         </div>
     </div>
@@ -17,6 +16,25 @@ export default {
     components: {
         Header
     },
+    data(){
+        return{
+            logo:'',
+            article:''
+        }
+    },
+    mounted(){
+        const token = this.$store.state.token;
+        this.$http('/api/otherInfo/getAboutUs','get',{},token).then(res=>{
+                if(res.data.code==100){
+                    const {content,appImgUrl} = res.data.data
+                    this.logo = appImgUrl
+                    this.article = content
+                }else{
+                    this.$createToast({ txt: res.data.data.msg, type: "txt" }).show();
+                }
+               
+            })
+    }
 }
 </script>
 <style lang="stylus" scoped>

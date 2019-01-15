@@ -1,11 +1,11 @@
 <template>
     <div class="page">
         <Header title="资讯详情"></Header>
-        <div class="name">鑫苑国际新城项目现有房源在售</div>
-        <div class="time">2018-11-20</div>
-        <div class="richbox">
-            <div>是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢，古今多少事，都付笑谈中。是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。</div>
-            <img src="@/assets/images/ban-1.png" alt="" srcset="">
+        <div class="name">{{article&&article.msgName}}</div>
+        <div class="time">{{article&&article.createTime}}</div>
+        <div class="richbox" v-html="article&&article.msgContent">
+    
+            <!-- <img src="@/assets/images/ban-1.png" alt="" srcset=""> -->
         </div>
     </div>
 </template>
@@ -15,6 +15,24 @@ export default {
     name: "NewsDetail",
     components:{
         Header
+    },
+    data(){
+        return{
+            article:null
+        }
+    },
+    mounted(){
+        const id = this.$route.params.id;
+        const token = this.$store.state.token;
+        console.log(id)
+        this.$http('/api/app/homeMsg/msgInfo','post',this.$qs.stringify({'msgId':id}),token).then(res=>{
+            console.log(res)
+            if(res.data.code==100){
+                this.article = res.data.data
+            }else{
+                this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+            }
+        })
     }
 }
 </script>
@@ -34,11 +52,14 @@ export default {
     font-size 12px
     color #9F9F9F
 }
-.richbox{
-    padding 20px 15px
-    color #666666
-    font-size 13px
-    line-height 20px
+.richbox {
+      padding 20px 15px
+}
+.richbox p{
+    background-color #fff !important
+    color #666666 !important
+    font-size 13px !important
+    line-height 20px !important
 }
 .richbox img{
     margin 10px 0

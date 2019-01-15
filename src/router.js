@@ -3,7 +3,7 @@ import store from '@/store.js';
 import Router from 'vue-router';
 
 Vue.use(Router)
-const router =  new Router({
+const router = new Router({
   mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
@@ -93,7 +93,10 @@ const router =  new Router({
     {
       path: '/hotguide',
       name: 'HotGuide',
-      component: () => import('./views/HotGuide.vue')
+      component: () => import('./views/HotGuide.vue'),
+      meta: {
+        Auth: true
+      }
     },
     {
       path: '/mycollect',
@@ -133,20 +136,26 @@ const router =  new Router({
     {
       path: '/product',
       name: 'product',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Product.vue')
+      component: () => import('./views/Product.vue'),
+      meta: {
+        Auth: true
+      }
     },
     {
-      path: '/productdetail',
+      path: '/productdetail/:id',
       name: 'ProductDetail',
-      component: () => import(/* webpackChunkName: "about" */ './views/ProductDetail.vue')
+      component: () => import('./views/ProductDetail.vue'),
+      meta: {
+        Auth: true
+      }
     },
     {
-      path: '/newsdetail',
+      path: '/newsdetail/:id',
       name: 'NewsDetail',
-      component: () => import(/* webpackChunkName: "about" */ './views/NewsDetail.vue')
+      component: () => import('./views/NewsDetail.vue'),
+      meta: {
+        Auth: true
+      }
     },
     {
       path: '/login',
@@ -173,6 +182,14 @@ const router =  new Router({
       }
     },
     {
+      path: '/register2',
+      name: 'Register2',
+      component: () => import('./views/Register2.vue'),
+      meta: {
+        Auth: true
+      }
+    },
+    {
       path: '*',
       redirect: { name: 'Login' }
     }
@@ -181,11 +198,11 @@ const router =  new Router({
 router.beforeEach((to, from, next) => {
   // ...
   const token = store.state.token;
-  if( token || to.meta.Auth){
+  if (token || to.meta.Auth) {
     next()
-  }else{
+  } else {
     next({
-      path:'/login'
+      path: '/login'
     });
   }
 })

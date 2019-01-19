@@ -2,29 +2,29 @@
   <div class="page">
     <Header title="我的发布"/>
     <div class="todo-box">
-      <div class="prod">
+      <div class="prod" v-for="prod in myPostList&&myPostList" :key="prod.id">
         <div class="prod-icon">
-          <img class="prod-img" src="@/assets/images/item-icon.png" alt>
-          <span class="prod-img-pages">7张</span>
+          <img class="prod-img" :src="prod.picUrls&&prod.picUrls.split(',')[0]" alt>
+          <span class="prod-img-pages">{{prod.picUrls&&prod.picUrls.split(',').length}}张</span>
         </div>
         <div class="prod-info">
           <div class="prod-name">
-            和悦华锦
-            <img class="prod-enjoy" src="@/assets/images/icon-2-b.png" alt srcset>
+            {{prod.title}}
+            <!-- <img class="prod-enjoy" src="@/assets/images/icon-2-b.png" alt srcset> -->
           </div>
           <div class="prod-value">
-            <span>户型:3室1厅</span>
-            <span>面积120㎡</span>
+             <span>户型:{{prod.classify}}</span>
+            <span>面积{{prod.area}}㎡</span>
           </div>
-          <div class="prod-time">发布时间:2018-11-20</div>
+          <div class="prod-time">发布时间:{{prod.createTime&&prod.createTime.substring(0,10)}}</div>
           <div class="prod-tags">
-            <span>个人</span>
-            <span>简单装修</span>
-            <!-- <span>在售</span> -->
-            <span style="background-color:unset">...</span>
+            <span v-if="prod.identityMsg">{{prod.identityMsg}}</span>
+            <span v-if="prod.dicorationNumMsg">{{prod.dicorationNumMsg }}</span>
+            <span>{{prod.statusMsg}}</span>
+            <!-- <span style="background-color:unset">...</span> -->
           </div>
-          <div class="prod-price">¥3000万</div>
-          <div class="btn-com" @click="toBuyTags">购买标签</div>
+          <div class="prod-price" v-if="prod.price">¥{{prod.price.length>5?prod.price.toFixed(4)+'万':prod.price+'元'}}</div>
+          <div class="btn-com" style="top:0.266667rem" @click="toBuyTags">购买标签</div>
         </div>
       </div>
     </div>
@@ -100,6 +100,11 @@ export default {
   },
   data(){
     return{
+      params:{
+          page:1,
+          pageSize:10
+      },
+      myPostList:null,
       type:0,
       showPopPay:false,
       showPop:false,
@@ -109,7 +114,25 @@ export default {
       showRemind:false,
     }
   },
+  mounted(){
+    this.getMyPostList()
+  },
   methods:{
+    getMyPostList(){
+      this.$http(
+        "/api/app/history/getMyList",
+        "post",
+        this.$qs.stringify(this.params),
+        this.$store.state.token
+      ).then(res => {
+          if(res.data.code==100){
+              this.myPostList = res.data.data
+            console.log(res.data)
+          }else{
+            this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+          }
+      });
+    },
     ToPayFor(){
       this.showPopPay = false
     },

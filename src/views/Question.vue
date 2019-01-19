@@ -2,18 +2,22 @@
     <div class="page">
         <Header title="常见问题"></Header>
         <div class="question-box">
-            <div class="cell" @click="viewQuestionDetail">
-                <div class="cell-label">如何发布卖房信息？</div>
-                <img class="cell-right-icon"  src="@/assets/images/icon-5.png" alt="">
-            </div>
-            <div class="cell">
-                <div class="cell-label">如何发布卖房信息？</div>
-                <img class="cell-right-icon"  src="@/assets/images/icon-5.png" alt="">
-            </div>
-            <div class="cell">
-                <div class="cell-label">如何发布卖房信息？</div>
-                <img class="cell-right-icon"  src="@/assets/images/icon-5.png" alt="">
-            </div>
+            <cube-scroll
+                ref="scroll"
+                :data="questionList"
+                :options="{pullDownRefresh: {txt:'刷新成功'},
+                            pullUpLoad: true}"
+                @pulling-down="onPullingDown"
+                @pulling-up="onPullingUp">
+                <div v-for="ques in questionList" class="cell" :key="ques.id" @click="viewQuestionDetail(ques.id)">
+                    <div class="cell-label">{{ques.question}}</div>
+                    <img class="cell-right-icon"  src="@/assets/images/icon-5.png" alt="">
+                </div>
+            </cube-scroll>
+
+
+            
+            
         </div>
     </div>
 </template>
@@ -24,9 +28,44 @@ export default {
     components: {
         Header
     },
+    data(){
+        return{
+            params:{
+                page:1,
+                pageSize:15
+            },
+            questionList:[]
+        }
+    },
+    mounted(){
+        this.getCommentQuestion()
+    },
     methods:{
-        viewQuestionDetail(){
-            this.$router.push({name:'QuestionDetail'})
+        getCommentQuestion(){
+            this.$http('/api/otherInfo/getQuestionList','get',this.params,this.$store.state.token).then(res=>{
+                console.log(res.data)
+                if(res.data.code==100){
+                    this.questionList = this.questionList.concat(...res.data.data)
+                }else{
+                    this.$createDialog({
+                        type: 'alert',
+                        title: res.data.msg,
+                        icon: 'cubeic-warn'
+                    }).show()
+                }
+            })
+        },
+        onPullingDown() {
+            this.params.page = 1;
+            this.questionList = []
+            this.getCommentQuestion()
+        },
+        onPullingUp() {
+            this.params.page = this.params.page + 1;
+            this.getCommentQuestion()
+        },
+        viewQuestionDetail(id){
+            this.$router.push({name:'QuestionDetail',params:{id:id}})
         }
     }
 }
@@ -35,4 +74,8 @@ export default {
 @import '../assets/css/style.styl';
 .question-box
     padding 0 15px
+    height calc(100vh - 45px)
+.cube-pulldown-loaded{
+    font-size: 13px; 
+}
 </style>

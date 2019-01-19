@@ -3,7 +3,7 @@
     <div class="search-box" style="top:0">
       <div class="location" @click.stop="changeLocation">
         <img class="location-icon" src="@/assets/images/icon-14.png" alt>
-        <div class="location-place">{{showCity}}</div>
+        <div class="location-place">{{showCity.name}}</div>
         <div class="location-change">切换分站</div>
       </div>
       <cube-input class="search" v-model="searchWorld" placeholder="请输入区域、商圈或者编号">
@@ -11,7 +11,9 @@
       </cube-input>
     </div>
     <div class="banner">
-      <img class="img-full" src="@/assets/images/banner.png" alt srcset>
+      
+      <img v-if="banner.path" class="img-full" :src="banner.path" alt srcset>
+      <img v-else class="img-full" src="@/assets/images/banner.png" alt srcset>
     </div>
     <div>
       <ul class="list-menu">
@@ -63,10 +65,28 @@
         </div>
       </div>
     </div>
+    <!-- <div class="popCity" v-if="showPopCity">
+      <cube-index-list :data="cityData">
+        <cube-index-list-group  v-for="(group, index) in cityData" :key="index" :group="group">
+          <cube-index-list-item
+            v-for="(item, index) in group.items"
+            :key="index"
+            :item="item"
+            @select="selectItem">
+            <div class="pop-item">{{item.name}}</div>
+          </cube-index-list-item>
+        </cube-index-list-group>
+      </cube-index-list>
+    </div> -->
     <div class="popCity" v-if="showPopCity">
-      <cube-index-list :data="cityData" @select="selectItem"></cube-index-list>
+      <div class="popCity-inner">
+        <div v-for="city in cityData" class="popCity-item"
+        @click="switchCity(city)"
+        :class="city.id==showCity.id?'is_active':''" :key="city.id">
+          {{city.name}}
+        </div>
+      </div>
     </div>
-
     <Tabbar/>
   </div>
 </template>
@@ -74,7 +94,6 @@
 <script>
 // @ is an alias to /src
 import Tabbar from "@/components/Tabbar.vue";
-import { cityData } from "@/popcity.js";
 export default {
   name: "home",
   components: {
@@ -82,12 +101,24 @@ export default {
   },
   data() {
     return {
+      banner:{
+        path:'',
+        content:''
+      },
       newMsg: [],
       page: 1,
       pageSize: 10,
-      cityData: cityData,
+      cityData: [
+        {
+        id:'',
+        name:'总站'
+      }
+      ],
       showPopCity: false,
-      showCity: "总站",
+      showCity: {
+        id:'',
+        name:'总站'
+      },
       searchWorld: "",
       slideList: [
         {
@@ -177,11 +208,43 @@ export default {
       ]
     };
   },
-  mounted() {
+  created() {
     this.getNewMsg();
     this.getRecoment();
+    this.getSiteList();
+    this.getBannerPic();
   },
   methods: {
+    getBannerPic(){
+      this.$http('/api/otherInfo/getSowingMap','get',{type:1},this.$store.state.token).then(res=>{
+        console.log(res)
+        if(res.data.code==100){
+          this.banner.path = res.data.data.picUrl
+          this.banner.content = res.data.data.mapTitle  
+        }else{
+          this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+        }
+        
+      })
+    },
+    switchCity(city){
+      this.showPopCity = false;
+      this.showCity = city;
+    },
+    getSiteList(){
+      this.$http(
+        "/api/otherInfo/getAreaList",
+        "get",
+        {},
+        this.$store.state.token
+      ).then(res => {
+        if (res.data.code == 100) {
+          this.cityData.push(...res.data.data)
+        } else {
+          this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+        }
+      })
+    },
     changeLocation() {
       this.showPopCity = !this.showPopCity;
     },
@@ -296,6 +359,8 @@ export default {
 
 .banner {
   width: 100%;
+  padding 0 15px;
+  box-sizing:border-box;
   height: 174px;
 
   .img-full {
@@ -430,6 +495,10 @@ export default {
   color: #9f9f9f;
 }
 
+.cube-pulldown-wrapper{
+  font-size:13px;  
+}
+
 .popCity {
   position: fixed;
   top: 40px;
@@ -437,8 +506,28 @@ export default {
   width: 100vw;
   background-color: #fff;
   z-index: 10;
+  background-color rgba(52,52,52,0.4);
+  overflow-x hidden;
+  overflow-y auto;
+  display flex;
+  align-items flex-start;
+  flex-direction column;
 }
-.cube-pulldown-wrapper{
-  font-size:13px;  
+.popCity-inner{
+  width 100%;
+  background-color #ffffff;
+  display flex;
+  flex-wrap wrap;
+  align-items center;
+}
+.popCity-item{
+  text-align: center;
+  width: 20%;
+  font-size: 13px;
+  height: 38px;
+  line-height: 38px;
+  &.is_active {
+    color: #FB6800;
+  }
 }
 </style>

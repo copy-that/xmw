@@ -26,12 +26,12 @@ const router = new Router({
       component: () => import('./views/BuySell.vue')
     },
     {
-      path: '/buyhouse',
+      path: '/buyhouse/:buytype',
       name: 'BuyHouse',
       component: () => import('./views/BuyHouse.vue')
     },
     {
-      path: '/renthouse',
+      path: '/renthouse/:renttype',
       name: 'RentHouse',
       component: () => import('./views/RentHouse.vue')
     },
@@ -114,7 +114,7 @@ const router = new Router({
       component: () => import('./views/Question.vue')
     },
     {
-      path: '/questiondetail',
+      path: '/questiondetail/:id',
       name: 'QuestionDetail',
       component: () => import('./views/QuestionDetail.vue')
     },

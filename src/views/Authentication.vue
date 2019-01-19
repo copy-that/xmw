@@ -2,62 +2,47 @@
   <div class="page">
     <Header title="个人认证"/>
     <div class="auth-box">
-        <div class="auth-name">姓名：</div>
-        <input class="auth-input" type="text" placeholder="请输入您的姓名">
-        <div class="auth-name">身份证正反面照片：</div>
-        <div class="upload-box">
-            <cube-upload
-            ref="face"
-            v-model="face"
-            :action="action"
-            @files-added="faceHandler"
-            @file-error="errHandler"
-            >
-            <cube-upload-file v-for="(file, i) in face" :file="file" :key="i"></cube-upload-file>
-            <cube-upload-btn :multiple="false">
-                <div>
-                <i>＋</i>
-                <p>点击上传身份证正面照</p>
-                </div>
-            </cube-upload-btn>
-            </cube-upload>
-            <cube-upload
-            ref="back"
-            v-model="back"
-            :action="action"
-            @files-added="backHandler"
-            @file-error="errHandler"
-            >
-            <cube-upload-file v-for="(file, i) in back" :file="file" :key="i"></cube-upload-file>
-            <cube-upload-btn :multiple="false">
-                <div>
-                <i>＋</i>
-                <p>点击上传身份证正面照</p>
-                </div>
-            </cube-upload-btn>
-            </cube-upload>
+      <div class="auth-name">姓名：</div>
+      <input class="auth-input" v-model="name" type="text" placeholder="请输入您的姓名">
+      <div class="auth-name">身份证正反面照片：</div>
+      <div class="upload-box">
+         <div class="cube-upload">
+          <img class="cube-upload-pic"  :src="face" alt="" srcset="">
+          <div class="cube-upload-btn">
+            <div v-if="face==''">
+              <i>＋</i>
+              <p>点击上传身份证正面照</p>
+            </div>
+            <input type="file" ref="face" accept="image/*" @change="faceHandler" class="cube-upload-input">
+          </div>
         </div>
-        <div class="auth-name">房产证照片：</div>
-        <div class="upload-box">
-            <cube-upload
-            ref="house"
-            v-model="house"
-            :action="action"
-            @files-added="houseHandler"
-            @file-error="errHandler"
-            >
-            <cube-upload-file v-for="(file, i) in house" :file="file" :key="i"></cube-upload-file>
-            <cube-upload-btn :multiple="false">
-                <div>
-                <i>＋</i>
-                <p>点击上传身份证正面照</p>
-                </div>
-            </cube-upload-btn>
-            </cube-upload>
+        <div class="cube-upload">
+          <img class="cube-upload-pic"  :src="back" alt="" srcset="">
+          <div class="cube-upload-btn">
+            <div v-if="back==''">
+              <i>＋</i>
+              <p>点击上传身份证背面照</p>
+            </div>
+            <input type="file" ref="back" accept="image/*" @change="backHandler" class="cube-upload-input">
+          </div>
         </div>
-        <cube-button :primary="true" class="primary-btn" @click="submitForm">提交</cube-button>
+      </div>
+      <div class="auth-name">房产证照片：</div>
+      <div class="upload-box">
+        <div class="cube-upload">
+          <img class="cube-upload-pic" :src="house" alt="" srcset="">
+          <div class="cube-upload-btn">
+            <div v-if="house==''">
+              <i>＋</i>
+              <p>点击上传房产证照片</p>
+            </div>
+            <input type="file" ref="house" accept="image/*" @change="houseHandler" class="cube-upload-input">
+          </div>
+          
+        </div>
+      </div>
+      <cube-button :primary="true" class="primary-btn" @click.stop="submitForm">提交</cube-button>
     </div>
-
   </div>
 </template>
 <script>
@@ -69,74 +54,129 @@ export default {
   },
   data() {
     return {
-      action: "//jsonplaceholder.typicode.com/photos/",
-      face: [],
-      back:[],
-      house:[]
+      name:"",
+      face: "",
+      back: "",
+      house: "",
     };
   },
   methods: {
-    faceHandler() {
-      const face = this.face[0];
-      face && this.$refs.face.removeFile(face);
+    faceHandler(e) {
+    const that = this
+    var file = e.target.files[0]
+     var reader = new FileReader();
+     reader.readAsDataURL(file)
+     reader.onload = function(){
+          that.face = this.result; 
+      };
     },
-    backHandler() {
-      const back = this.back[0];
-      back && this.$refs.back.removeFile(back);
+    backHandler(e) {
+      const that = this
+      var file = e.target.files[0]
+      var reader = new FileReader();
+      reader.readAsDataURL(file)
+      reader.onload = function(){
+            that.back = this.result; 
+        };
     },
-    houseHandler() {
-      const house = this.house[0];
-      house && this.$refs.house.removeFile(house);
+    houseHandler(e) {
+      const that = this
+    var file = e.target.files[0]
+     var reader = new FileReader();
+     reader.readAsDataURL(file)
+     reader.onload = function(){
+          that.house = this.result; 
+      };
     },
-    errHandler(file) {
-      // const msg = file.response.message
-      this.$createToast({
-        type: "warn",
-        txt: "Upload fail",
-        time: 1000
-      }).show();
-    },
-    submitForm(){
-      this.$router.go(-1)
+    submitForm() {
+      if(this.name==''){
+        this.$createToast({ txt: '名字不能为空', type: "txt" }).show();
+        return;
+      }
+      if(this.$refs.face.files.length==0){
+        this.$createToast({ txt: '请添加身份证正面照', type: "txt" }).show();
+        return;
+      }
+      if(this.$refs.back.files.length==0){
+        this.$createToast({ txt: '请添加身份证背面照', type: "txt" }).show();
+        return;
+      }
+      if(this.$refs.house.files.length==0){
+        this.$createToast({ txt: '请添加房产证照片', type: "txt" }).show();
+        return;
+      }
+      let from = new FormData();
+      from.append('image1',this.$refs.face.files[0])
+      from.append('image2',this.$refs.back.files[0])
+      from.append('image3',this.$refs.house.files[0])
+      from.append('certificationName',this.name)
+      
+      // this.$router.go(-1)
+      this.$http('/api/app/commonUser/userCertification','post',from,this.$store.state.token).then(res=>{
+
+          this.$createDialog({
+            type: 'alert',
+            title: res.data.msg,
+            icon: res.data.code==100?'cubeic-right':'cubeic-warn',
+            onConfirm: () => {
+              this.$router.back()
+            },
+          }).show()
+      
+      })
     }
   }
 };
 </script>
 <style lang="stylus" >
 @import '../assets/css/style.styl';
-.auth-box{
-    padding: 0 15px;
-    text-align center;
+
+.auth-box {
+  padding: 0 15px;
+  text-align: center;
 }
-.auth-name{
-    text-align left ;
-    font-size 15px;
-    margin 30px 0 12px;
+
+.auth-name {
+  text-align: left;
+  font-size: 15px;
+  margin: 30px 0 12px;
 }
-.auth-input{
-    margin 0 15px
-   width: calc(100% - 30px);
-   box-sizing:border-box;
-   padding: 0px 15px;
-   border: 1px solid #f1f1f1;
-   outline: none;
-   background-color: #f9f9f9;
-   border-radius:4px;
-   height 30px;
-   font-size 15px;
-   color #A1A1A1;
+
+.auth-input {
+  margin: 0 15px;
+  width: calc(100% - 30px);
+  box-sizing: border-box;
+  padding: 0px 15px;
+  border: 1px solid #f1f1f1;
+  outline: none;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  height: 30px;
+  font-size: 15px;
+  color: #A1A1A1;
 }
+
 .upload-box {
   padding: 0 15px;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+
   .cube-upload {
+    position relative
     border: 1px solid #f1f1f1;
     height: 85px;
     width: 150px;
     background-color: #f9f9f9;
     border-radius: 4px;
+    
+    .cube-upload-pic{
+      position absolute
+      top: 0px
+      left: 0px
+      height: 85px;
+      width: 150px;
+    }
 
     .cube-upload-file, .cube-upload-btn {
       margin: 0;
@@ -145,27 +185,14 @@ export default {
     .cube-upload-file {
       margin: 0;
       height: 100%;
-
-      + .cube-upload-btn {
-        margin-top: -85px;
-        opacity: 0;
-      }
-    }
-
-    .cube-upload-file-def {
-      width: 100%;
-      height: 100%;
-
-      .cubeic-wrong {
-        display: none;
-      }
     }
 
     .cube-upload-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-
+      height 100%
+      width 100%
       > div {
         text-align: center;
       }
@@ -187,6 +214,8 @@ export default {
         color: #666666;
       }
     }
+
+    
   }
 }
 </style>

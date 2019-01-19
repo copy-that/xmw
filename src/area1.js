@@ -1,4 +1,4 @@
-[{
+export const addressData = [{
 	"children": [{
 		"children": [{
 			"text": "东城区",

@@ -8,7 +8,7 @@
         <div class="card-name">买房信息</div>
         <img class="card-arrow" src="@/assets/images/icon-5.png" alt>
       </div>
-      <div class="card-cell" @click="showSellSheet">
+      <div class="card-cell" @click="showRentSheet">
         <img class="card-icon" src="@/assets/images/icon-12.png" alt>
         <div class="card-name">出租信息</div>
         <img class="card-arrow" src="@/assets/images/icon-5.png" alt>
@@ -35,62 +35,64 @@ export default {
       this.$router.push({ name: "MyPost" });
     },
     showBuySheet() {
+
       this.$createActionSheet({
         title: "买房信息",
         data: [
           {
-            content: "<em>住宅</em>",
-            id: "6"
+            content: "<em>买住宅</em>",
+            id: "1"
           },
           {
-            content: "<em>商铺</em>",
-            id: "7"
+            content: "<em>买商铺</em>",
+            id: "3"
           },
           {
             content: "<em>写字楼</em>",
-            id: "8"
+            id: "5"
           },
           {
-            content: "<em>厂房仓库</em>",
+            content: "<em>买厂房</em>",
+            id: "7"
+          },
+          {
+            content: "<em>买新房</em>",
             id: "9"
-          },
-          {
-            content: "买新房",
-            id: "10"
           }
         ],
         onSelect: (item, index) => {
-          this.$router.push({ name: "BuyHouse" });
+          console.log()
+          this.$router.push({ name: "BuyHouse" ,params:{buytype:item.id}});
         }
       }).show();
     },
-    showSellSheet() {
+    showRentSheet() {
       this.$createActionSheet({
         title: "出租信息",
         data: [
           {
             content: "<em>住宅</em>",
-            class: "cube-foo"
+            id: "2"
           },
           {
             content: "<em>商铺</em>",
-            class: "cube-foo"
+            id: "4"
           },
           {
             content: "<em>写字楼</em>",
-            class: "cube-foo"
+            id: "6"
           },
           {
             content: "<em>厂房仓库</em>",
-            class: "cube-foo"
+            id: "8"
           },
           {
             content: "<em>租酒店</em>",
-            class: "cube-foo"
+            id: "10"
           }
         ],
         onSelect: (item, index) => {
-          this.$router.push({ name: "RentHouse" });
+          this.$router.push({ name: "RentHouse",params:{renttype:item.id} });
         }
       }).show();
     }

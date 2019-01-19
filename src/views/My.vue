@@ -3,8 +3,9 @@
         <Header :back-icon="false" title="个人中心"/>
         <div class="my-box">
             <div class="userinfo" @click="viewMyInfo">
-                <div class="userinfo-name">彭于晏</div>
-                <img class="userinfo-avatar" src="@/assets/images/icon-4.png"  alt="">
+                <div class="userinfo-name">{{myInfo&&myInfo.nickName}}</div>
+                <img v-if="myInfo&&myInfo.atavar" class="userinfo-avatar" :src="myInfo.atavar"  alt="">
+                <img v-else class="userinfo-avatar" src="@/assets/images/icon-4.png"  alt="">
                 <img class="userinfo-right-icon" src="@/assets/images/icon-5.png" alt="" srcset="">
             </div>
             <div class="userinfo-menu">
@@ -64,10 +65,26 @@ export default {
         Tabbar,
         Header
     },
+    data(){
+        return{
+            myInfo:null
+        }
+    },
     mounted(){
-        
+        this.getMyInfo()
     },
     methods:{
+        getMyInfo(){
+            this.$http('/api/app/commonUser/getInfo','post',{},this.$store.state.token).then(res=>{
+                console.log(res.data)
+                if(res.data.code==100){
+                    this.myInfo = res.data.data
+                    console.log(res.data)
+                }else{
+                     this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+                }
+            })
+        },
         viewMyInfo(){
             this.$router.push({name:'MyInfo'})
         },
@@ -146,6 +163,7 @@ export default {
         position absolute
         height 50px
         width 50px
+        border-radius:50%
         right 65px
         top 25px
     .userinfo-right-icon

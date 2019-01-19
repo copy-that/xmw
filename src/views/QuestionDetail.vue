@@ -2,18 +2,42 @@
     <div class="page">
         <div class="navtitle">
             <img class="back-icon" @click="goback" src="@/assets/images/icon-16.png" alt="" srcset="">
-            <span>如何发布卖房信息？</span>
+            <span>{{questionDetail.question}}</span>
         </div>
         <div class="quest-detail">
-            <div>是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。 几度夕阳红。白发渔樵江渚上，都付笑谈中。滚滚长江东逝水，浪花淘尽英雄。是非成败转头空，青山依旧在，几度夕阳红。
-                白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢，古今多少事，都付笑谈中。</div>
+            <div>{{questionDetail.answer}}</div>
         </div>
     </div>
 </template>
 <script>
 export default {
     name:'QuestionDetail',
+    data(){
+        return{
+            questionDetail:{
+                answer:'',
+                question:''
+            }
+        }
+    },
+    mounted(){
+        this.getQuestionDetail()
+    },
     methods:{
+        getQuestionDetail(){
+            this.$http('/api/otherInfo/getQuestionById','get',{id:this.$route.params.id},this.$store.state.token).then(res=>{
+          
+                if(res.data.code==100){
+                    this.questionDetail = res.data.data
+                }else{
+                    this.$createDialog({
+                        type: 'alert',
+                        title: res.data.msg,
+                        icon: 'cubeic-warn'
+                    }).show()
+                }
+            })
+        },
         goback(){
             this.$router.go(-1)
         }

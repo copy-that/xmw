@@ -18,7 +18,7 @@
         </div>
         <div class="right">
           <span class="detail-price">¥{{ProductInfo&&ProductInfo.price}}/月</span><!-- 缺少类型 -->
-          <div class="detail-enjoy" @click="enjoyProd">
+          <div class="detail-enjoy" @click="enjoyProd()">
             <img class="enjoy-icon" v-if="ProductInfo&&ProductInfo.coll==1" src="@/assets/images/icon-2.png" alt>
             <img class="enjoy-icon" v-else src="@/assets/images/icon-2-b.png" alt>
             <span class="enjoy-state">{{ProductInfo&&ProductInfo.coll==1?'已收藏':'&ensp;收藏&ensp;'}}</span>
@@ -112,19 +112,19 @@
         <div class="paypop-money">￥<span>210</span></div>
         <div class="paypop-title">请选择付款方式</div>
         <div class="paypop-cell" @click="checkType(1)">
-          <img class="paypop-cell-check" v-if="type==1" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-if="paytype==1" src="@/assets/images/icon-6.png" alt="">
           <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
           <img class="paypop-cell-icon" src="@/assets/images/icon-9.png" alt="">
           <div class="paypop-cell-name">支付宝</div>
         </div>
         <div class="paypop-cell" @click="checkType(2)">
-          <img class="paypop-cell-check" v-if="type==2" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-if="paytype==2" src="@/assets/images/icon-6.png" alt="">
           <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
           <img class="paypop-cell-icon" src="@/assets/images/icon-10.png" alt="">
           <div class="paypop-cell-name">支付宝</div>
         </div>
         <div class="paypop-cell" @click="checkType(3)">
-          <img class="paypop-cell-check" v-if="type==3" src="@/assets/images/icon-6.png" alt="">
+          <img class="paypop-cell-check" v-if="paytype==3" src="@/assets/images/icon-6.png" alt="">
           <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
           <img class="paypop-cell-icon" src="@/assets/images/icon-13.png" alt="">
           <div class="paypop-cell-name">支付宝</div>
@@ -139,7 +139,7 @@ export default {
   name: "ProductDetail",
   data() {
     return {
-        type:0,
+        paytype:1,
         serviceTel:'',
         showPopPay:false,
         comment:'',
@@ -147,8 +147,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$route.params.id)
-    // this.initMap();
+
     this.getProductDetail()
     this.$http('/api/otherInfo/getAboutUs','get',{},this.$store.state.token).then(res=>{
           if(res.data.code==100){
@@ -176,20 +175,35 @@ export default {
           this.$createToast({ txt: res.data.msg, type: "txt" }).show();
         }
       }).then(data=>{
-        this.initMap(data)
+        if(data){
+           this.initMap(data)
         console.log(data)
+        }
+       
       });
     },
     ToPayFor(){
-      this.showPopPay = false
+
+      const id = this.ProductInfo.id;
+        const paytype = this.paytype;
+        this.$http('/mobile/infoOrder/createds','post',this.$qs.stringify({infoId:id,payStyle:paytype}),this.$store.state.token).then(res=>{
+          if(res.data.code==100){
+            this.showPopPay = false
+            console.log(res.data)
+          }else{
+            this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+          }
+        })
+      
     },
     checkType(type){
-      this.type = type
+      this.paytype = type
     },
     showImagePreview() {
-      var that = this
+      var imgs = this.ProductInfo.picUrls.split(',')
+
       this.$createImagePreview({
-        imgs: that.picUrls
+        imgs: imgs
       }).show()
     },
     handleBuy(){
@@ -222,7 +236,19 @@ export default {
       }
     },
     enjoyProd(){
-      this.isEnjoy = !this.isEnjoy
+      const id = this.ProductInfo.id;
+      var type = this.ProductInfo.coll==0?1:0;
+      
+      this.$http('/api/app/rendInfoApi/getCollection','post',this.$qs.stringify({type:type,infoId:id}),this.$store.state.token).then(res=>{
+        
+        if(res.data.code==100){
+          this.ProductInfo.coll = type;
+          console.log(res.data)
+        }else{
+          this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+        }
+      })
+      // this.isEnjoy = !this.isEnjoy
     },
     goback(){
         this.$router.go(-1)

@@ -13,15 +13,15 @@
       </div>
       <div class="filter">
         <div class="filter-header">
-          <div class="filter-item" :class="'id'==activeitem?'is_active':''" @click="setFilter('id')">
+          <div class="filter-item" :class="identity!==''?'is_active':''" @click="setFilter('id')">
             身份
             <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
-          <div class="filter-item" :class="'pr'==activeitem?'is_active':''" @click="setFilter('pr')">
+          <div class="filter-item" :class="prtype!==''?'is_active':''" @click="setFilter('pr')">
             价格
             <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
-          <div class="filter-item" :class="'fi'==activeitem?'is_active':''" @click="setFilter('fi')">
+          <div class="filter-item" :class="''!==fitype?'is_active':''" @click="setFilter('fi')">
             筛选
             <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
@@ -32,16 +32,18 @@
         </div>
         <div class="filter-body"  v-if="showdrop">
           <div class="id-body" v-show="'id'==activeitem">
-            <div class="id-body-item" :class="0==idtype?'is_active':''">
+            <div class="id-body-item" :class="''==identity?'is_active':''" @click="setIdentity('')">
               <span>不限</span>
             </div>
-            <div class="id-body-item" :class="1==idtype?'is_active':''">
+            <div class="id-body-item" :class="1==identity?'is_active':''" @click="setIdentity(1)">
               <span>个人</span>
-              <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
+              <img class="check-icon" v-if="1==identity" src="@/assets/images/icon-6.png" alt srcset>
+              <img class="check-icon" v-else src="@/assets/images/icon-7.png" alt srcset>
             </div>
-            <div class="id-body-item" :class="2==idtype?'is_active':''">
+            <div class="id-body-item" :class="2==identity?'is_active':''" @click="setIdentity(2)">
               <span>经纪人</span>
-              <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
+              <img class="check-icon" v-if="2==identity" src="@/assets/images/icon-6.png" alt srcset>
+              <img class="check-icon" v-else src="@/assets/images/icon-7.png" alt srcset>
             </div>
             <cube-button class="form-primary-btn" @click="handleFilter" style="margin-bottom:10px" :primary="true">确定</cube-button>
           </div>
@@ -69,7 +71,7 @@
             <div  v-for="(todo,index) in fiList" v-bind:key="index">
               <div class="body-item-name">{{todo.name}}</div>
               <div class="body-item-box" >
-                <div class="body-item-three" v-for="(tag,key) in todo.children" :key="key" :class="tag.type==vitype?'is_active':''">
+                <div class="body-item-three" v-for="(tag,key) in todo.children" :key="key">
                   <span>{{tag.name}}</span>
                   <img class="check-icon" v-if="tag.type==filterTags[index]" src="@/assets/images/icon-6.png" alt srcset>
                   <img class="check-icon" v-else src="@/assets/images/icon-7.png" alt srcset>
@@ -142,25 +144,26 @@ export default {
     return {
       searchWorld: "",
       activeitem: "",
-      vitype:1,
-      idtype: 1,
-      prtype: 1,
+      vitype:'',
+      identity: '',
+      prtype: '',
+      fitype:'',
       showdrop: false,
       prodList:[{},{}],
       filterTags:[0,0,0,0,0],
       fiList:[
         {
-          name:'认证',
+          name:'信息',
           value:'valid',
           children:[{
             name:'不限',
-            type:'0'
+            type:''
           },{
             name:'已认证',
             type:'1'
           },{
             name:'未认证',
-            type:'2'
+            type:'0'
           }]
         },
         {
@@ -268,13 +271,17 @@ export default {
             type:'1'
           },{
             name:'精装修',
-            type:'2'
+            type:'1gsd6fg46fdg'
           }]
         }
       ]
     };
   },
   methods:{
+    setIdentity(value){
+      this.identity = value
+      console.log(value)
+    },
     setFilter(item){
       this.showdrop = true
       this.activeitem = item

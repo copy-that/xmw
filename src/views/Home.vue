@@ -11,13 +11,12 @@
       </cube-input>
     </div>
     <div class="banner">
-      
       <img v-if="banner.path" class="img-full" :src="banner.path" alt srcset>
       <img v-else class="img-full" src="@/assets/images/banner.png" alt srcset>
     </div>
     <div>
       <ul class="list-menu">
-        <li v-for="item in scrollList2" class="list-menu-item" :key="item.id" @click="viewProduct">
+        <li v-for="item in scrollList2" class="list-menu-item" :key="item.id" @click="viewProduct(item.id)">
           <img class="list-item-icon" :src="item.icon" alt>
           <div class="list-item-name">{{ item.name }}</div>
         </li>
@@ -56,7 +55,7 @@
           <div class="newsitem-name">{{msg.msgName}}</div>
           <div class="newsitem-time">{{msg.createTime}}</div>
         </div>
-      </div> -->
+      </div>-->
       <div class="newsitem" v-for="msg in newMsg" :key="msg.id" @click="viewNewsDetail(msg.id)">
         <!-- <img class="newsitem-icon" src="@/assets/images/item-icon.png" alt=""> -->
         <div class="newsitem-info">
@@ -77,14 +76,16 @@
           </cube-index-list-item>
         </cube-index-list-group>
       </cube-index-list>
-    </div> -->
+    </div>-->
     <div class="popCity" v-if="showPopCity">
       <div class="popCity-inner">
-        <div v-for="city in cityData" class="popCity-item"
-        @click="switchCity(city)"
-        :class="city.id==showCity.id?'is_active':''" :key="city.id">
-          {{city.name}}
-        </div>
+        <div
+          v-for="city in cityData"
+          class="popCity-item"
+          @click="switchCity(city)"
+          :class="city.id==showCity.id?'is_active':''"
+          :key="city.id"
+        >{{city.name}}</div>
       </div>
     </div>
     <Tabbar/>
@@ -101,23 +102,23 @@ export default {
   },
   data() {
     return {
-      banner:{
-        path:'',
-        content:''
+      banner: {
+        path: "",
+        content: ""
       },
       newMsg: [],
       page: 1,
       pageSize: 10,
       cityData: [
         {
-        id:'',
-        name:'总站'
-      }
+          id: "",
+          name: "总站"
+        }
       ],
       showPopCity: false,
       showCity: {
-        id:'',
-        name:'总站'
+        id: "",
+        name: "总站"
       },
       searchWorld: "",
       slideList: [
@@ -127,51 +128,55 @@ export default {
         }
       ],
       scrollList2: [
-        { icon: require("@/assets/images/tab-9.png"), name: "买住宅", id: "1" },
+        { 
+          icon: require("@/assets/images/tab-9.png"), 
+          name: "买住宅", 
+          id: "1" 
+        },
         {
           icon: require("@/assets/images/tab-10.png"),
           name: "买商铺",
-          id: "2"
+          id: "3"
         },
         {
           icon: require("@/assets/images/tab-11.png"),
           name: "买办公",
-          id: "3"
+          id: "5"
         },
         {
           icon: require("@/assets/images/tab-12.png"),
           name: "买厂房",
-          id: "4"
+          id: "7"
         },
         {
           icon: require("@/assets/images/tab-13.png"),
           name: "买期房",
-          id: "11"
+          id: "9"
         },
         {
           icon: require("@/assets/images/tab-9.png"),
           name: "租住宅",
-          id: "21"
+          id: "2"
         },
         {
           icon: require("@/assets/images/tab-10.png"),
           name: "租商铺",
-          id: "31"
+          id: "4"
         },
         {
           icon: require("@/assets/images/tab-11.png"),
           name: "租办公",
-          id: "41"
+          id: "6"
         },
         {
           icon: require("@/assets/images/tab-12.png"),
           name: "租厂房",
-          id: "23"
+          id: "8"
         },
         {
           icon: require("@/assets/images/tab-13.png"),
           name: "租酒店",
-          id: "22"
+          id: "10"
         }
       ],
       recomList: [
@@ -215,23 +220,27 @@ export default {
     this.getBannerPic();
   },
   methods: {
-    getBannerPic(){
-      this.$http('/api/otherInfo/getSowingMap','get',{type:1},this.$store.state.token).then(res=>{
-        console.log(res)
-        if(res.data.code==100){
-          this.banner.path = res.data.data.picUrl
-          this.banner.content = res.data.data.mapTitle  
-        }else{
+    getBannerPic() {
+      this.$http(
+        "/api/otherInfo/getSowingMap",
+        "get",
+        { type: 1 },
+        this.$store.state.token
+      ).then(res => {
+        console.log(res);
+        if (res.data.code == 100) {
+          this.banner.path = res.data.data.picUrl;
+          this.banner.content = res.data.data.mapTitle;
+        } else {
           this.$createToast({ txt: res.data.msg, type: "txt" }).show();
         }
-        
-      })
+      });
     },
-    switchCity(city){
+    switchCity(city) {
       this.showPopCity = false;
       this.showCity = city;
     },
-    getSiteList(){
+    getSiteList() {
       this.$http(
         "/api/otherInfo/getAreaList",
         "get",
@@ -239,25 +248,20 @@ export default {
         this.$store.state.token
       ).then(res => {
         if (res.data.code == 100) {
-          this.cityData.push(...res.data.data)
+          this.cityData.push(...res.data.data);
         } else {
           this.$createToast({ txt: res.data.msg, type: "txt" }).show();
         }
-      })
+      });
     },
     changeLocation() {
       this.showPopCity = !this.showPopCity;
     },
     getRecoment() {
       const token = this.$store.state.token;
-      this.$http(
-        "/api/app/homeMsg/hotList",
-        "post",
-        {},
-        token
-      ).then(res => {
+      this.$http("/api/app/homeMsg/hotList", "post", {}, token).then(res => {
         if (res.data.code == 100) {
-          this.recomList[0].children.push(...res.data.data)
+          this.recomList[0].children.push(...res.data.data);
           // console.log(res.data.data)
         } else {
           this.$createToast({ txt: res.data.msg, type: "txt" }).show();
@@ -293,16 +297,21 @@ export default {
     scrollHandler({ y }) {
       this.scrollY = -y;
     },
-    viewProduct() {
-      this.$router.push("product");
+    viewProduct(type) {
+      var {name ,id} = this.showCity;
+        if(id==''){
+          id='all'
+        }
+
+      this.$router.push({name:"Product",params:{type:type,station:id,stationName:name}});
     },
     viewProductDetail(id) {
-       console.log(id)
-      this.$router.push({ name: "ProductDetail",params:{id:id} });
+      console.log(id);
+      this.$router.push({ name: "ProductDetail", params: { id: id } });
     },
     viewNewsDetail(id) {
-      console.log(id)
-      this.$router.push({name:'NewsDetail',params:{id:id}});
+      console.log(id);
+      this.$router.push({ name: "NewsDetail", params: { id: id } });
     }
   }
 };
@@ -359,8 +368,8 @@ export default {
 
 .banner {
   width: 100%;
-  padding 0 15px;
-  box-sizing:border-box;
+  padding: 0 15px;
+  box-sizing: border-box;
   height: 174px;
 
   .img-full {
@@ -428,6 +437,7 @@ export default {
     margin-right: 25px;
 
     .reitem-icon {
+      display: block;
       height: 100px;
       width: 130px;
       border-radius: 4px;
@@ -495,8 +505,8 @@ export default {
   color: #9f9f9f;
 }
 
-.cube-pulldown-wrapper{
-  font-size:13px;  
+.cube-pulldown-wrapper {
+  font-size: 13px;
 }
 
 .popCity {
@@ -506,26 +516,29 @@ export default {
   width: 100vw;
   background-color: #fff;
   z-index: 10;
-  background-color rgba(52,52,52,0.4);
-  overflow-x hidden;
-  overflow-y auto;
-  display flex;
-  align-items flex-start;
-  flex-direction column;
+  background-color: rgba(52, 52, 52, 0.4);
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
 }
-.popCity-inner{
-  width 100%;
-  background-color #ffffff;
-  display flex;
-  flex-wrap wrap;
-  align-items center;
+
+.popCity-inner {
+  width: 100%;
+  background-color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
-.popCity-item{
+
+.popCity-item {
   text-align: center;
   width: 20%;
   font-size: 13px;
   height: 38px;
   line-height: 38px;
+
   &.is_active {
     color: #FB6800;
   }

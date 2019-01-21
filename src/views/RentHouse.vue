@@ -45,7 +45,7 @@
           >
           <!-- <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt> -->
         </div>
-        <!-- <template v-if="renttype==1||renttype==9"> -->
+        <template v-if="renttype==2">
         <div class="cell" @click="showRentType">
           <div class="cell-label">出租类型:</div>
           <div class="cell-value">{{form==''?"请选择出租类型":form}}</div>
@@ -56,8 +56,20 @@
           <div class="cell-value">{{classify==''?"请选择房型":classify}}</div>
           <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
         </div>
-        <!-- </template> -->
-        <div class="cell">
+        </template>
+        <template v-if="renttype==10">
+        <div class="cell" @click="showGradeType">
+          <div class="cell-label">酒店星级:</div>
+          <div class="cell-value">{{grade==''?"请选择酒店档次":grade}}</div>
+          <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
+        </div>
+        <div class="cell" @click="showMatingType">
+          <div class="cell-label">配&emsp;&emsp;套:</div>
+          <div class="cell-value">{{mating==''?"请选择酒店配套":mating}}</div>
+          <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt>
+        </div>
+        </template>
+        <div class="cell"  v-if="renttype==2||renttype==6||renttype==8">
           <div class="cell-label">身&emsp;&emsp;份:</div>
           <div class="radio-box">
             <div class="radio-item" :class="params.identity===0?'is_check':''" @click="idCheck(0)">
@@ -74,7 +86,7 @@
           <input type="text" v-model="params.tbBrokerageFee" class="cell-input" placeholder="中介费">
           <!-- <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt> -->
         </div>
-        <div class="cell">
+        <div class="cell" v-if="renttype!=10">
           <div class="cell-label">面&emsp;&emsp;积:</div>
           <input type="text" v-model="params.area" class="cell-input" placeholder="平方米">
           <!-- <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt> -->
@@ -84,7 +96,7 @@
           <input type="text" v-model="params.price" class="cell-input" placeholder="元">
           <!-- <img class="cell-right-icon" src="@/assets/images/icon-5.png" alt> -->
         </div>
-        <div class="cell cell-check">
+        <div class="cell cell-check"  v-if="renttype==2">
           <div class="cell-label">房屋配置:</div>
           <div class="radio-box">
             <div
@@ -284,6 +296,8 @@ export default {
       title: "租住宅",
       form: "",
       classify: "",
+      grade:"",
+      mating:"",
       image: [],
       imageFile: [],
       renttype: 0,
@@ -308,6 +322,8 @@ export default {
         longitude: "",
         latitude: "",
         remark: "",
+        grade:"",
+        mating:"",
         tbBrokerageFee: "",
         payPrice: 0,
         tagsId: []
@@ -419,26 +435,39 @@ export default {
           return;
         }
       }
-      if (this.renttype !== 3) {
+      if (this.renttype !== 4) {
         if (!this.params.identity === "") {
           this.$createToast({ txt: "请选择您的身份", type: "txt" }).show();
           return;
         }
       }
-
-      if (!this.params.area) {
-        this.$createToast({ txt: "请输入你房屋的面积", type: "txt" }).show();
-        return;
+      console.log(this.renttype,typeof this.renttype)
+      if(this.renttype != 10){
+        if (!this.params.area) {
+          this.$createToast({ txt: "请输入你房屋的面积", type: "txt" }).show();
+          return;
+        }
+      }else{
+        if (!this.params.grade) {
+          this.$createToast({ txt: "请输入酒店的等级", type: "txt" }).show();
+          return;
+        }
+        if (!this.params.mating) {
+          this.$createToast({ txt: "请输入酒店的配套", type: "txt" }).show();
+          return;
+        }
       }
+      
       if (!this.params.price) {
         this.$createToast({ txt: "请输入你房屋的价格", type: "txt" }).show();
         return;
       }
-      if (this.houseAllocation.length==0) {
-        this.$createToast({ txt: "请选择房屋配置", type: "txt" }).show();
-        return;
+      if(this.renttype==2){
+        if (this.houseAllocation.length==0) {
+          this.$createToast({ txt: "请选择房屋配置", type: "txt" }).show();
+          return;
+        }
       }
-      
       if (this.image.length == 0) {
         this.$createToast({ txt: "请添加你的房源照片", type: "txt" }).show();
         return;
@@ -795,6 +824,66 @@ export default {
         console.log(res.data);
         if (res.data.code == 100) {
           this.allocation = res.data.data;
+        } else {
+          this.$createToast({ time: 0, txt: "Toast time 0" }).show();
+        }
+      });
+    },
+    showGradeType(){
+       const that = this;
+      this.$http(
+        "/api/app/rendInfoApi/getGrade",
+        "post",
+        {},
+        this.$store.state.token
+      ).then(res => {
+        console.log(res.data);
+        if (res.data.code == 100) {
+          const dataSheet = res.data.data.map(item => {
+            return {
+              id: item.id,
+              content: item.value
+            };
+          });
+          this.$createActionSheet({
+            title: "房屋类型",
+            data: dataSheet,
+            onSelect: (item, index) => {
+              console.log(item);
+              that.grade = item.content;
+              that.params.grade = item.id;
+            }
+          }).show();
+        } else {
+          this.$createToast({ time: 0, txt: "Toast time 0" }).show();
+        }
+      });
+    },
+    showMatingType(){
+      const that = this;
+      this.$http(
+        "/api/app/rendInfoApi/getMating",
+        "post",
+        {},
+        this.$store.state.token
+      ).then(res => {
+        console.log(res.data);
+        if (res.data.code == 100) {
+          const dataSheet = res.data.data.map(item => {
+            return {
+              id: item.id,
+              content: item.value
+            };
+          });
+          this.$createActionSheet({
+            title: "房屋类型",
+            data: dataSheet,
+            onSelect: (item, index) => {
+              console.log(item);
+              that.mating = item.content;
+              that.params.mating = item.id;
+            }
+          }).show();
         } else {
           this.$createToast({ time: 0, txt: "Toast time 0" }).show();
         }

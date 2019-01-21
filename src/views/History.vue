@@ -82,8 +82,8 @@ export default {
           }
       });
     },
-    viewProdDetail() {
-      this.$router.push({ name: "ProductDetail" });
+    viewProdDetail(id) {
+      this.$router.push({ name: "ProductDetail",params:{id:id} });
     },
     enjoyProd(index) {
       this.historyList[index].isenjoy = !this.historyList[index].isenjoy;

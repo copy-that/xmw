@@ -5,7 +5,7 @@
       <div class="search-box top-45">
         <div class="location">
           <img class="location-icon-r" src="@/assets/images/icon-14.png" alt>
-          <div class="location-place-r">郑州</div>
+          <div class="location-place-r">{{stationName}}</div>
         </div>
         <cube-input class="search-min" v-model="searchWorld" placeholder="请输入区域、商圈或者编号">
           <img class="search-icon" slot="prepend" src="@/assets/images/icon-15.png" alt>
@@ -45,7 +45,7 @@
               <img class="check-icon" v-if="2==identity" src="@/assets/images/icon-6.png" alt srcset>
               <img class="check-icon" v-else src="@/assets/images/icon-7.png" alt srcset>
             </div>
-            <cube-button class="form-primary-btn" @click="handleFilter" style="margin-bottom:10px" :primary="true">确定</cube-button>
+            <cube-button class="form-primary-btn" @click="getProductList" style="margin-bottom:10px" :primary="true">确定</cube-button>
           </div>
           <div class="body-item-box" v-show="'pr'==activeitem">
             <div class="body-item-two" :class="1==prtype?'is_active':''">
@@ -64,7 +64,7 @@
               <span>2000-3000元</span>
               <img class="check-icon" src="@/assets/images/icon-7.png" alt srcset>
             </div>
-            <cube-button class="form-primary-btn" @click="handleFilter" style="margin-bottom:10px" :primary="true">确定</cube-button>
+            <cube-button class="form-primary-btn" @click="getProductList" style="margin-bottom:10px" :primary="true">确定</cube-button>
           </div>
           <div class="body-type" v-show="'fi'==activeitem" >
             
@@ -78,7 +78,7 @@
                 </div>
               </div>
             </div>
-            <cube-button class="form-primary-btn" @click="handleFilter" style="margin-bottom:10px" :primary="true">确定</cube-button>
+            <cube-button class="form-primary-btn" @click="getProductList" style="margin-bottom:10px" :primary="true">确定</cube-button>
          </div>
           <div class="body-type" v-show="'lo'==activeitem">
             <div class="body-item-name">热门分站</div>
@@ -102,7 +102,7 @@
               <div class="body-item-five" :class="17==prtype?'is_active':''">西安</div>
               <div class="body-item-five" :class="18==prtype?'is_active':''">成都</div>   
             </div>
-            <cube-button class="form-primary-btn" @click="handleFilter" style="margin-bottom:10px" :primary="true">确定</cube-button>
+            <cube-button class="form-primary-btn" @click="getProductList" style="margin-bottom:10px" :primary="true">确定</cube-button>
           </div>
         </div>
       </div>
@@ -145,12 +145,20 @@ export default {
       searchWorld: "",
       activeitem: "",
       vitype:'',
+      stationName:'',
+      station:'',
       identity: '',
       prtype: '',
       fitype:'',
       showdrop: false,
       prodList:[{},{}],
       filterTags:[0,0,0,0,0],
+      params:{
+        page:1,
+        pageSize:15
+      },
+      toolLabel:[],
+      toolData:[],
       fiList:[
         {
           name:'信息',
@@ -277,6 +285,15 @@ export default {
       ]
     };
   },
+  mounted(){
+    
+    const {type,station,stationName} = this.$route.params
+    this.vitype = type;
+    this.station = station;
+    this.stationName = stationName;
+    console.log(type,station,stationName)
+    this.getFileData()
+  },
   methods:{
     setIdentity(value){
       this.identity = value
@@ -286,8 +303,47 @@ export default {
       this.showdrop = true
       this.activeitem = item
     },
-    handleFilter(){
-      this.showdrop = false
+    getFileData(){
+      const query = this.$qs.stringify({type:this.vitype}) 
+     
+      this.$http('/api/app/rendInfoApi/getDictionaryList','post',query,this.$store.state.token).then(res=>{
+        
+        if(res.data.code==100){
+           console.log(res.data)
+          if(this.vitype==1){
+           this.toolLabel = [{name:'身份',value:'zd_shenfen'},{name:'价格',value:'zd_buy_price'},{name:'筛选',value:'zd_buy_price'},{name:'分站',value:'zd_fenzhan'}]
+           
+          }
+          
+        }else{
+
+        }
+       
+      })
+    },
+    getProductList(){
+      console.log(this.params);
+      this.$http('/api/app/rendInfoApi/getWorkshopList','post',{type:type,...this.params},this.$store.state.token).then(res=>{
+         
+          if(res.data.code==100){
+             console.log(res.data)
+          }else{
+            this.$createDialog({
+                type: 'alert',
+                title: res.data.msg,
+                icon: 'cubeic-warn'
+            }).show()
+          }
+      })
+    },
+    onPullingDown() {
+        this.params.page = 1;
+        this.questionList = []
+        this.getCommentQuestion()
+    },
+    onPullingUp() {
+        this.params.page = this.params.page + 1;
+        this.getCommentQuestion()
     },
     viewProductDetail(){
       this.$router.push({name:'ProductDetail'})

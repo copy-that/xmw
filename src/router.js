@@ -9,7 +9,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: () => import('./views/Home.vue'),
       meta: {
         Auth: true
@@ -56,9 +56,9 @@ const router = new Router({
       component: () => import('./views/MyPost.vue')
     },
     {
-      path: '/mypoket',
-      name: 'MyPoket',
-      component: () => import('./views/MyPoket.vue')
+      path: '/buytags/:id',
+      name: 'BuyTags',
+      component: () => import('./views/BuyTags.vue')
     },
     {
       path: '/poketdetail',
@@ -134,8 +134,8 @@ const router = new Router({
       component: () => import('./views/EidtePass.vue')
     },
     {
-      path: '/product',
-      name: 'product',
+      path: '/product/:type/:station/:stationName',
+      name: 'Product',
       component: () => import('./views/Product.vue'),
       meta: {
         Auth: true

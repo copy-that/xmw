@@ -4,7 +4,6 @@ import Router from 'vue-router';
 
 Vue.use(Router)
 const router = new Router({
-  mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {
@@ -17,12 +16,12 @@ const router = new Router({
     },
     {
       path: '/history',
-      name: 'history',
+      name: 'History',
       component: () => import(/* webpackChunkName: "about" */ './views/History.vue')
     },
     {
       path: '/buysell',
-      name: 'buysell',
+      name: 'Buysell',
       component: () => import('./views/BuySell.vue')
     },
     {
@@ -37,7 +36,7 @@ const router = new Router({
     },
     {
       path: '/my',
-      name: 'my',
+      name: 'My',
       component: () => import('./views/My.vue')
     },
     {
@@ -56,9 +55,22 @@ const router = new Router({
       component: () => import('./views/MyPost.vue')
     },
     {
+      path: '/search',
+      name: 'Search',
+      component: () => import('./views/Search.vue'),
+      meta: {
+        Auth: true
+      }
+    },
+    {
       path: '/buytags/:id',
       name: 'BuyTags',
       component: () => import('./views/BuyTags.vue')
+    },
+    {
+      path: '/mypoket',
+      name: 'MyPoket',
+      component: () => import('./views/MyPoket.vue')
     },
     {
       path: '/poketdetail',
@@ -191,19 +203,25 @@ const router = new Router({
     },
     {
       path: '*',
-      redirect: { name: 'Login' }
+      redirect: { name: 'Home' }
     }
   ]
 })
 router.beforeEach((to, from, next) => {
   // ...
-  const token = store.state.token;
-  if (token || to.meta.Auth) {
-    next()
-  } else {
-    next({
-      path: '/login'
-    });
+  const hasAuth = store.state.hasAuth;
+  if(hasAuth){
+      next()
+  }else{
+   
+    const token = store.state.token;
+    if (token || to.meta.Auth) {
+      next()
+    } else {
+      next({
+        path: '/login'
+      });
+    }
   }
 })
 

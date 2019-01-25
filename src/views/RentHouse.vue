@@ -270,8 +270,7 @@
 </template>
 <script>
 import Header from "@/components/Header.vue";
-import { addressData } from "@/area1.js";
-import { tags } from "@/tags.js";
+import { addressData } from "@/area.js";
 export default {
   name: "BuyHouse",
   components: {
@@ -279,10 +278,17 @@ export default {
   },
   data() {
     return {
-      Poi: {
-        city: "全国",
-        citylimit: true,
-        offset: 5
+      // Poi: {
+      //   city: "全国",
+      //   citylimit: true,
+      //   offset: 5
+      // },
+      Poi:{
+        query:'',
+        output:'json',
+        region:'全国',
+        ak:'ci8U590ESD0lXaUhkqnAsFrusIcvwt5G',
+        page_size:5
       },
       showRemind: false,
       remindDesc: "",
@@ -683,43 +689,93 @@ export default {
     },
     initSearch(e) {
       this.params.locationText = e.target.value;
-      var keywords = e.target.value;
+      this.Poi.query = e.target.value;
       const that = this;
-      AMap.plugin("AMap.PlaceSearch", function() {
-        var autoOptions = that.Poi;
-        var placeSearch = new AMap.PlaceSearch(autoOptions);
-        placeSearch.search(keywords, function(status, result) {
-          // 搜索成功时，result即是对应的匹配数据
+       ajax({
+        type:'get',
+        url:'http://api.map.baidu.com/place/v2/suggestion',
+        data:that.Poi,
+        dataType:'jsonp',
+        success:function(data){
+          if(data.message=='ok'&&data.result){
+              const dataSheet = data.result.map(item => {
+               
+                if(item){
+                  return {
+                    content: item.name,
+                    location: item.location
+                  };
+                }
+              });
 
-          if (status == "complete" && result.poiList.pois) {
-            const dataSheet = result.poiList.pois.map(item => {
-              if (item) {
-                return {
-                  id: item.id,
-                  content: item.name,
-                  location: item.location
-                };
-              }
-            });
-
-            that
-              .$createActionSheet({
+              that.$createActionSheet({
                 title: "地理位置",
                 data: dataSheet,
                 onSelect: (item, index) => {
-                  that.params.locationText = item.content;
-                  that.params.longitude = item.location.lng;
-                  that.params.latitude = item.location.lat;
+                  
+                  if(item.location.lng){
+                    that.params.locationText = item.content;
+                    that.params.longitude = item.location.lng;
+                    that.params.latitude = item.location.lat;
+                  }else{
+                    that.params.locationText = ''
+                  }
+                },
+                onCancel:()=>{
+                  that.params.locationText = ''
                 }
-              })
-              .show();
-          }
-        });
-      });
+              }).show();
+            }else{
+              this.$createToast({ txt: '查询不到数据', type: "txt" }).show();
+              that.params.locationText = ''
+            }
+        },
+        error:function(){
+          console.log("error");
+        }
+      })
+      // AMap.plugin("AMap.PlaceSearch", function() {
+      //   var autoOptions = that.Poi;
+      //   var placeSearch = new AMap.PlaceSearch(autoOptions);
+      //   placeSearch.search(keywords, function(status, result) {
+      //     // 搜索成功时，result即是对应的匹配数据
+
+      //     if (status == "complete" && result.poiList.pois) {
+      //       const dataSheet = result.poiList.pois.map(item => {
+      //         if (item) {
+      //           return {
+      //             id: item.id,
+      //             content: item.name,
+      //             location: item.location
+      //           };
+      //         }
+      //       });
+
+      //       that.$createActionSheet({
+      //           title: "地理位置",
+      //           data: dataSheet,
+      //           onSelect: (item, index) => {
+      //             if(item.location.lng){
+      //               that.params.locationText = item.content;
+      //               that.params.longitude = item.location.lng;
+      //               that.params.latitude = item.location.lat;
+      //             }else{
+      //               that.params.locationText = ''
+      //             }
+      //           },
+      //           onCancel:()=>{
+      //             that.params.locationText = ''
+      //           }
+      //         }).show();
+      //     }else{
+      //       that.params.locationText = ''
+      //     }
+      //   });
+      // });
     },
     selectHandle(selectedVal, selectedIndex, selectedText) {
       this.area = selectedText.join("/");
-      this.Poi.city = selectedIndex[1];
+      this.Poi.region = selectedIndex[1];
       this.params.provinceId = selectedVal[0];
       this.params.cityId = selectedVal[1];
       this.params.zoneId = selectedVal[2];

@@ -53,9 +53,9 @@
     <div class="paypop" v-if="showPopPay">
       <div class="paypop-inner">
         <div class="paypop-cancel" @click="showPopPay=false">取消</div>
-        <div class="paypop-money">￥<span>210</span></div>
+        <div class="paypop-money">￥<span>{{orderPrice}}</span></div>
         <div class="paypop-title">请选择付款方式</div>
-        <div class="paypop-cell" @click="checkType(1)">
+         <div class="paypop-cell" @click="checkType(1)">
           <img class="paypop-cell-check" v-if="type==1" src="@/assets/images/icon-6.png" alt="">
           <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
           <img class="paypop-cell-icon" src="@/assets/images/icon-9.png" alt="">
@@ -65,17 +65,18 @@
           <img class="paypop-cell-check" v-if="type==2" src="@/assets/images/icon-6.png" alt="">
           <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
           <img class="paypop-cell-icon" src="@/assets/images/icon-10.png" alt="">
-          <div class="paypop-cell-name">支付宝</div>
+          <div class="paypop-cell-name">微信</div>
         </div>
         <div class="paypop-cell" @click="checkType(3)">
           <img class="paypop-cell-check" v-if="type==3" src="@/assets/images/icon-6.png" alt="">
           <img class="paypop-cell-check" v-else src="@/assets/images/icon-7.png" alt="">
           <img class="paypop-cell-icon" src="@/assets/images/icon-13.png" alt="">
-          <div class="paypop-cell-name">支付宝</div>
+          <div class="paypop-cell-name">金币</div>
         </div>
         <cube-button class="form-primary-btn" :primary="true" @click="ToPayFor">确认</cube-button>
       </div>
     </div>
+    <div class="" v-html="aliPayForm" v-if="showAliPayForm"></div>
     </div>
 </template>
 <script>
@@ -91,14 +92,18 @@ export default {
             tagsShow:[],
             remindDesc:'',
             showRemind:false,
-            type:0,
+            type:1,
             showPopPay:false,
             showTagLabel:[],
-            total:0
+            total:0,
+            orderNumber:'',
+            orderPrice:0,
+            showAliPayForm:false,
+            aliPayForm:''
         }
     },
     mounted(){
-        // console.log(this.$route.params.id)
+     
         this.$http('/api/app/tags/getTagsList','post',this.$qs.stringify({infoId:this.$route.params.id}),this.$store.state.token).then(res=>{
             
             if(res.data.code==100){
@@ -107,11 +112,12 @@ export default {
                     if(item.buy==0){
                        this.tagsList.push(item)
                     }else{
-
+                        const flagValue = item.flagValue;
+                        this.$set(this.tagsShow, flagValue, { id: item.id, value: item.tagName, price: tagPrice });
                     }
                     
                 })
-               console.log(this.tagsList)
+              
             }else{
 
             }
@@ -153,13 +159,65 @@ export default {
             this.showRemind = false
         },
         ToPayFor(){
-            this.showPopPay = false
+            if(this.type==3){
+                this.$http('/api/payapi/payByBalance','post',this.$qs.stringify({orderNo:this.orderNumber,type:2}),this.$store.state.token).then(res=>{
+                    console.log(res.data)
+                })
+            }else{
+                 this.$http('/api/payapi/payOrder','post',this.$qs.stringify({payType:this.type,orderNo:this.orderNumber,type:2}),this.$store.state.token).then(res=>{
+                   
+                    if(res.data.code==100){
+                        if(res.data.data.orderNo==this.orderNumber){
+                            if(this.type==1){
+                                this.aliPayForm= res.data.data.date;
+                                this.showAliPayForm = true
+                                this.$nextTick(()=>{
+                                    document.forms['alipaysubmit'].submit();
+                                })
+                                return;
+                            }else{
+
+                            }
+                            
+                        }else{
+                            this.$createToast({ txt: '非法订单号无法支付', type: "txt" }).show();
+                        }
+                        
+                    }
+                })
+            }
+           
+           
         },
         checkType(type){
             this.type = type
         },
         rawOrder(){
-            this.showPopPay = true
+            if(typeof this.total=='number'&&this.total>0){
+                //
+                    
+            const id = this.$route.params.id;
+            var tags = [];
+            this.tagsShow.map(item =>{
+                if(item){
+                    tags.push(item.id)
+                }
+            })
+      
+            this.$http('/api/app/tags/againBuy','post',{infoId:id,tagsId:tags},this.$store.state.token).then(res=>{
+               
+                if(res.data.code==100){
+                   console.log(res.data)
+                    const {orderNumber,orderPrice} = res.data.data
+                    this.orderPrice = orderPrice;
+                    this.orderNumber = orderNumber;
+                    this.showPopPay = true
+                }
+            })
+            }else{
+                this.$createToast({ txt: '该金额参数不正确', type: "txt" }).show();
+            }
+            
         },
     }
 }

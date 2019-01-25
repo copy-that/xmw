@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="mask" v-if="showdrop"></div>
-    <Header title="商品页"></Header>
+    <Header :title="title"></Header>
       <div class="search-box top-45">
         <div class="location">
           <img class="location-icon-r" src="@/assets/images/icon-14.png" alt>
@@ -13,25 +13,63 @@
       </div>
       <div class="filter">
         <div class="filter-header">
-          <div class="filter-item" :class="identity!==''?'is_active':''" @click="setFilter('id')">
-            身份
+          <div class="filter-item" :class="activeitem&&activeitem==oneData.valueField?'is_active':''" @click="setFilter(oneData.valueField)">
+            {{oneData.valueName?oneData.valueName:'身份'}}
             <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
-          <div class="filter-item" :class="prtype!==''?'is_active':''" @click="setFilter('pr')">
-            价格
+          <div class="filter-item" :class="activeitem&&activeitem==twoData.valueField?'is_active':''" @click="setFilter(twoData.valueField)">
+            {{twoData.valueName?twoData.valueName:'价格'}}
             <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
-          <div class="filter-item" :class="''!==fitype?'is_active':''" @click="setFilter('fi')">
-            筛选
+          <div class="filter-item" :class="activeitem&&filterData.valueField==activeitem?'is_active':''" @click="setFilter(filterData.valueField)">
+            {{filterData.valueName}}
             <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
-          <div class="filter-item" :class="'lo'==activeitem?'is_active':''" @click="setFilter('lo')">
-            分站
+          <div class="filter-item" :class="activeitem&&threeData.valueField==activeitem?'is_active':''" @click="setFilter(threeData.valueField)">
+            {{threeData.valueName?threeData.valueName:'分站'}}
             <img src="@/assets/images/icon-17.png" alt srcset>
           </div>
         </div>
         <div class="filter-body"  v-if="showdrop">
-          <div class="id-body" v-show="'id'==activeitem">
+          <div class="id-body" v-if="oneData.valueField==activeitem&&activeitem">
+            <div class="id-body-item" :class="item.id==oneparam?'is_active':''" v-for="(item,index) in oneData.zdValue" :key="index" @click="setIdentity(oneData.valueField,item.id,1)">
+              <span>{{item.value}}</span>
+              <img class="check-icon" v-if="item.id==oneparam" src="@/assets/images/icon-6.png" alt srcset>
+              <img class="check-icon" v-else src="@/assets/images/icon-7.png" alt srcset>
+            </div>
+            <cube-button class="form-primary-btn" @click="getProductList()" style="margin-bottom:10px" :primary="true">确定</cube-button>
+          </div>
+          <div class="body-item-box"  v-if="twoData.valueField==activeitem&&activeitem">
+            <div class="body-item-two" :class="item.id==twoparam?'is_active':''" v-for="(item,index) in twoData.zdValue" :key="index" @click="setIdentity(twoData.valueField,item.id,2)">
+              <span>{{item.value}}</span>
+              <img class="check-icon" v-if="item.id==twoparam" src="@/assets/images/icon-6.png" alt srcset>
+              <img class="check-icon" v-else src="@/assets/images/icon-7.png" alt srcset>
+            </div>
+            <cube-button class="form-primary-btn" @click="getProductList()" style="margin-bottom:10px" :primary="true">确定</cube-button>
+          </div>
+          <div class="body-type"  v-if="filterData.valueField==activeitem&&activeitem"> 
+            <div  v-for="(todo,row) in filterData.zdValue" v-bind:key="todo.valueField">
+              <div class="body-item-name">{{todo.valueName}}</div>
+              <div class="body-item-box" >
+                <div class="body-item-three" v-for="(item,index) in todo.zdValue" :key="index"  @click="setIdentity(todo.valueField,item.id,3,row)">
+                  <span>{{item.value}}</span>
+                  <img class="check-icon" v-if="item.id==filterTags[row]" src="@/assets/images/icon-6.png" alt srcset>
+                  <img class="check-icon" v-else src="@/assets/images/icon-7.png" alt srcset>
+                </div>
+              </div>
+            </div>
+            <cube-button class="form-primary-btn" @click="getProductList()" style="margin-bottom:10px" :primary="true">确定</cube-button>
+         </div>
+        <div class="body-type"  v-if="threeData.valueField==activeitem&&activeitem">
+          <div class="body-item-box" style="justify-content: flex-start;">
+            <div class="body-item-five" :class="item.id==threeparam?'is_active':''" 
+             v-for="(item,index) in threeData.zdValue" :key="index" @click="setIdentity(threeData.valueField, item.id,4,item.value)">
+             {{item.value}}
+             </div>
+          </div>
+          <cube-button class="form-primary-btn" @click="getProductList()" style="margin-bottom:10px" :primary="true">确定</cube-button>
+        </div>
+          <!-- <div class="id-body" v-show="'id'==activeitem">
             <div class="id-body-item" :class="''==identity?'is_active':''" @click="setIdentity('')">
               <span>不限</span>
             </div>
@@ -103,11 +141,11 @@
               <div class="body-item-five" :class="18==prtype?'is_active':''">成都</div>   
             </div>
             <cube-button class="form-primary-btn" @click="getProductList" style="margin-bottom:10px" :primary="true">确定</cube-button>
-          </div>
+          </div> -->
         </div>
       </div>
     <div class="list-prod">
-      <div class="prod" v-for="(prod,index) in prodList" :key="index" @click="viewProductDetail">
+      <!-- <div class="prod" v-for="(prod,index) in prodList" :key="index" @click="viewProductDetail">
         <div class="prod-icon">
           <img class="prod-img" src="@/assets/images/item-icon.png" alt>
           <span class="prod-img-pages">7张</span>
@@ -128,8 +166,38 @@
           </div>
           <div class="prod-price">¥3000万</div>
         </div>
-      </div>     
-     
+      </div>      -->
+      <cube-scroll
+          ref="scroll"
+          :data="prodList"
+          :options="options"
+          @pulling-down="onPullingDown"
+          @pulling-up="onPullingUp">
+          <div v-for="prod in prodList" class="prod" :key="prod.id" @click="viewProductDetail(prod.id)">
+            <div class="prod-icon">
+              <img class="prod-img" v-lazy="prod.picUrls&&prod.picUrls.split(',')[0]" alt>
+              <span class="prod-img-pages">{{prod.picUrls&&prod.picUrls.split(',').length}}张</span>
+            </div>
+            <div class="prod-info">
+              <div class="prod-name">{{prod.title.length>12?prod.title.slice(0,10)+'...':prod.title}}
+                <img class="prod-enjoy" src="@/assets/images/icon-2-b.png" alt srcset>
+              </div>
+              <div class="prod-value">
+                <span v-if="prod.classify">户型:{{prod.classify}}</span>
+                <span v-if="prod.area">面积:{{prod.area}}㎡</span>
+                <span v-if="prod.grade">档次:{{prod.grade}}</span>
+                <span v-if="prod.mating">配套:{{prod.mating}}</span>
+              </div>
+              <div class="prod-time">发布时间:{{prod.createTime}}</div>
+              <div class="prod-tags">
+                <span v-if="prod.identityMsg">{{prod.identityMsg}}</span>
+                <span v-if="prod.dicorationNumMsg">{{prod.dicorationNumMsg}}</span>
+                <span v-if="prod.statusMsg">{{prod.statusMsg}}</span>
+              </div>
+              <div class="prod-price">¥{{prod.price>=10000?(prod.price/10000)+'万':prod.price+'元'}}</div>
+            </div>
+          </div>
+      </cube-scroll>
     </div>
   </div>
 </template>
@@ -147,18 +215,44 @@ export default {
       vitype:'',
       stationName:'',
       station:'',
-      identity: '',
-      prtype: '',
-      fitype:'',
+      oneparam: '',
+      twoparam: '',
+      threeparam:'',
       showdrop: false,
-      prodList:[{},{}],
-      filterTags:[0,0,0,0,0],
+      prodList:[],
+      filterTags:[],
       params:{
         page:1,
-        pageSize:15
+        pageSize:15,
+        identity:'',
+        auStatus:'',
+        form:'',
+        dicorationNum:'',
+        classify:'',
+        price:'',
+        area:'',
+        station:'',
+        grade:'',
+        mating:''
       },
-      toolLabel:[],
-      toolData:[],
+      oneData:{valueName:"",valueField:"",zdValue:[]},
+      twoData:{valueName:"",valueField:"",zdValue:[]},
+      threeData:{valueName:"",valueField:"",zdValue:[]},
+      filterData:{valueName:"筛选",valueField:"zd_shaixuan",zdValue:[]},
+      options:{
+        pullDownRefresh: {
+          threshold: 60,
+          stopTime: 1000,
+          txt: '更新成功'
+        },
+        pullUpLoad: {
+          threshold:60,
+          txt	:{
+              more:'加载更多',
+              noMore:'没有更多'
+          }
+        }
+      },
       fiList:[
         {
           name:'信息',
@@ -285,21 +379,122 @@ export default {
       ]
     };
   },
+  computed:{
+    title:function(){
+      switch(this.vitype){
+        case '1':
+        return '买住宅'
+        break;
+        case '2':
+        return '租住宅'
+        break;
+        case '3':
+        return '买商铺'
+        break;
+        case '4':
+        return '租商铺'
+        break;
+        case '5':
+        return '买办公'
+        break;
+        case '6':
+        return '租办公'
+        break;
+        case '7':
+        return '买厂房'
+        break;
+        case '8':
+        return '租厂房'
+        break;
+         case '9':
+        return '买期房'
+        break;
+        case '10':
+        return '租酒店'
+        break;
+      }
+      
+    }
+  },
   mounted(){
     
     const {type,station,stationName} = this.$route.params
     this.vitype = type;
-    this.station = station;
+    this.params.station = station;
     this.stationName = stationName;
-    console.log(type,station,stationName)
+    // console.log(type,station,stationName)
     this.getFileData()
+    this.getProductList()
   },
   methods:{
-    setIdentity(value){
+    setIdentity(key,value,col,filter){
+      const type = this.$route.params.type;
+      //  console.log(key,value,filter)
       this.identity = value
-      console.log(value)
+     
+      switch(key){
+          case 'zd_shenfen':
+          this.params.identity = value
+          break;
+          case 'zd_buy_price':
+          this.params.price = value
+          break;
+          case 'zd_zujin':
+          this.params.price = value
+          break;
+          case 'zd_workshop_zj':
+          this.params.price = value
+          break;
+          case 'zd_zu_price':
+          this.params.price = value
+          break;
+           case 'zd_dangci':
+          this.params.grade = value
+          break;
+          case 'zd_peitao':
+          this.params.mating = value
+          break;
+          case 'zd_xinxi':
+          this.params.auStatus = value
+          break;
+          case 'zd_xingshi':
+          this.params.form = value
+          break;
+          case 'zd_fenzhan':
+          this.params.station = value
+          break;
+          case 'zd_decorate':
+          this.params.dicorationNum = value
+          break;
+          case 'zd_houseType':
+          this.params.classify = value
+          break;
+          case 'zd_mianji':
+          this.params.area = value
+          break;
+           
+        }
+      
+      if(col == 1){
+        this.oneparam = value
+      }
+      if(col == 2){
+        this.twoparam = value
+      }
+      if(col == 3){
+        if(filter!==undefined){
+          this.$set(this.filterTags,filter,value)
+          // this.filterTags[filter] = value
+        }
+      }
+      if(col == 4){
+        this.stationName = filter
+        this.threeparam = value
+      }
+    
     },
     setFilter(item){
+      //  console.log(item)
       this.showdrop = true
       this.activeitem = item
     },
@@ -309,12 +504,39 @@ export default {
       this.$http('/api/app/rendInfoApi/getDictionaryList','post',query,this.$store.state.token).then(res=>{
         
         if(res.data.code==100){
-           console.log(res.data)
-          if(this.vitype==1){
-           this.toolLabel = [{name:'身份',value:'zd_shenfen'},{name:'价格',value:'zd_buy_price'},{name:'筛选',value:'zd_buy_price'},{name:'分站',value:'zd_fenzhan'}]
+      
+          if(this.vitype==3||this.vitype==4||this.vitype==10){
+            res.data.data.map(item=>{
+               console.log(item)
+              if(item.valueField=="zd_xinxi" || item.valueField=='zd_zu_price' ){
+                this.oneData = item
+              }else if(item.valueField=="zd_buy_price" ||  item.valueField=='zd_dangci'){
+                this.twoData = item
+              }else if(item.valueField=="zd_fenzhan"){
+                this.threeData = item
+              }else{
+                this.filterTags.push('')
+                this.filterData.zdValue.push(item)
+              }
+            })
            
+
+          }else{
+             res.data.data.map(item=>{
+               console.log(item)
+              if(item.valueField=="zd_shenfen"){
+                this.oneData = item
+              }else if(item.valueField=="zd_buy_price" || item.valueField=='zd_zujin' || item.valueField=='zd_workshop_zj'){
+                this.twoData = item
+              }else if(item.valueField=="zd_fenzhan"){
+                this.threeData = item
+              }else{
+                this.filterTags.push('')
+                this.filterData.zdValue.push(item)
+              }
+              
+            })
           }
-          
         }else{
 
         }
@@ -322,11 +544,36 @@ export default {
       })
     },
     getProductList(){
-      console.log(this.params);
-      this.$http('/api/app/rendInfoApi/getWorkshopList','post',{type:type,...this.params},this.$store.state.token).then(res=>{
-         
+      this.prodList = []
+      this.showdrop = false;
+      const vitype = this.vitype;
+      console.log(this.showdrop)
+      if(vitype==1||vitype==9){
+        this.getHouseList()
+      }else if(vitype==10){
+        this.getHotelList()
+      }else if(vitype==5||vitype==6){
+        this.getOfficeList()
+      }else if(vitype==2){
+        this.getRentHouseList()
+      }else if(vitype==3||vitype==4){
+        this.getShopList()
+      }else{
+        this.getWorkHouseList()
+      }
+
+    },
+    getHouseList(){
+      this.$http('/api/app/rendInfoApi/getBuyHouseList','post',this.$qs.stringify({type:this.vitype,...this.params}),this.$store.state.token).then(res=>{
           if(res.data.code==100){
-             console.log(res.data)
+            console.log(res.data)
+              if(res.data.data.rendVos.length>0){
+                
+                  this.prodList = this.prodList.concat(...res.data.data.rendVos)
+              }
+              else{
+                  this.$refs.scroll.forceUpdate()
+              }
           }else{
             this.$createDialog({
                 type: 'alert',
@@ -336,22 +583,123 @@ export default {
           }
       })
     },
-    onPullingDown() {
-        this.params.page = 1;
-        this.questionList = []
-        this.getCommentQuestion()
+    getHotelList(){
+      this.$http('/api/app/rendInfoApi/getHotelList','post',this.$qs.stringify({type:this.vitype,...this.params}),this.$store.state.token).then(res=>{
+          if(res.data.code==100){
+            console.log(res.data)
+              if(res.data.data.rendVos.length>0){
+                
+                  this.prodList = this.prodList.concat(...res.data.data.rendVos)
+              }
+              else{
+                  this.$refs.scroll.forceUpdate()
+              }
+          }else{
+            this.$createDialog({
+                type: 'alert',
+                title: res.data.msg,
+                icon: 'cubeic-warn'
+            }).show()
+          }
+      })
+    },
+    getOfficeList(){
+      this.$http('/api/app/rendInfoApi/getOfficeList','post',this.$qs.stringify({type:this.vitype,...this.params}),this.$store.state.token).then(res=>{
+          if(res.data.code==100){
+            console.log(res.data)
+              if(res.data.data.rendVos.length>0){
+                
+                  this.prodList = this.prodList.concat(...res.data.data.rendVos)
+              }
+              else{
+                  this.$refs.scroll.forceUpdate()
+              }
+          }else{
+            this.$createDialog({
+                type: 'alert',
+                title: res.data.msg,
+                icon: 'cubeic-warn'
+            }).show()
+          }
+      })
+    },
+    
+    getRentHouseList(){
+       this.$http('/api/app/rendInfoApi/getRendHouseList','post',this.$qs.stringify({type:this.vitype,...this.params}),this.$store.state.token).then(res=>{
+          if(res.data.code==100){
+            console.log(res.data)
+              if(res.data.data.rendVos.length>0){
+                
+                  this.prodList = this.prodList.concat(...res.data.data.rendVos)
+              }
+              else{
+                  this.$refs.scroll.forceUpdate()
+              }
+          }else{
+            this.$createDialog({
+                type: 'alert',
+                title: res.data.msg,
+                icon: 'cubeic-warn'
+            }).show()
+          }
+      })
+    },
+    getShopList(){
+      this.$http('/api/app/rendInfoApi/getShopList','post',this.$qs.stringify({type:this.vitype,...this.params}),this.$store.state.token).then(res=>{
+          if(res.data.code==100){
+            console.log(res.data)
+              if(res.data.data.rendVos.length>0){
+                
+                  this.prodList = this.prodList.concat(...res.data.data.rendVos)
+              }
+              else{
+                  this.$refs.scroll.forceUpdate()
+              }
+          }else{
+            this.$createDialog({
+                type: 'alert',
+                title: res.data.msg,
+                icon: 'cubeic-warn'
+            }).show()
+          }
+      })
+    },
+    getWorkHouseList(){
+      this.$http('/api/app/rendInfoApi/getWorkshopList','post',this.$qs.stringify({type:this.vitype,...this.params}),this.$store.state.token).then(res=>{
+          if(res.data.code==100){
+            console.log(res.data)
+              if(res.data.data.rendVos.length>0){
+                
+                  this.prodList = this.prodList.concat(...res.data.data.rendVos)
+              }
+              else{
+                  this.$refs.scroll.forceUpdate()
+              }
+          }else{
+            this.$createDialog({
+                type: 'alert',
+                title: res.data.msg,
+                icon: 'cubeic-warn'
+            }).show()
+          }
+      })
     },
     onPullingUp() {
         this.params.page = this.params.page + 1;
-        this.getCommentQuestion()
+        this.getProductList()
     },
-    viewProductDetail(){
-      this.$router.push({name:'ProductDetail'})
+    onPullingDown() {
+        this.params.page = 1;
+        this.prodList = []
+        this.getProductList()
+    },
+    viewProductDetail(id){
+      this.$router.push({name:'ProductDetail',params:{id:id}})
     }
   }
 };
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
 
 @import '../assets/css/style.styl';
 .page {
@@ -361,42 +709,7 @@ export default {
 .top-45{
   top 45px  
 }
-.cube-input.search-min {
-  width: 260px;
-  box-sizing: border-box;
-  padding: 0 15px;
-  font-size: 13px;
-}
 
-.cube-input.search-min::after {
-  border-radius: 40px;
-  box-shadow: 0 2px 2px 2px rgba(245, 245, 245, 0.6);
-}
-
-.cube-input.search-min .cube-input-field{
-  box-sizing: border-box;
-  padding: 3px 10px;
-}
-
-.search-icon {
-  height: 13px;
-  width: 13px;
-}
-
-.location-icon-r 
-  top: 8px;
-  position: absolute;
-  left: 0;
-  height: 13px;
-  width: 13px;
-
-.location-place-r {
-  top: 8px;
-  font-size: 13px;
-  position: absolute;
-  left: 21px;
-  font-size: 0.346667rem;
-}
 
 .filter {
   position fixed
@@ -405,11 +718,10 @@ export default {
   background-color #ffffff
   box-sizing border-box
   z-index 10
-  padding: 0 15px;
   overflow: hidden;
 }
-
 .filter-header {
+  padding: 0 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -504,16 +816,21 @@ export default {
   margin-right:0
 }
 .body-item-five {
-  text-align: center;
+  text-align: left;
   width: 20%;
   font-size: 13px;
   height: 38px;
   line-height: 38px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   &.is_active {
     color: #FB6800;
   }
 }
-
+.body-item-five:nth-of-type(5n){
+  text-align: right;
+}
 // .block {
 //   position: fixed;
 //   top: 0;
@@ -528,7 +845,11 @@ export default {
 // }
 
 .list-prod {
-  margin:85px 0 20px;
-  padding: 0 15px;
+  padding 80px 15px 0px
+  box-sizing: border-box
+  height calc(100vh - 45px)
+  .cube-pulldown-loaded,.before-trigger{
+    font-size: 13px; 
+  }
 }
 </style>

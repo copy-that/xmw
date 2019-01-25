@@ -5,8 +5,7 @@
             <cube-scroll
                 ref="scroll"
                 :data="questionList"
-                :options="{pullDownRefresh: {txt:'刷新成功'},
-                            pullUpLoad: true}"
+                :options="options"
                 @pulling-down="onPullingDown"
                 @pulling-up="onPullingUp">
                 <div v-for="ques in questionList" class="cell" :key="ques.id" @click="viewQuestionDetail(ques.id)">
@@ -14,10 +13,7 @@
                     <img class="cell-right-icon"  src="@/assets/images/icon-5.png" alt="">
                 </div>
             </cube-scroll>
-
-
-            
-            
+   
         </div>
     </div>
 </template>
@@ -33,6 +29,20 @@ export default {
             params:{
                 page:1,
                 pageSize:15
+            },
+            options: {
+                pullDownRefresh: {
+                    threshold: 60,
+                    stopTime: 1000,
+                    txt: '更新成功'
+                },
+                pullUpLoad: {
+                    threshold:60,
+                    txt	:{
+                        more:'加载更多',
+                        noMore:'没有更多'
+                    }
+                },
             },
             questionList:[]
         }

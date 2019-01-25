@@ -53,7 +53,7 @@
             
         </div>
         
-        <Tabbar active-tab-item="my" />
+        <Tabbar active-tab-item="My" />
     </div>
 </template>
 <script>

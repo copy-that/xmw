@@ -6,7 +6,7 @@
         <div class="location-place">{{showCity.name}}</div>
         <div class="location-change">切换分站</div>
       </div>
-      <cube-input class="search" v-model="searchWorld" placeholder="请输入区域、商圈或者编号">
+      <cube-input class="search" v-model="searchWorld" @focus="searchFocus" placeholder="请输入区域、商圈或者编号">
         <img class="search-icon" slot="prepend" src="@/assets/images/icon-15.png" alt>
       </cube-input>
     </div>
@@ -40,7 +40,7 @@
             @click="viewProductDetail(recomitem.id)"
             :key="recomitem.id"
           >
-            <img class="reitem-icon" :src="recomitem.picUrls" alt>
+            <img class="reitem-icon" v-lazy="recomitem.picUrls.split(',')[0]" alt>
             <div class="reitem-name">{{recomitem.title}}</div>
             <div class="reitem-price">¥{{recomitem.price}}万</div>
           </div>
@@ -213,13 +213,25 @@ export default {
       ]
     };
   },
-  created() {
-    this.getNewMsg();
-    this.getRecoment();
-    this.getSiteList();
-    this.getBannerPic();
+  created() { 
+    const token = this.$route.query.token;
+    const unionid = this.$route.query.unionid || '222';
+    if(token){
+      this.getNewMsg();
+      this.getRecoment();
+      this.getSiteList();
+      this.getBannerPic();
+    }else{
+      this.$router.push({name:'Register',query:{unionid:unionid}})
+    }
+    
+    
   },
   methods: {
+    searchFocus(e){
+      console.log(e)
+      this.$router.push({name:'Search'})
+    },
     getBannerPic() {
       this.$http(
         "/api/otherInfo/getSowingMap",

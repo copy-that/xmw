@@ -36,22 +36,20 @@ export default {
                 pageSize:15
             },
             options: {
-        pullDownRefresh: {
-          threshold: 60,
-          // stop: 44,
-          stopTime: 1000,
-          txt: '更新成功'
-        },
-        pullUpLoad: {
-          threshold:60,
-          txt	:{
-            more:'加载更多',
-            noMore:'没有更多'
-          }
-          
-        },
-     
-      },
+                pullDownRefresh: {
+                    threshold: 60,
+                    // stop: 44,
+                    stopTime: 1000,
+                    txt: '更新成功'
+                },
+                pullUpLoad: {
+                    threshold:60,
+                    txt	:{
+                        more:'加载更多',
+                        noMore:'没有更多'
+                    }
+                },
+            },
         }
     },
     mounted(){

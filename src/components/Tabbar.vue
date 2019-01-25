@@ -17,7 +17,7 @@ export default {
   props:{
     activeTabItem:{
       type:String,
-      default:'home'
+      default:'Home'
     }
   },
   data () {
@@ -25,22 +25,22 @@ export default {
       activeTab:'',
       tabs: [{
         name: '首 页',
-        label:'home',
+        label:'Home',
         icon: require('@/assets/images/tab-1.png'),
         icon_active:  require('@/assets/images/tab-1-p.png'),
       }, {
         name: '历史',
-        label:'history',
+        label:'History',
         icon:  require('@/assets/images/tab-2.png'),
         icon_active:  require('@/assets/images/tab-2-p.png'),
       }, {
         name: '出租出售发布',
-        label:'buysell',
+        label:'Buysell',
         icon:  require('@/assets/images/tab-3.png'),
         icon_active:  require('@/assets/images/tab-3-p.png'),
       }, {
         name: '我的',
-        label:'my',
+        label:'My',
         icon:  require('@/assets/images/tab-4.png'),
         icon_active:  require('@/assets/images/tab-4-p.png'),
       }]

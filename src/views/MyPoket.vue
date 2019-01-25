@@ -8,7 +8,7 @@
                     <span>我的金币（个）</span>
                 </div>
                 <div class="card-value">
-                    <div class="total">7500.00</div>
+                    <div class="total">{{moneyTotal?moneyTotal:0}}</div>
                     <div class="detail-btn" @click="viewPoketDetail">收支明细&emsp;›</div>
                 </div>
             </div>
@@ -29,6 +29,22 @@ export default {
     name:'MyPoket',
     components: {
         Header
+    },
+    data(){
+        return{
+            moneyTotal:0
+        }
+    },
+    mounted(){
+        this.$http('/api/app/commonUser/getMoney','post',{},this.$store.state.token).then(res=>{
+            console.log(res)
+            if(res.data.code==100){
+                this.moneyTotal = res.data.data
+            }else{
+                this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+            }
+            
+        })
     },
     methods:{
         viewRecharge(){

@@ -62,8 +62,7 @@
 </template>
 <script>
 import Header from "@/components/Header.vue";
-import { provinceList, cityList, areaList } from "@/area.js";
-import {addressData} from '@/area1.js'
+import {addressData} from '@/area.js'
 export default {
   name: "Register2",
   components: {

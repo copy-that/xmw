@@ -1,7 +1,6 @@
 <template>
   <div class="page">
     <Header :back-icon="false" title="登录"></Header>
-
     <div class="login-box">
       <img class="login-logo" src="@/assets/images/LOGO.png" alt srcset>
       <cube-input class="login-input" v-model="phone" :maxlength="11" placeholder="请输入手机号"></cube-input>
@@ -21,13 +20,6 @@
       <div class="btn-box">
         <router-link class="line-item" to="/forgot">忘记密码</router-link>
         <router-link class="line-item" to="/register">注册</router-link>
-      </div>
-      <div class="three-part">
-        <div class="three-part-tittle">第三方登录</div>
-        <div class="three-part-box">
-          <img src="@/assets/images/icon-10.png" alt="" >
-          <img src="@/assets/images/icon-19.png" id="qlogin" @click="threePartQQ"  alt="" >
-        </div>
       </div>
     </div>
   </div>
@@ -65,15 +57,6 @@ export default {
     
   },
   methods: {
-    threePartQQ(){
-      window.location.href = 'https://graph.qq.com/oauth2.0/authorize?client_id=100229030&response_type=token&scope=all&redirect_uri=http%3A%2F%2Fqzonestyle.gtimg.cn%2Fqzone%2Fopenapi%2Fredirect-1.0.1.html', 'oauth2Login_10634' ,'height=525,width=585, toolbar=no, menubar=no, scrollbars=no, status=no, location=yes, resizable=yes'
-      // this.http('/threePartLogin/bindQQ','get',{},this.$store.state.token).then(res=>{
-      //   console.log(res)
-      // })
-    },
-    threePartWX(){
-      this.$router.push({name:'Home'})
-    },
     goLogin() {
       if (this.phone == "") {
         this.$createToast({ txt: "手机号不能为空", type: "txt" }).show();
@@ -92,11 +75,11 @@ export default {
       ).then(res => {
         if (res.data.code == 100) {
           this.$store.commit("setUserToken", res.data.data);
-          console.log()
+          console.log(res.data.data)
           if(this.$route.matched.length>1){
             this.$router.back();
           }else{
-            this.$router.push({name:'home'})
+            this.$router.push({name:'Home'})
           }
           
         } else {

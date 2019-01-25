@@ -11,13 +11,13 @@
           <div class="detail-name">{{ProductInfo&&ProductInfo.title}}</div>
           <div class="detail-time">发布时间：{{ProductInfo&&ProductInfo.createTime.substring(0,10)}}</div>
           <div class="detail-tages" v-if="ProductInfo&&ProductInfo.tagVos">
-            <span>{{ProductInfo&&ProductInfo.identityMsg}}</span>
-            <span>{{ProductInfo&&ProductInfo.dicorationNum}}</span>
+            <span v-if="ProductInfo.identityMsg">{{ProductInfo&&ProductInfo.identityMsg}}</span>
+            <span v-if="ProductInfo.dicorationNum">{{ProductInfo&&ProductInfo.dicorationNum}}</span>
             <span>{{ProductInfo&&ProductInfo.status==0?'在售':'已售'}}</span>
           </div>
         </div>
         <div class="right">
-          <span class="detail-price">¥{{ProductInfo&&ProductInfo.price}}/月</span><!-- 缺少类型 -->
+          <span class="detail-price" v-if="ProductInfo&&ProductInfo.price">¥{{ProductInfo.price>=10000?(ProductInfo.price/10000)+'万':ProductInfo.price+'元'}}/月</span><!-- 缺少类型 -->
           <div class="detail-enjoy" @click="enjoyProd()">
             <img class="enjoy-icon" v-if="ProductInfo&&ProductInfo.coll==1" src="@/assets/images/icon-2.png" alt>
             <img class="enjoy-icon" v-else src="@/assets/images/icon-2-b.png" alt>
@@ -28,35 +28,39 @@
       <div class="images" v-if="ProductInfo&&ProductInfo.tagVos">
         <img class="image-item" v-for="tag in ProductInfo.tagVos" :src="tag.tagPicUrl" :key="tag.id" alt srcset>
       </div>
-      <div class="detail-cell">
+      <div class="detail-cell" v-if="ProductInfo&&ProductInfo.number">
         <div class="cell-lable">房源编号：</div>
         <div class="cell-value">{{ProductInfo&&ProductInfo.number}}</div>
       </div>
-      <div class="detail-cell">
+      <div class="detail-cell" v-if="ProductInfo&&ProductInfo.callName">
         <div class="cell-lable">发&ensp;布&ensp;人：</div>
-        <div class="cell-value">{{ProductInfo&&ProductInfo.callName }}（{{ProductInfo&&ProductInfo.identityMsg}}），中介费：{{ProductInfo&&ProductInfo.tbBrokerageFee}}元</div>
+        <div class="cell-value">{{ProductInfo&&ProductInfo.callName }}{{ProductInfo&&ProductInfo.identityMsg?`（${ProductInfo.identityMsg}）`:''}}{{ProductInfo&&ProductInfo.tbBrokerageFee?'，中介费：'+ProductInfo.tbBrokerageFee+'元':''}}</div>
       </div>
-      <div class="detail-cell">
+      <div class="detail-cell" v-if="ProductInfo&&ProductInfo.classify">
         <div class="cell-lable">房&emsp;&emsp;型：</div>
         <div class="cell-value">{{ProductInfo&&ProductInfo.classify}}</div>
       </div>
-      <div class="detail-cell">
+      <div class="detail-cell" v-if="ProductInfo&&ProductInfo.form">
         <div class="cell-lable">出租类型：</div>
         <div class="cell-value">{{ProductInfo&&ProductInfo.form}}</div>
       </div>
-      <div class="detail-cell">
+      <div class="detail-cell" v-if="ProductInfo&&ProductInfo.area">
         <div class="cell-lable">面&emsp;&emsp;积：</div>
         <div class="cell-value">{{ProductInfo&&ProductInfo.area}}平米</div>
       </div>
-      <div class="detail-cell">
+      <div class="detail-cell" v-if="ProductInfo&&ProductInfo.houseAllocation">
         <div class="cell-lable">房屋配置：</div>
         <div class="cell-value">{{ProductInfo&&ProductInfo.houseAllocation}}</div>
       </div>
-      <div class="detail-cell">
+      <div class="detail-cell" v-if="ProductInfo&&ProductInfo.locationText">
+        <div class="cell-lable">位置信息：</div>
+        <div class="cell-value">{{ProductInfo&&ProductInfo.locationText}}</div>
+      </div>
+      <div class="detail-cell" v-if="ProductInfo&&ProductInfo.grade">
         <div class="cell-lable">酒店等级：</div>
         <div class="cell-value">{{ProductInfo&&ProductInfo.grade}}</div>
       </div>
-      <div class="detail-cell">
+      <div class="detail-cell" v-if="ProductInfo&&ProductInfo.mating">
         <div class="cell-lable">提供服务：</div>
         <div class="cell-value">{{ProductInfo&&ProductInfo.mating}}</div>
       </div>
@@ -143,7 +147,8 @@ export default {
         serviceTel:'',
         showPopPay:false,
         comment:'',
-        ProductInfo:null
+        ProductInfo:null,
+        orderNumber:''
     };
   },
   mounted() {
@@ -169,7 +174,7 @@ export default {
           console.log(res.data)
           this.ProductInfo = res.data.data;
           const lng = Number(res.data.data.longitude).toFixed(2);
-          const lat = Number(res.data.data.longitude).toFixed(2);
+          const lat = Number(res.data.data.latitude).toFixed(2);
          return [+lng,+lat]
         } else {
           this.$createToast({ txt: res.data.msg, type: "txt" }).show();
@@ -184,16 +189,7 @@ export default {
     },
     ToPayFor(){
 
-      const id = this.ProductInfo.id;
-        const paytype = this.paytype;
-        this.$http('/mobile/infoOrder/createds','post',this.$qs.stringify({infoId:id,payStyle:paytype}),this.$store.state.token).then(res=>{
-          if(res.data.code==100){
-            this.showPopPay = false
-            console.log(res.data)
-          }else{
-            this.$createToast({ txt: res.data.msg, type: "txt" }).show();
-          }
-        })
+     
       
     },
     checkType(type){
@@ -232,7 +228,18 @@ export default {
         }
       }).show()
       }else{
-        this.showPopPay =true
+        const id = this.ProductInfo.id;
+        const paytype = this.paytype;
+        this.$http('/mobile/infoOrder/createds','post',this.$qs.stringify({infoId:id,payStyle:paytype}),token).then(res=>{
+          if(res.data.code==100){
+            console.log(res.data.data)
+            this.orderNumber = res.data.data
+            this.showPopPay = true
+          }else{
+            this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+          }
+        })
+        
       }
     },
     enjoyProd(){
@@ -255,17 +262,28 @@ export default {
     },
     initMap(data) {
       
-      var map = new AMap.Map("map", {
-        zoom: 13,
-        center: data,
-        resizeEnable: true
-      });
-      var viaMarker = new AMap.Marker({
-        position: new AMap.LngLat(data[0], data[1]),
-        icon: require("@/assets/images/icon-3.png"),
-        offset: new AMap.Pixel(-75, -3)
-      });
-      map.add([viaMarker]);
+      // var map = new AMap.Map("map", {
+      //   zoom: 13,
+      //   center: data,
+      //   resizeEnable: true
+      // });
+      // var viaMarker = new AMap.Marker({
+      //   position: new AMap.LngLat(data[0], data[1]),
+      //   icon: require("@/assets/images/icon-3.png"),
+      //   offset: new AMap.Pixel(-75, -3)
+      // });
+      // map.add([viaMarker]);
+
+      var map = new BMap.Map("map");
+      var point = new BMap.Point(data[0], data[1]);
+      map.centerAndZoom(point, 15);
+      
+      //创建图标
+      var pt = new BMap.Point(data[0], data[1]);
+      var myIcon = new BMap.Icon(require("@/assets/images/icon-3.png"), new BMap.Size(48,48));
+      var marker2 = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
+      map.addOverlay(marker2);  
+
     }
   }
 };

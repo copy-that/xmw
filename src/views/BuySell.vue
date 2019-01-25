@@ -15,7 +15,7 @@
       </div>
       <cube-button class="form-primary-btn" :primary="true" @click="viewMypost">查看我的发布</cube-button>
     </div>
-    <Tabbar active-tab-item="buysell"/>
+    <Tabbar active-tab-item="Buysell"/>
   </div>
 </template>
 <script>

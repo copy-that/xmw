@@ -9,7 +9,6 @@
     </div>
     <div class="login-box" v-else-if="step==2">
       <img class="login-logo" src="@/assets/images/LOGO.png" alt srcset>
-      <cube-input class="login-input" v-model="nickname" :maxlength="8" placeholder="请输入昵称"></cube-input>
       <cube-input class="login-input" v-model="phone" :maxlength="11" placeholder="请输入手机号"></cube-input>
       <div style="display:flex">
         <cube-input
@@ -30,6 +29,7 @@
     </div>
     <div class="login-box" v-else>
       <img class="login-logo" src="@/assets/images/LOGO.png" alt srcset>
+      <cube-input class="login-input" v-model="nickname" :maxlength="8" placeholder="请输入昵称"></cube-input>
       <cube-input
         class="login-input"
         v-model="pass"
@@ -56,6 +56,7 @@ export default {
   },
   data() {
     return {
+      unionid:'',
       step: 1,
       choosetype: 1,
       nickname:"",
@@ -83,15 +84,17 @@ export default {
       ]
     };
   },
-  mounted() {},
+  mounted() {
+    this.unionid = this.$route.query.unionid;
+  },
   methods: {
     checkType(type) {
       this.choosetype = type;
     },
     chooseType() {
-      if (this.choosetype == 2) {
-        this.$router.replace({ name: "Register2" });
-      }
+      // if (this.choosetype == 2) {
+      //   this.$router.replace({ name: "Register2" });
+      // }
       this.step = 2;
     },
     validPhone(phone) {
@@ -120,10 +123,10 @@ export default {
     },
     nextStep() {
 
-      if (this.nickname == "") {
-        this.$createToast({ txt: "昵称不能为空", type: "txt" }).show();
-        return;
-      }
+      // if (this.nickname == "") {
+      //   this.$createToast({ txt: "昵称不能为空", type: "txt" }).show();
+      //   return;
+      // }
       if (this.phone == "") {
         this.$createToast({ txt: "手机号不能为空", type: "txt" }).show();
         return;
@@ -132,20 +135,41 @@ export default {
         this.$createToast({ txt: "验证码不能为空", type: "txt" }).show();
         return;
       }
+      // this.$http(
+      //   "/api/otherInfo/checkSmsCode",
+      //   "post",
+      //   this.$qs.stringify({ phone: this.phone, type: "1", code: this.valid }),
+      //   ""
+      // ).then(res => {
+      //   if (res.data.code == 100) {
+      //     this.step = 3;
+      //   } else {
+      //     this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+      //   }
+      // });
       this.$http(
-        "/api/otherInfo/checkSmsCode",
+        "/api/app/commonUser/bangdingWxQq",
         "post",
-        this.$qs.stringify({ phone: this.phone, type: "1", code: this.valid }),
+        this.$qs.stringify({ phone: this.phone, wxOpenId: this.$route.query.unionid, phoneCode: this.valid }),
         ""
       ).then(res => {
         if (res.data.code == 100) {
-          this.step = 3;
+          if(this.choosetype==1){
+            this.step = 3;
+          }else{
+            
+          }
+          
         } else {
           this.$createToast({ txt: res.data.msg, type: "txt" }).show();
         }
       });
     },
     goRegister() {
+      if (this.nickname == "") {
+        this.$createToast({ txt: "昵称不能为空", type: "txt" }).show();
+        return;
+      }
       var regpa = /^[0-9a-zA-Z]{6,20}$/;
       if (!regpa.test(this.pass)) {
         this.$createToast({

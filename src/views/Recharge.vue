@@ -4,16 +4,17 @@
         <div class="charge-box">
             <div class="charge-input">
                 <label class="charge-name" for="">充值金额：<span class="charge-num-before">￥</span></label>
-                <input class="charge-num" type="text" placeholder="请输入充值金额">
+                <input class="charge-num" v-model="charge" @input="handleInput" type="text" placeholder="请输入充值金额">
             </div>
+            <span class="charge-valide">{{ iligal?'输入金额不合法':''}}</span>
             <div class="type-name" >支付方式：</div>
             <div class="radio-type">
-                <div class="radio-item is_check">
+                <div class="radio-item" :class="this.type==1?'is_check':''" @click="handleSelectPayType(1)">
                     <span class="form_item_radio"></span>
                     <img class="radio-type-img" src="@/assets/images/icon-9.png" alt="" srcset="">
                     <span>支付宝支付</span>
                 </div>
-                <div class="radio-item">
+                <div class="radio-item"  :class="this.type==2?'is_check':''" @click="handleSelectPayType(2)">
                     <span class="form_item_radio"></span>
                     <img class="radio-type-img" src="@/assets/images/icon-10.png" alt="" srcset="">
                     <span>微信支付</span>
@@ -21,6 +22,7 @@
             </div>
             <cube-button class="primary-btn" :primary="true" @click="viewReSucess">确认充值</cube-button>
         </div>
+        <div class="" v-html="aliPayForm" v-if="showAliPayForm"></div>
     </div>
 </template>
 <script>
@@ -30,9 +32,55 @@ export default {
     components:{
         Header
     },
+    data(){
+        return{
+            charge:0,
+            type:1,
+            iligal:false,
+            showAliPayForm:true,
+            aliPayForm:''
+        }
+    },
     methods:{
+        handleInput(e){
+            if(isNaN(e.target.value)){
+                this.iligal = true
+            }else{
+                 this.iligal = false
+            }
+         
+        },
+        handleSelectPayType(type){
+            this.type = type;
+        },
         viewReSucess(){
-            this.$router.push({name:'ReSuccess'})
+            if(this.charge<=0){
+                return;
+            }
+            if(!isNaN(this.charge)){
+                this.$http('/api/payapi/appRecharge','post',this.$qs.stringify({type:this.type,money:this.charge}),this.$store.state.token).then(res=>{
+                   
+                    if(res.data.code==100){
+                        console.log(res.data)
+                        if(this.type==1){
+                            this.aliPayForm= res.data.data.date;
+                            this.showAliPayForm = true
+                            this.$nextTick(()=>{
+                                document.forms['alipaysubmit'].submit();
+                            })
+                        }else{
+                            const ff = res.date
+                            console.log(ff)
+                        }
+                        
+                    }else{
+                        this.$createToast({ txt: res.data.msg, type: "txt" }).show();
+                    }
+                })
+            }
+             
+            
+            // this.$router.push({name:'ReSuccess'})
         }
     }
 }
@@ -81,4 +129,7 @@ input.charge-num::-webkit-input-placeholder
     margin 0 15px 0 30px
     height 25px
     width 25px
+.charge-valide
+    font-size 13px
+    color red
 </style>
